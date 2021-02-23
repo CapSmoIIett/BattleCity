@@ -68,13 +68,14 @@
 Технологии 
 	Графическая библиотека:
 		SFML
-		Qt
+		Qt		- Нет
 		Cairo
-		Cocos2D-X
+		Cocos2D-X	- Нет
 		Juce
 		wxWidgets
 		SDL 2.0
 		GTK+
+		OPenGL		- Пока что фаворит
 		
 	Сервер
 	
