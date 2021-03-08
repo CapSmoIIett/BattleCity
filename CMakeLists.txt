@@ -14,7 +14,9 @@ find_package(OpenGL REQUIRED)
 	#external/bullet-2.81-rev2613/src/
 #	.
 #)
+include_directories(headers)
+file(GLOB_RECURSE SRC_LIST *.c* *.h*)
 
-add_executable (BattleCity main.cpp)	# Компиляция исполняемых файлов
+add_executable (BattleCity SRC_LIST)	# Компиляция исполняемых файлов
 
 	 
