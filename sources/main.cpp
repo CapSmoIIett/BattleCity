@@ -47,10 +47,14 @@ void init()
 int main (int argc, char* argv[])
 {
     glutInit(&argc, argv);
+   
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
 
     glutInitWindowSize(800,600);
     glutCreateWindow("OpenGl");
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glutSwapBuffers();
 
     //glutReshapeFunc(reshape);
     //glutDisplayFunc(Display);

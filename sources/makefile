@@ -1,2 +1,4 @@
 all:
-	g++ filename.cpp -lGL -lGLU -lglut
+	g++ main.cpp -lGL -lGLU -lglut -o main
+	./main
+	clear
