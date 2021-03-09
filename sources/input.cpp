@@ -1,8 +1,8 @@
- #include <unistd.h>
+#include <unistd.h>
 
 int main (int argc, char* argv[])
 {
-    execl("./graphic", NULL);
+    
 
     return 0;
 

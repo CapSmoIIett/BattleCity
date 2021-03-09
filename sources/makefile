@@ -1,4 +1,5 @@
 all:
-	g++ main.cpp -lGL -lGLU -lglut -o main
+	g++ graphic.cpp -lGL -lGLU -lglut -o graphic
+	g++ main.cpp -o main
 	./main
 	clear
