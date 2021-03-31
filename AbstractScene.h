@@ -6,8 +6,9 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include "InterfaseScene.h"
 #include <iterator>
+
+#include "Objects.h"
 
 
 class AbstractScene{
@@ -15,10 +16,10 @@ private:
     sf::Clock clock;
 
 protected:
-    std::unordered_map <int, Object*> map_objects;          // Массив объектов на карте
     int count_id;                                           // Количество объектов на карте
    
 public: 
+    std::unordered_map <int, Object*> map_objects;          // Массив объектов на карте
 
     AbstractScene();
 

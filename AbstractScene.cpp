@@ -1,9 +1,11 @@
-#pragma once
-
 #include <AbstractScene.h>
 
 AbstractScene::AbstractScene(){
-
+    
+    map_objects[1] = new Object(1, "TopBorderline", Point{0, -16}, 1000); // Верхняя граница карты
+    map_objects[2] = new Object(2, "BotBorderline", Point{0, 625}, 1000); // Нижняя граница карты
+    map_objects[3] = new Object(3, "LeftBorderline", Point{-16, 0}, 1000); // Левая граница карты
+    map_objects[4] = new Object(4, "RightBorderline", Point{625, 0}, 1000); // Правая граница карты
 }
    
 AbstractScene::~AbstractScene(){
