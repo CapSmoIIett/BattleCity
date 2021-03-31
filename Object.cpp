@@ -3,12 +3,14 @@
 
 ///////////////////////////////////////////////////////
 Object::Object( const int id, 
+                String name,
                 Point point,   
                 int health, 
                 const int heigth, 
                 const int width, 
                 int speed=0 ):
 id(id),
+name(name),
 point(point), 
 health(health),
 heigth(heigth), 
@@ -58,6 +60,7 @@ Tank::Tank( const int id,
             const int width, 
             int speed ): 
 Object( id, 
+        "Tank",
         init_point, 
         health, 
         heigth, 
@@ -99,7 +102,7 @@ void Tank::handle_tick(AbstractScene *abstract_scene){
         bool is_intersect = i.second->now_rectangle(abstract_scene).intersects(future_rectangle) && i.first != id;
         if (is_intersect){
             this->recently_collided = true; //Это для AITank.нет урона при наезде танка
-           std::cout << "танк столкнулся c " << i.name << "\n";
+           std::cout << "танк столкнулся c " << "\n";
             return;
         }
     }

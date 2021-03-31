@@ -62,7 +62,7 @@ class Object                                                                    
         int health;
 
         //
-        Object(const int id, Point point, int health, const int heigth = 0, const int width = 0, int speed = 0);  // TODO разобраться с параметрами по умолчанию
+        Object(const int id, String name, Point point, int health, const int heigth = 0, const int width = 0, int speed = 0);  // TODO разобраться с параметрами по умолчанию
         
         //
         ~Object(){};
@@ -95,10 +95,10 @@ class Object                                                                    
         Rect <int>now_rectangle(AbstractScene *abstract_scene);
 
         //
-        virtual void make_damage(AbstractScene *abstract_scene) = 0;
+        virtual void make_damage(AbstractScene *abstract_scene) {};
 
         //
-        virtual void handle_tick(AbstractScene *abstract_scene) = 0;
+        virtual void handle_tick(AbstractScene *abstract_scene) {};
 };
 
 /////////////////////////////// танк, блоки, пуля и штаб //////////////////////////////
@@ -144,7 +144,7 @@ class Tank: public Object, public Directable
 class DistrBlock: public Object
 {
     public:
-        DistrBlock(const int id, Point point = {0,0}, const int health = 1):Object(id, point, health)
+        DistrBlock(const int id, Point point = {0,0}, const int health = 1):Object(id, "DistrBlock", point, health)
             { std::cout << "конструктор разрушимого блока\n"; }
 };
 
@@ -153,14 +153,14 @@ class Headquarters: public Object
     public:
         bool is_alive;
 
-        Headquarters(const int id, Point point):Object(id, point, 1), is_alive(true)
+        Headquarters(const int id, Point point):Object(id, "Headquarters", point, 1), is_alive(true)
             { std::cout << "конструктор штаба\n"; }
 };
 
 class Bullet: public Object, public Directable
 {
     public:
-        Bullet(const int id, Point init_point = {0, 0}, const int dir = 0, const int health = 1): Object(id, init_point, health), Directable(dir)
+        Bullet(const int id, Point init_point = {0, 0}, const int dir = 0, const int health = 1): Object(id, "Bullet", init_point, health), Directable(dir)
             { std::cout << "конструктор пули\n"; };
         ~Bullet(){};
 };

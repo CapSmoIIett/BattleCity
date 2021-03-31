@@ -26,7 +26,10 @@ public:
     ~AbstractScene(){};
 
     // Функция добавляющая объект в массив объектов
-    int addObject(Object*);                                           
+    int addObject(Object*);        
+
+    // Функция добавляющая объект в массив объектов
+    int addObject(int, int, String);                                     
 
     // Функция, очищающая список объектов от убитых, с health <= 0
     void clearDead();                                     
