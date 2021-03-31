@@ -1,4 +1,4 @@
-#include <AbstractScene.h>
+#include "AbstractScene.h"
 
 AbstractScene::AbstractScene(){
     
@@ -15,11 +15,13 @@ AbstractScene::~AbstractScene(){
 int AbstractScene::addObject(Object* object){
     map_objects[count_id] = object;
     count_id++;
+    return 0;
 }   
 
 int AbstractScene::addObject(int x, int y, String name){
     map_objects[count_id] = new Object(count_id, name, Point {x, y}, 1);
     count_id++;
+    return 0;
 }                                        
 
 void AbstractScene::clearDead(){
@@ -28,7 +30,7 @@ void AbstractScene::clearDead(){
         if(i.second->health <= 0){
             to_remove.push_back(i.first);                                           // Добавляем в очередь на удаление
 
-            if(i.second->name == "Tank" or i.second->name == "PlayerTank"){
+            if(i.second->serialise().type == "Tank" or i.second->serialise().type == "PlayerTank"){
                 Point point = i.second->get_point();
                 addObject(point.x, point.y, "Explosion");
             }

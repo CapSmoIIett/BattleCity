@@ -1,16 +1,15 @@
-#include "Objects.h"
+#include "Object.h"
 
 
-///////////////////////////////////////////////////////
 Object::Object( const int id, 
-                String name,
+                sf::String type,
                 Point point,   
                 int health, 
                 const int heigth, 
                 const int width, 
                 int speed=0 ):
 id(id),
-name(name),
+data({type,type}),
 point(point), 
 health(health),
 heigth(heigth), 
