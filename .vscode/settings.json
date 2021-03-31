@@ -1,9 +1,18 @@
 {
     "files.associations": {
+<<<<<<< HEAD
         "array": "cpp",
         "atomic": "cpp",
         "bit": "cpp",
         "*.tcc": "cpp",
+=======
+        "*.tcc": "cpp",
+        "unordered_map": "cpp",
+        "iterator": "cpp",
+        "array": "cpp",
+        "atomic": "cpp",
+        "bit": "cpp",
+>>>>>>> 6956a829a080f1855c5c917e1afa2d40dc44b06e
         "cctype": "cpp",
         "clocale": "cpp",
         "cmath": "cpp",
@@ -17,12 +26,19 @@
         "cwctype": "cpp",
         "deque": "cpp",
         "map": "cpp",
+<<<<<<< HEAD
         "unordered_map": "cpp",
+=======
+        "set": "cpp",
+>>>>>>> 6956a829a080f1855c5c917e1afa2d40dc44b06e
         "vector": "cpp",
         "exception": "cpp",
         "algorithm": "cpp",
         "functional": "cpp",
+<<<<<<< HEAD
         "iterator": "cpp",
+=======
+>>>>>>> 6956a829a080f1855c5c917e1afa2d40dc44b06e
         "memory": "cpp",
         "memory_resource": "cpp",
         "numeric": "cpp",
@@ -45,6 +61,10 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
+<<<<<<< HEAD
+=======
+        "cinttypes": "cpp",
+>>>>>>> 6956a829a080f1855c5c917e1afa2d40dc44b06e
         "typeinfo": "cpp"
     }
 }

@@ -55,14 +55,14 @@ class Object                                                                    
 
     public:
         //
-        String name;
+        Data data;
         //
         const int id;
         //
         int health;
 
         //
-        Object(const int id, String name, Point point, int health, const int heigth = 0, const int width = 0, int speed = 0);  // TODO разобраться с параметрами по умолчанию
+        Object(const int id, sf::String name, Point point, int health, int heigth = 0, int width = 0, int speed = 0);  // TODO разобраться с параметрами по умолчанию
         
         //
         ~Object(){};
@@ -71,7 +71,7 @@ class Object                                                                    
         void set_point(Point point);
         
         //
-        inline Point get_point();
+        Point get_point();
         
         //
         void set_health( int new_healse);
@@ -80,10 +80,10 @@ class Object                                                                    
         int get_health();
 
         //
-        virtual Data serialise(){};
+        virtual Data serialise(){ return data;};
 
         //
-        virtual void apply(Data){};
+        virtual void apply(Data d){ this->data = d;};
 
         //
         void set_speed(int speed);
@@ -92,13 +92,13 @@ class Object                                                                    
         int get_speed();
        
         // рамка, в которой сейчас находится объект
-        Rect <int>now_rectangle(AbstractScene *abstract_scene);
+        Rect <int>now_rectangle(class AbstractScene *abstract_scene);
 
         //
-        virtual void make_damage(AbstractScene *abstract_scene) {};
+        virtual void make_damage(class AbstractScene *abstract_scene) {};
 
         //
-        virtual void handle_tick(AbstractScene *abstract_scene) {};
+        virtual void handle_tick(class AbstractScene *abstract_scene) {};
 };
 
 /////////////////////////////// танк, блоки, пуля и штаб //////////////////////////////
@@ -126,17 +126,17 @@ class Tank: public Object, public Directable
         bool did_collided();
     
         //
-        void make_damage(AbstractScene *abstract_scene);
+        void make_damage(class AbstractScene *abstract_scene);
 
         // рамка, в которой будет находиться объект, если ему ничего не помешает
-        Rect <int>get_future_rectangle(AbstractScene *abstract_scene);
+        Rect <int>get_future_rectangle(class AbstractScene *abstract_scene);
 
         //
-        void handle_tick(AbstractScene *abstract_scene);
+        void handle_tick(class AbstractScene *abstract_scene);
 
     protected:
         //
-        void move(AbstractScene *abstract_scene);
+        void move(class AbstractScene *abstract_scene);
 };
 ////////
 

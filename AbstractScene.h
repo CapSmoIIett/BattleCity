@@ -19,17 +19,17 @@ protected:
     int count_id;                                           // Количество объектов на карте
    
 public: 
-    std::unordered_map <int, Object*> map_objects;          // Массив объектов на карте
+    std::unordered_map <int, class Object*> map_objects;          // Массив объектов на карте
 
     AbstractScene();
 
-    ~AbstractScene(){};
+    ~AbstractScene();
 
     // Функция добавляющая объект в массив объектов
-    int addObject(Object*);        
+    int addObject(class Object*);        
 
     // Функция добавляющая объект в массив объектов
-    int addObject(int, int, String);                                     
+    int addObject(int, int, sf::String);                                     
 
     // Функция, очищающая список объектов от убитых, с health <= 0
     void clearDead();                                     
@@ -41,7 +41,7 @@ public:
     void loadMap(std::fstream& file);
 
     // Функция, возвращающая point объекта по id
-    Point getPoint(int id);                                
+    class Point getPoint(int id);                                
     
 };
 

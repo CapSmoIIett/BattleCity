@@ -2,8 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
-#include "Object.h"
+
 #include "AbstractScene.h"
+#include "Object.h"
+
 
 using namespace std;
 
