@@ -7,7 +7,7 @@ Object::Object( const int id,
                 int health, 
                 const int heigth, 
                 const int width, 
-                int speed=0 ):
+                int speed ):
 id(id),
 data({type,type}),
 point(point), 
