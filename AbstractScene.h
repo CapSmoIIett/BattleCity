@@ -38,7 +38,7 @@ public:
     void createAbctractBullet(int id);                     
     
     // Функция, выгружающая из памяти карту.
-    void loadMap();
+    void loadMap(std::fstream& file);
 
     // Функция, возвращающая point объекта по id
     Point getPoint(int id);                                

@@ -8,9 +8,7 @@ AbstractScene::AbstractScene(){
     map_objects[4] = new Object(4, "RightBorderline", Point{625, 0}, 1000); // Правая граница карты
 }
    
-AbstractScene::~AbstractScene(){
-
-}
+AbstractScene::~AbstractScene(){}
 
 int AbstractScene::addObject(Object* object){
     map_objects[count_id] = object;
@@ -20,6 +18,16 @@ int AbstractScene::addObject(Object* object){
 int AbstractScene::addObject(int x, int y, String name){
     map_objects[count_id] = new Object(count_id, name, Point {x, y}, 1);
     count_id++;
+
+    //map_objects[count_id] = type;
+    //             if(type == "DistrBlock")        { obj_list[count_id] = new DistrBlock(count_id, Point{x, y}, 1);     } 
+    //        else if(type == "UnDistrBlock")      { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1000);  } 
+    //        else if(type == "Tank")              { obj_list[count_id] = new Tank      (count_id, Point{x, y}, dir, 1);} 
+    //        else if(type == "PleerTank")         { obj_list[count_id] = new Tank      (count_id, Point{x, y}, dir, 1);} 
+    //        else if(type == "WaterBlock")        { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1000);  } 
+    //        else if(type == "HeadquartersBlock") { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1);     } 
+    //        else if(type == "Spawner")           { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1000);  } 
+    //        return count_id++;
 }                                        
 
 void AbstractScene::clearDead(){
@@ -49,4 +57,27 @@ void AbstractScene::createAbctractBullet(int id){
 
 }                 
 
-
+void AbstractScene::loadMap(std::fstream& file)
+{
+    std::string str;
+    int x = 0;
+    int y = 0;
+    while(std::getline(file, str))
+    {
+        for (auto& i : str){
+            switch(i)
+            {
+                case '#': this->addObject(x, y, "DistrBlock");        break;
+                case '@': this->addObject(x, y, "UnDistrBlock");      break;
+                case '.': break;
+                case '!': this->addObject(x, y, "HeadquartersBlock"); break;//база                          
+                case '~': this->addObject(x, y, "WaterBlock");        break;//вода                           
+                case 's': this->addObject(x, y, "Spawner");           break;//создатель танков                           
+            }
+            x += 24; //3 * 8(px в блоке)
+        }
+        x = 0;
+        y += 24;
+            
+    }
+}
