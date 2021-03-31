@@ -30,7 +30,7 @@ class DrawBlock: public DrawObject
             DrawObject(sprite, id, name, point, health, heigth, width, speed){};
         ~DrawBlock(){};
 
-        void draw(sf::RenderWindow &window, AbstractScene *abstract_scene)
+        void draw(RenderWindow &window, AbstractScene *abstract_scene)
         {
             Point point = abstract_scene->getPoint(id);
             sprite->setPosition(point.x, point.y);
@@ -56,7 +56,7 @@ class DrawHeadquarters: public DrawObject
         {
             Point point = abstract_scene->getPoint(id);
             sprite->setPosition(point.x, point.y);
-            //Object * abstract_object = abstract_scene->obj_list[id];
+            Object * abstract_object = abstract_scene->map_objects[id];
             Headquarters *abstract_headquarters = dynamic_cast<Headquarters *>(abstract_object);
             
             bool is_alive = abstract_headquarters->is_alive; // Мы с самог начала думали об этом, когда разделили на сцены
@@ -76,10 +76,10 @@ class DrawBullet: public DrawObject
         DrawBullet( const int id, Sprite *up_sprite, Sprite *down_sprite, Sprite *right_sprite, Sprite *left_sprite, String name, 
         Point point, int health, const int heigth = 0, const int width = 0, int speed = 0): DrawObject(up_sprite, id, name, point, health, heigth, width, speed)
         {
-            this->up_sprite = up_sprite;
-            this->down_sprite = down_sprite;
+            this->up_sprite    = up_sprite;
+            this->down_sprite  = down_sprite;
             this->right_sprite = right_sprite;
-            this->left_sprite = left_sprite;
+            this->left_sprite  = left_sprite;
         };
 
         void draw(RenderWindow &window, AbstractScene *abstract_scene)
@@ -87,7 +87,7 @@ class DrawBullet: public DrawObject
             //получаем направление
             //обращаясь к отображению этого объекта в абстрактной сцене.
 
-            Object * abstract_object = abstract_scene->obj_list[id];
+            Object * abstract_object = abstract_scene->map_objects[id];
             Bullet *abstr_bullet = dynamic_cast<Bullet *>(abstract_object);
             int direction = abstr_bullet->get_dir(); // Мы с самог начала думали об этом, когда разделили на сцены
             switch(direction) 
@@ -113,10 +113,10 @@ class DrawTank: public DrawObject
         DrawTank( const int id, Sprite *up_sprite, Sprite *down_sprite, Sprite *right_sprite, Sprite *left_sprite, String name, 
             Point point, int health, const int heigth = 0, const int width = 0, int speed = 0): DrawObject(up_sprite, id, name, point, health, heigth, width, speed)
             {
-                this->up_sprite = up_sprite;
-                this->down_sprite = down_sprite;
+                this->up_sprite    = up_sprite;
+                this->down_sprite  = down_sprite;
                 this->right_sprite = right_sprite;
-                this->left_sprite = left_sprite;
+                this->left_sprite  = left_sprite;
             };
         ~DrawTank(){};
         
@@ -124,7 +124,7 @@ class DrawTank: public DrawObject
         {
             //получаем направление
             //обращаясь к отображению этого объекта в абстрактной сцене.
-            Object * abstract_object = abstract_scene->obj_list[id];
+            Object * abstract_object = abstract_scene->map_objects[id];
             Tank *abstr_tank = dynamic_cast<Tank *>(abstract_object);
             int direction = abstr_tank->get_dir(); // Мы с самог начала думали об этом, когда разделили на сцены
 
@@ -143,7 +143,7 @@ class DrawTank: public DrawObject
 
 
 // напишем рисующую сцену
-class DrawScene
+class DrawScene: public AbstractScene
 {
     private:
         //вся картинка
@@ -176,9 +176,6 @@ class DrawScene
 
         DrawScene()
         {
-            all_image.loadFromFile("/home/asya/Projects/BattleCity/txtrs.png");
-            all_texture.loadFromImage(all_image);
-
             setImage(block_sprite, 256, 0, 8, 8);
             setImage(indestructible_block_sprite, 256, 16, 8, 8);
             setImage(water_sprite, 256, 48, 8, 8);
@@ -209,33 +206,33 @@ class DrawScene
             void add_obj(const int id, const std::string& type)
             {
                 // собираем объекты в зависимости от их типа
-                     if (type == "DistrBlock")        { object_list[id] = new DrawBlock(id, &block_sprite); } 
-                else if (type == "UnDistrBlock")      { object_list[id] = new DrawBlock(id, &indestructible_block_sprite); } 
-                else if (type == "WaterBlock")        { object_list[id] = new DrawBlock(id, &water_sprite);} 
-                else if (type == "HeadquartersBlock") { object_list[id] = new DrawBlock(id, &iliving_headquarters_sprite);} 
-                else if (type == "Tank")              { object_list[id] = new DrawTank (id, &tank_up_sprite2, &tank_down_sprite2, &tank_right_sprite2, &tank_left_sprite2); } 
-                else if (type == "PleerTank")         { object_list[id] = new DrawTank (id, &tank_up_sprite, &tank_down_sprite, &tank_right_sprite, &tank_left_sprite); } 
+                     if (type == "DistrBlock")        { map_objects[id] = new DrawBlock(id, &block_sprite); } 
+                else if (type == "UnDistrBlock")      { map_objects[id] = new DrawBlock(id, &indestructible_block_sprite); } 
+                else if (type == "WaterBlock")        { map_objects[id] = new DrawBlock(id, &water_sprite);} 
+                else if (type == "HeadquartersBlock") { map_objects[id] = new DrawBlock(id, &iliving_headquarters_sprite);} 
+                else if (type == "Tank")              { map_objects[id] = new DrawTank (id, &tank_up_sprite2, &tank_down_sprite2, &tank_right_sprite2, &tank_left_sprite2); } 
+                else if (type == "PleerTank")         { map_objects[id] = new DrawTank (id, &tank_up_sprite, &tank_down_sprite, &tank_right_sprite, &tank_left_sprite); } 
 
             }
 
         void synchronize(AbstractScene *abstract_scene){
             //забирает измемения из абстрактной сцены и создаёт объекты
-            for(auto i: abstract_scene->obj_list){
-                if(object_list.find(i.first/*id*/) == object_list.end()){ add_obj(i.first/*id*/, abstract_scene->accord_list[i.first/*id*/]); }
+            for(auto i: abstract_scene->map_objects){
+                if(map_objects.find(i.first/*id*/) == map_objects.end()){ add_obj(i.first/*id*/, abstract_scene->map_objects[i.first/*id*/]); }
             }
             //сверяет изменения с абстрактной сценой и удаляет объекты
             std::vector<int> to_remove;
-            for(auto i: this->object_list) 
+            for(auto i: this->map_objects) 
             {
-                if (abstract_scene->obj_list.find(i.first/*id*/) == abstract_scene->obj_list.end()) 
+                if (abstract_scene->map_objects.find(i.first/*id*/) == abstract_scene->map_objects.end()) 
                     { delete i.second; to_remove.push_back(i.first); }
             }
 
-            for (auto i : to_remove) { object_list.erase(i); }
+            for (auto i : to_remove) { map_objects.erase(i); }
         };
         //глобальная функция рисования
         //проходится по object_list и вызывает для draw каждого
-        void draw(sf::RenderWindow &window, AbstractScene *abstract_scene) { for (auto& i : object_list) { i.second->draw(window, abstract_scene); } }
+        void draw(sf::RenderWindow &window, AbstractScene *abstract_scene) { for (auto& i : map_objects) { i.second->draw(window, abstract_scene); } }
 
         ~DrawScene(){ };
 };
