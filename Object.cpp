@@ -47,7 +47,7 @@ int Object::get_speed(){
 Rect<int> Object::now_rectangle(AbstractScene *abstract_scene)                        
 {
     Point point = abstract_scene->map_objects[id]->get_point();
-    return sf::Rect <int>(point.x, point.y, width, heigth);
+    return Rect <int>(point.x, point.y, width, heigth);
 }
 
 //////////////////////////////////////////////////////////////////////////////////
