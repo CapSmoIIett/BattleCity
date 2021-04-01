@@ -5,6 +5,7 @@
 
 #include "AbstractScene.h"
 #include "Object.h"
+#include "DrawScene.h"
 
 
 using namespace std;
@@ -15,6 +16,8 @@ int main() {
     // минимальная длительность игрового цикла
     Time cycle_time = seconds(0.02);//0.02f);
     RenderWindow window(VideoMode(624, 624), "simple rts");
+    AbstractScene abstract_scene;
+    DrawScene draw_scene;
 
     Clock clock;
     Event event;
@@ -34,5 +37,8 @@ int main() {
         //std::cout << "отрисовано за " << elapsed_time.asMilliseconds() << " миллисекунд\n";
         sleep(cycle_time - elapsed_time);
     }
+
+    draw_scene.draw(window, &abstract_scene);
+
     return 0;
 } 
