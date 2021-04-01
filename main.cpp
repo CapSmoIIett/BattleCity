@@ -12,11 +12,14 @@ using namespace std;
 
 int main() {
 
-    // все подготовительные действия
-    // минимальная длительность игрового цикла
-    Time cycle_time = seconds(0.02);//0.02f);
-    RenderWindow window(VideoMode(624, 624), "simple rts");
     AbstractScene abstract_scene;
+    fstream file("levels/1.txt");
+    abstract_scene.loadMap(file);
+    file.close();
+    
+    Time cycle_time = seconds(0.02);//0.02f);
+    RenderWindow window(VideoMode(624, 624), "BattleCity");
+    //AbstractScene abstract_scene;
     DrawScene draw_scene;
 
     Clock clock;
@@ -31,7 +34,7 @@ int main() {
         //пришлось дать знать рисующей сцене о абстрактной сцене. Это нужно, что бы получать х, y отображения этого объекта.
 
         draw_scene.synchronize(&abstract_scene); 
-        window.clear();
+        window.clear();     // window.clear(sf::Color(34,15,6));
         draw_scene.draw(window, &abstract_scene);
     
         window.display();
@@ -39,8 +42,6 @@ int main() {
         //std::cout << "отрисовано за " << elapsed_time.asMilliseconds() << " миллисекунд\n";
         //sleep(cycle_time - elapsed_time);
     }
-
-    
 
     return 0;
 } 

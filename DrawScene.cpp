@@ -172,11 +172,7 @@ void DrawTank::draw(sf::RenderWindow &window, AbstractScene* abstract_scene){
 DrawScene::DrawScene(){
     std::cout << "Конструктор DrawScene." << "\n";
 
-    
-    //
     //"/home/matthew/Projects/BattleCity/txtrs.png"
-    //all_image.loadFromFile(getCurrentLocationTextures());
-   // all_texture.loadFromImage(all_image);
     all_image.loadFromFile(getCurrentLocationTextures());
     all_texture.loadFromImage(all_image);
 
