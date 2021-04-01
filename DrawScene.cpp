@@ -10,11 +10,11 @@ DrawObject::DrawObject( Sprite*  sprite,
                         const int width, 
                         int speed ):
 Object(id, name, point, health, heigth, width, speed), sprite(sprite){
-
+    std::cout << "Конструктор объекта." << "\n";
 }
 
 DrawObject::~DrawObject(){
-
+    std::cout << "Деструктор объекта." << "\n";
 }
 
 
@@ -29,11 +29,11 @@ DrawBlock::DrawBlock(   Sprite*  sprite,
                         const int width, 
                         int speed ) : 
 DrawObject(sprite, id, name, point, health, heigth, width, speed){
-
+    std::cout << "Конструктор блока." << "\n";
 }
 
 DrawBlock::~DrawBlock(){
-
+    std::cout << "Деструктор блока." << "\n";
 }
 
 void DrawBlock::draw(sf::RenderWindow &window, AbstractScene* abstract_scene){
@@ -56,11 +56,11 @@ DrawHeadquarters::DrawHeadquarters( Sprite* living_headquarters_sprite,
 DrawObject(living_headquarters_sprite, id, name, point, health, heigth, width, speed),
 living_headquarters_sprite(living_headquarters_sprite), 
 dead_headquarters_sprite(dead_headquarters_sprite){
-
+    std::cout << "Конструктор штаба." << "\n";
 }
 
 DrawHeadquarters::~DrawHeadquarters(){
-
+    std::cout << "Деструктор штаба." << "\n";
 }
         
 void DrawHeadquarters::draw(RenderWindow &window, AbstractScene* abstract_scene){
@@ -91,10 +91,15 @@ DrawBullet::DrawBullet( const int id,
                         const int width, 
                         int speed ): 
 DrawObject(up_sprite, id, name, point, health, heigth, width, speed){
+    std::cout << "Конструктор пули." << "\n";
     this->up_sprite = up_sprite;
     this->down_sprite = down_sprite;
     this->right_sprite = right_sprite;
     this->left_sprite = left_sprite;
+}
+
+DrawBullet::~DrawBullet(){
+    std::cout << "Деструктор пули." << "\n";
 }
 
 void DrawBullet::draw(RenderWindow &window, AbstractScene* abstract_scene){
@@ -130,6 +135,7 @@ DrawTank::DrawTank( const int id,
                     const int width, 
                     int speed): 
 DrawObject(up_sprite, id, name, point, health, heigth, width, speed){
+    std::cout << "Конструктор танка." << "\n";
     this->up_sprite = up_sprite;
     this->down_sprite = down_sprite;
     this->right_sprite = right_sprite;
@@ -137,7 +143,7 @@ DrawObject(up_sprite, id, name, point, health, heigth, width, speed){
 }
         
 DrawTank::~DrawTank(){
-
+    std::cout << "Деструктор танка." << "\n";
 }
         
 void DrawTank::draw(sf::RenderWindow &window, AbstractScene* abstract_scene){
@@ -164,8 +170,15 @@ void DrawTank::draw(sf::RenderWindow &window, AbstractScene* abstract_scene){
 
 
 DrawScene::DrawScene(){
-    all_image.loadFromFile("/home/asya/Projects/BattleCity/txtrs.png");
+    std::cout << "Конструктор DrawScene." << "\n";
+
+    
+    //
+    //"/home/matthew/Projects/BattleCity/txtrs.png"
+    all_image.loadFromFile(getCurrentLocationTextures());
     all_texture.loadFromImage(all_image);
+
+    
 
     setImage(block_sprite, 256, 0, 8, 8);
     setImage(indestructible_block_sprite, 256, 16, 8, 8);
@@ -195,11 +208,11 @@ DrawScene::DrawScene(){
 }
 
 DrawScene::~DrawScene(){
-    
+    std::cout << "Деструктор DrawScene." << "\n"; 
 };
 
 void DrawScene::setImage(Sprite sprite, int a, int b, int c, int d){
-    all_image.loadFromFile("/home/asya/Projects/BattleCity/txtrs.png");
+    all_image.loadFromFile(getCurrentLocationTextures());
     all_texture.loadFromImage(all_image);
 
     sprite.setTexture(all_texture);
@@ -241,3 +254,13 @@ void DrawScene::draw(sf::RenderWindow &window, AbstractScene* abstract_scene) {
     } 
 }
 
+std::string DrawScene::getCurrentLocationTextures(){
+    char* way = new char[200];                          
+    way = getcwd(way, 200);                               // Получаем текущую деректорию
+
+    std::string str(way);
+    str += "/txtrs.png";
+    std::cout << str << "\n";
+    delete[] way;
+    return str;
+}

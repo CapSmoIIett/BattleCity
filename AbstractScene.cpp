@@ -1,14 +1,19 @@
 #include <AbstractScene.h>
 
 AbstractScene::AbstractScene(){
-    
+    std::cout << "Конструктор абстрактной сцены." << "\n";
     map_objects[1] = new Object(1, "TopBorderline", Point{0, -16}, 1000); // Верхняя граница карты
     map_objects[2] = new Object(2, "BotBorderline", Point{0, 625}, 1000); // Нижняя граница карты
     map_objects[3] = new Object(3, "LeftBorderline", Point{-16, 0}, 1000); // Левая граница карты
     map_objects[4] = new Object(4, "RightBorderline", Point{625, 0}, 1000); // Правая граница карты
+    map_objects[5] = new Headquarters(5, Point{300, 300});
+    map_objects[6] = new Tank(6, Point{20,20});
+    map_objects[7] = new DistrBlock(7, Point{50,20});
 }
    
-AbstractScene::~AbstractScene(){}
+AbstractScene::~AbstractScene(){
+    std::cout << "Деструктор абстрактной сцены." << "\n";
+}
 
 int AbstractScene::addObject(Object* object){
     map_objects[count_id] = object;
@@ -28,6 +33,7 @@ int AbstractScene::addObject(int x, int y, String name){
     //        else if(type == "HeadquartersBlock") { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1);     } 
     //        else if(type == "Spawner")           { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1000);  } 
     //        return count_id++;
+    return 0;
 }                                        
 
 void AbstractScene::clearDead(){

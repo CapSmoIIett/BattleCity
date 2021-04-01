@@ -3,6 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <unordered_map>
+
+#include <unistd.h>
+
 #include "AbstractScene.h"
 #include "Object.h"
 
@@ -77,6 +80,7 @@ class DrawBullet: public DrawObject
         DrawBullet( const int id, Sprite* up_sprite, Sprite* down_sprite, Sprite* right_sprite, Sprite* left_sprite, String name, 
         Point point, int health, const int heigth = 0, const int width = 0, int speed = 0);
 
+        ~DrawBullet();
         //
         void draw(RenderWindow &window, AbstractScene* abstract_scene);
 };
@@ -149,5 +153,7 @@ class DrawScene
         //глобальная функция рисования
         //проходится по object_list и вызывает для draw каждого
         void draw(sf::RenderWindow &window, AbstractScene* abstract_scene);
+
+        std::string getCurrentLocationTextures();
      
 };
