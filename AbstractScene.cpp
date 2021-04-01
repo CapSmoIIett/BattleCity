@@ -6,6 +6,9 @@ AbstractScene::AbstractScene(){
     map_objects[2] = new Object(2, "BotBorderline", Point{0, 625}, 1000); // Нижняя граница карты
     map_objects[3] = new Object(3, "LeftBorderline", Point{-16, 0}, 1000); // Левая граница карты
     map_objects[4] = new Object(4, "RightBorderline", Point{625, 0}, 1000); // Правая граница карты
+    map_objects[5] = new Headquarters(5, Point{300, 300});
+    map_objects[6] = new Tank(6, Point{20,20});
+    map_objects[7] = new DistrBlock(7, Point{50,20});
 }
    
 AbstractScene::~AbstractScene(){
