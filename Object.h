@@ -62,7 +62,7 @@ class Object                                                                    
         int health;
 
         //
-        Object(const int id, sf::String name, Point point, int health, int heigth = 0, int width = 0, int speed = 0);  // TODO разобраться с параметрами по умолчанию
+        Object(const int id, sf::String name, Point point, int health = 1, int heigth = 39, int width = 39, int speed = 0);  // TODO разобраться с параметрами по умолчанию
         
         //
         ~Object(){};
@@ -117,7 +117,7 @@ class Tank: public Object, public Directable
 
     public:
         //
-        Tank(const int id, Point init_point = {0, 0}, const int dir = UP, const int health = 1, const int heigth = 0, const int width = 0, int speed = 0);  // TODO Разобраться с порядком параметров
+        Tank(const int id, Point init_point = {50, 50}, const int dir = UP, const int health = 1, const int heigth = 39, const int width = 39, int speed = 1);  // TODO Разобраться с порядком параметров
 
         //
         ~Tank(){};

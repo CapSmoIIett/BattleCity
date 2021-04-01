@@ -115,6 +115,7 @@ class DrawTank: public DrawObject
 class DrawScene
 {
     private:
+    
         //вся картинка
         Image   all_image; //создаем объект Image (изображение)
         Texture all_texture;
@@ -142,7 +143,7 @@ class DrawScene
         ~DrawScene();
 
         //
-        void setImage(Sprite sprite, int a, int b, int c, int d);
+        void setImage(Sprite &sprite, int a, int b, int c, int d);
 
         //
         void add_obj(const int id, const std::string& type);
@@ -155,5 +156,4 @@ class DrawScene
         void draw(sf::RenderWindow &window, AbstractScene* abstract_scene);
 
         std::string getCurrentLocationTextures();
-     
 };

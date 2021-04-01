@@ -49,7 +49,9 @@ Rect<int> Object::now_rectangle(AbstractScene *abstract_scene)
     return Rect <int>(point.x, point.y, width, heigth);
 }
 
-//////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 Tank::Tank( const int id,
             Point init_point, 

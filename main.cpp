@@ -29,16 +29,18 @@ int main() {
                 window.close();
         }
         //пришлось дать знать рисующей сцене о абстрактной сцене. Это нужно, что бы получать х, y отображения этого объекта.
-        
+
+        draw_scene.synchronize(&abstract_scene); 
         window.clear();
-        
+        draw_scene.draw(window, &abstract_scene);
+    
         window.display();
-        Time elapsed_time = clock.getElapsedTime() % cycle_time;
+        //Time elapsed_time = clock.getElapsedTime() % cycle_time;
         //std::cout << "отрисовано за " << elapsed_time.asMilliseconds() << " миллисекунд\n";
-        sleep(cycle_time - elapsed_time);
+        //sleep(cycle_time - elapsed_time);
     }
 
-    draw_scene.draw(window, &abstract_scene);
+    
 
     return 0;
 } 

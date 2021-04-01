@@ -7,4 +7,4 @@ all:
 	
 	g++ -g main.o Object.o AbstractScene.o DrawScene.o -lsfml-graphics -lsfml-window -lsfml-system
 	./a.out 
-	clear
+	#clear

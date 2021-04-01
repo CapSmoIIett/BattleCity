@@ -2,13 +2,14 @@
 
 AbstractScene::AbstractScene(){
     std::cout << "Конструктор абстрактной сцены." << "\n";
-    map_objects[1] = new Object(1, "TopBorderline", Point{0, -16}, 1000); // Верхняя граница карты
-    map_objects[2] = new Object(2, "BotBorderline", Point{0, 625}, 1000); // Нижняя граница карты
-    map_objects[3] = new Object(3, "LeftBorderline", Point{-16, 0}, 1000); // Левая граница карты
-    map_objects[4] = new Object(4, "RightBorderline", Point{625, 0}, 1000); // Правая граница карты
-    map_objects[5] = new Headquarters(5, Point{300, 300});
-    map_objects[6] = new Tank(6, Point{20,20});
-    map_objects[7] = new DistrBlock(7, Point{50,20});
+    map_objects[0] = new Object(1, "UnDistrBlock", Point{0, -16}, 1000); // Верхняя граница карты
+    map_objects[1] = new Object(2, "UnDistrBlock", Point{0, 625}, 1000); // Нижняя граница карты
+    map_objects[2] = new Object(3, "UnDistrBlock", Point{-16, 0}, 1000); // Левая граница карты
+    map_objects[3] = new Object(4, "UnDistrBlock", Point{625, 0}, 1000); // Правая граница карты
+    //map_objects[5] = new Headquarters(5, Point{300, 300});
+    map_objects[4] = new Tank(6, Point{20,20});
+    //map_objects[5] = new DistrBlock(7, Point{50,20});
+    //count_id = 8;
 }
    
 AbstractScene::~AbstractScene(){
@@ -25,15 +26,15 @@ int AbstractScene::addObject(int x, int y, String name){
     map_objects[count_id] = new Object(count_id, name, Point {x, y}, 1);
     count_id++;
 
-    //map_objects[count_id] = type;
-    //             if(type == "DistrBlock")        { obj_list[count_id] = new DistrBlock(count_id, Point{x, y}, 1);     } 
-    //        else if(type == "UnDistrBlock")      { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1000);  } 
-    //        else if(type == "Tank")              { obj_list[count_id] = new Tank      (count_id, Point{x, y}, dir, 1);} 
-    //        else if(type == "PleerTank")         { obj_list[count_id] = new Tank      (count_id, Point{x, y}, dir, 1);} 
-    //        else if(type == "WaterBlock")        { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1000);  } 
-    //        else if(type == "HeadquartersBlock") { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1);     } 
-    //        else if(type == "Spawner")           { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1000);  } 
-    //        return count_id++;
+    /*map_objects[count_id] = type;
+                 if(type == "DistrBlock")        { map_objects[count_id] = new DistrBlock(count_id, Point{x, y}, 1);     } 
+            else if(type == "UnDistrBlock")      { map_objects[count_id] = new Object    (count_id, Point{x, y}, 1000);  } 
+            else if(type == "Tank")              { map_objects[count_id] = new Tank      (count_id, Point{x, y}, dir, 1);} 
+            else if(type == "PleerTank")         { map_objects[count_id] = new Tank      (count_id, Point{x, y}, dir, 1);} 
+            else if(type == "WaterBlock")        { map_objects[count_id] = new Object    (count_id, Point{x, y}, 1000);  } 
+            else if(type == "HeadquartersBlock") { map_objects[count_id] = new Object    (count_id, Point{x, y}, 1);     } 
+            else if(type == "Spawner")           { map_objects[count_id] = new Object    (count_id, Point{x, y}, 1000);  } 
+            return count_id++;*/
     return 0;
 }                                        
 

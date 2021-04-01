@@ -175,6 +175,8 @@ DrawScene::DrawScene(){
     
     //
     //"/home/matthew/Projects/BattleCity/txtrs.png"
+    //all_image.loadFromFile(getCurrentLocationTextures());
+   // all_texture.loadFromImage(all_image);
     all_image.loadFromFile(getCurrentLocationTextures());
     all_texture.loadFromImage(all_image);
 
@@ -211,9 +213,7 @@ DrawScene::~DrawScene(){
     std::cout << "Деструктор DrawScene." << "\n"; 
 };
 
-void DrawScene::setImage(Sprite sprite, int a, int b, int c, int d){
-    all_image.loadFromFile(getCurrentLocationTextures());
-    all_texture.loadFromImage(all_image);
+void DrawScene::setImage(Sprite &sprite, int a, int b, int c, int d){
 
     sprite.setTexture(all_texture);
     sprite.setTextureRect(IntRect(a, b, c, d));
@@ -222,8 +222,9 @@ void DrawScene::setImage(Sprite sprite, int a, int b, int c, int d){
        
 void DrawScene::add_obj(const int id, const std::string& type){
     // собираем объекты в зависимости от их типа
-    
-    if (type == "DistrBlock")             { object_list[id] = new DrawBlock(&block_sprite, id); } 
+    std::cout << id << "\n";
+    std::cout << type << "\n";
+         if (type == "DistrBlock")        { object_list[id] = new DrawBlock(&block_sprite, id); } 
     else if (type == "UnDistrBlock")      { object_list[id] = new DrawBlock(&indestructible_block_sprite, id); } 
     else if (type == "WaterBlock")        { object_list[id] = new DrawBlock(&water_sprite, id);} 
     else if (type == "HeadquartersBlock") { object_list[id] = new DrawBlock(&iliving_headquarters_sprite, id);} 
@@ -232,21 +233,21 @@ void DrawScene::add_obj(const int id, const std::string& type){
 
 }
 
-void DrawScene::synchronize(AbstractScene* abstract_scene){
+/*void DrawScene::synchronize(AbstractScene* abstract_scene){
     //забирает измемения из абстрактной сцены и создаёт объекты
     for(auto i: abstract_scene->map_objects){
-        if(object_list.find(i.first/*id*/) == object_list.end()){ add_obj(i.first/*id*/, abstract_scene->map_objects[i.first/*id*/]->data.type); }
+        if(object_list.find(i.first) == object_list.end()){ add_obj(i.first, abstract_scene->map_objects[i.first]->data.type); }
     }
     //сверяет изменения с абстрактной сценой и удаляет объекты
     std::vector<int> to_remove;
     for(auto i: this->object_list) 
     {
-        if (abstract_scene->map_objects.find(i.first/*id*/) == abstract_scene->map_objects.end()) 
+        if (abstract_scene->map_objects.find(i.first) == abstract_scene->map_objects.end()) 
         { delete i.second; to_remove.push_back(i.first); }
     }
 
     for (auto i : to_remove) { object_list.erase(i); }
-}
+}*/
 
 void DrawScene::draw(sf::RenderWindow &window, AbstractScene* abstract_scene) { 
     for (auto& i : object_list) { 
@@ -264,3 +265,28 @@ std::string DrawScene::getCurrentLocationTextures(){
     delete[] way;
     return str;
 }
+
+void DrawScene::synchronize(AbstractScene *abstract_scene){
+
+        for(auto i: abstract_scene->map_objects){                           //забирает измемения из абстрактной сцены и создаёт объекты
+            if(object_list.find(i.first/*id*/) == object_list.end()){
+                //если нет объекта в рисующей схеме
+                //значит его надо создать
+                add_obj(i.first/*id*/, i.second->data.type);
+            }
+        }
+        //сверяет изменения с абстрактной сценой и удаляет объекты
+        /*std::vector<int> to_remove;
+        for(auto i: this->object_list) {
+            if (abstract_scene->map_objects.find(i.first) ==
+                abstract_scene->map_objects.end()) {
+                //если нет объекта в абстрактной сцене
+                //значит его надо удалить и из нашей сцены
+                delete i.second;
+                to_remove.push_back(i.first);
+            }
+        }
+        for (auto i : to_remove) {
+            object_list.erase(i);
+        }*/
+    };
