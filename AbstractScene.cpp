@@ -1,4 +1,4 @@
-#include "AbstractScene.h"
+#include <AbstractScene.h>
 
 AbstractScene::AbstractScene(){
     
@@ -13,13 +13,11 @@ AbstractScene::~AbstractScene(){}
 int AbstractScene::addObject(Object* object){
     map_objects[count_id] = object;
     count_id++;
-    return 0;
 }   
 
 int AbstractScene::addObject(int x, int y, String name){
     map_objects[count_id] = new Object(count_id, name, Point {x, y}, 1);
     count_id++;
-<<<<<<< HEAD
 
     //map_objects[count_id] = type;
     //             if(type == "DistrBlock")        { obj_list[count_id] = new DistrBlock(count_id, Point{x, y}, 1);     } 
@@ -30,9 +28,6 @@ int AbstractScene::addObject(int x, int y, String name){
     //        else if(type == "HeadquartersBlock") { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1);     } 
     //        else if(type == "Spawner")           { obj_list[count_id] = new Object    (count_id, Point{x, y}, 1000);  } 
     //        return count_id++;
-=======
-    return 0;
->>>>>>> 6956a829a080f1855c5c917e1afa2d40dc44b06e
 }                                        
 
 void AbstractScene::clearDead(){
@@ -41,7 +36,7 @@ void AbstractScene::clearDead(){
         if(i.second->health <= 0){
             to_remove.push_back(i.first);                                           // Добавляем в очередь на удаление
 
-            if(i.second->serialise().type == "Tank" or i.second->serialise().type == "PlayerTank"){
+            if(i.second->name == "Tank" or i.second->name == "PlayerTank"){
                 Point point = i.second->get_point();
                 addObject(point.x, point.y, "Explosion");
             }
