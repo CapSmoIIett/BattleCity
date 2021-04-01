@@ -172,17 +172,13 @@ void DrawTank::draw(sf::RenderWindow &window, AbstractScene* abstract_scene){
 DrawScene::DrawScene(){
     std::cout << "Конструктор DrawScene." << "\n";
 
-    char* way = new char[200];                          
-    way = getcwd(way, 200);                               // Получаем текущую деректорию
-    std::cout << way << "\n";
-    std::string str(way);
-    str += "/txtrs.png";
-    std::cout << str << "\n";
-
-    all_image.loadFromFile(str.c_str());
+    
+    //
+    //"/home/matthew/Projects/BattleCity/txtrs.png"
+    all_image.loadFromFile(getCurrentLocationTextures());
     all_texture.loadFromImage(all_image);
 
-    delete[] way;
+    
 
     setImage(block_sprite, 256, 0, 8, 8);
     setImage(indestructible_block_sprite, 256, 16, 8, 8);
@@ -216,7 +212,7 @@ DrawScene::~DrawScene(){
 };
 
 void DrawScene::setImage(Sprite sprite, int a, int b, int c, int d){
-    all_image.loadFromFile("/home/asya/Projects/BattleCity/txtrs.png");
+    all_image.loadFromFile(getCurrentLocationTextures());
     all_texture.loadFromImage(all_image);
 
     sprite.setTexture(all_texture);
@@ -258,3 +254,13 @@ void DrawScene::draw(sf::RenderWindow &window, AbstractScene* abstract_scene) {
     } 
 }
 
+std::string DrawScene::getCurrentLocationTextures(){
+    char* way = new char[200];                          
+    way = getcwd(way, 200);                               // Получаем текущую деректорию
+
+    std::string str(way);
+    str += "/txtrs.png";
+    std::cout << str << "\n";
+    delete[] way;
+    return str;
+}

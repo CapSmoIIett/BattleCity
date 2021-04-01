@@ -153,5 +153,7 @@ class DrawScene
         //глобальная функция рисования
         //проходится по object_list и вызывает для draw каждого
         void draw(sf::RenderWindow &window, AbstractScene* abstract_scene);
+
+        std::string getCurrentLocationTextures();
      
 };
