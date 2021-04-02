@@ -64,9 +64,9 @@ void AbstractScene::loadMap(std::fstream& file)
                 case '#': this->addObject(x, y, "DistrBlock");        break;
                 case '@': this->addObject(x, y, "UnDistrBlock");      break;
                 case '.': break;
-                case '!': this->addObject(x, y, "HeadquartersBlock"); break;//база                          
-                case '~': this->addObject(x, y, "WaterBlock");        break;//вода                           
-                case 's': this->addObject(x, y, "Spawner");           break;//создатель танков                           
+                case '!': this->addObject(x, y, "HeadquartersBlock"); break;    // База                          
+                case '~': this->addObject(x, y, "WaterBlock");        break;    // Вода                           
+                case 's': this->addObject(x, y, "Spawner");           break;    // Создатель танков                           
             }
             x += 24; //3 * 8(px в блоке)
         }
