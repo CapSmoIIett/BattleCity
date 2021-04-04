@@ -148,6 +148,7 @@ void DrawTank::draw(sf::RenderWindow &window, AbstractScene* abstract_scene){
 
     Object*  abstract_object = abstract_scene->map_objects[id];
     Tank* abstr_tank = dynamic_cast<Tank* >(abstract_object);
+
     int direction = abstr_tank->get_dir();                          //получаем направление
        
     switch(direction) 

@@ -75,7 +75,7 @@ class Controller {
                 health--;
                 
                 std::cout << "Танк игрока был возрождён, осталось жизней: " << health << "\n";
-                /*this->tank_id = abstract_scene->addObject(start_x, start_y, "Tank");*/
+                this->tank_id = abstract_scene->addObject(start_x, start_y, "Tank");
                 since_last_click = 30; //пусть стоит на старте
             }
             since_last_click ++;

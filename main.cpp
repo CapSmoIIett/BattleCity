@@ -41,6 +41,8 @@ int main() {
 
             if (event.type == Event::Closed)
                 window.close();
+            //else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+               //abstract_scene.map_objects[5]->set
         }
         
         controller.manageTank(&abstract_scene);/* */
