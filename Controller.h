@@ -80,4 +80,5 @@ class Controller {
             }
             since_last_click ++;
         }  
+        
 };
