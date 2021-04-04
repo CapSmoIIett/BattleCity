@@ -21,7 +21,7 @@ int AbstractScene::addObject(Object* object){
 int AbstractScene::addObject(int x, int y, String name){
     map_objects[count_id] = new Object(count_id, name, Point {x, y}, 1);
     count_id++;
-    return 0;
+    return 0; // может быть return count_id; ?
 }                                        
 
 void AbstractScene::clearDead(){
