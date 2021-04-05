@@ -95,3 +95,18 @@ void AbstractScene::loadMap(std::fstream& file)
             
     }
 }
+void AbstractScene::handle_tick(){
+        //sf::Rect <int>future_rectangle = get_future_rectangle(abstract_scene);
+        for (auto i : map_objects){
+            //ROFL! При первых тестах танк не двигался - сталкивался сам с собой
+            //bool is_intersect = i.second->now_rectangle().intersects(future_rectangle) && i.first != id;
+            //if (is_intersect){
+                //this->recently_collided = true; //Это для AITank.
+                //нет урона при наезде танка
+                //std::cout << "танк столкнулся c " << abstract_scene->accord_list[i.first] << "\n";
+                //return;
+            ///}
+        }
+        //this->recently_collided = false; //Это для AITank.
+        //move(abstract_scene);
+}

@@ -45,5 +45,7 @@ public:
     // Функция, возвращающая point объекта по id
     class Point getPoint(int id);                                
     
+    //
+    void handle_tick();
 };
 
