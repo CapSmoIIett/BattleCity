@@ -42,9 +42,9 @@ int Object::get_speed(){
     return speed;
 }
 
-Rect<int> Object::now_rectangle(ObjectScene *abstract_scene)                        
+Rect<int> Object::now_rectangle(ObjectScene *scene)                        
 {
-    Point point = abstract_scene->map_objects[id]->get_point();
+    Point point = scene->map_objects[id]->get_point();
     return Rect <int>(point.x, point.y, width, heigth);
 }
 
@@ -75,14 +75,14 @@ bool Tank::did_collided(){
     return recently_collided;
 }
 
-void Tank::make_damage(ObjectScene *abstract_scene){
-    Object* object = abstract_scene->map_objects[id];
+void Tank::make_damage(ObjectScene *scene){
+    Object* object = scene->map_objects[id];
     Tank* tank = dynamic_cast<Tank *>(object);
     tank->set_health(tank->get_health() - 1);                 // и это ссылка, экземпляр изменился в другой сцене
 }
 
-Rect<int> Tank::get_future_rectangle(ObjectScene *abstract_scene){ 
-    Object* object = abstract_scene->map_objects[id];
+Rect<int> Tank::get_future_rectangle(ObjectScene *scene){ 
+    Object* object = scene->map_objects[id];
     Tank* tank = dynamic_cast<Tank *>(object);
     Point point = tank->get_point();
     int direct = tank->get_dir();
@@ -95,12 +95,12 @@ Rect<int> Tank::get_future_rectangle(ObjectScene *abstract_scene){
     return sf::Rect <int>(point.x, point.y, width, heigth);
 }
 
-void Tank::handle_tick(ObjectScene *abstract_scene){
-    Rect <int>future_rectangle = get_future_rectangle(abstract_scene);
+void Tank::handle_tick(ObjectScene *scene){
+    Rect <int>future_rectangle = get_future_rectangle(scene);
     
-    for (auto i : abstract_scene->map_objects)
+    for (auto i : scene->map_objects)
     {
-        bool is_intersect = i.second->now_rectangle(abstract_scene).intersects(future_rectangle) && i.first != id;
+        bool is_intersect = i.second->now_rectangle(scene).intersects(future_rectangle) && i.first != id;
         if (is_intersect){
             this->recently_collided = true; //Это для AITank.нет урона при наезде танка
            std::cout << "танк столкнулся c " << "\n";
@@ -108,11 +108,11 @@ void Tank::handle_tick(ObjectScene *abstract_scene){
         }
     }
     this->recently_collided = false; //Это для AITank.
-    move(abstract_scene);
+    move(scene);
 }
 
-void Tank::move(ObjectScene *abstract_scene){
-    Object* object = abstract_scene->map_objects[id];
+void Tank::move(ObjectScene *scene){
+    Object* object = scene->map_objects[id];
     Tank* tank = dynamic_cast<Tank *>(object);
     Point point = tank->get_point();
     int direct = tank->get_dir();

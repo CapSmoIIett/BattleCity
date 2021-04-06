@@ -36,8 +36,8 @@ DrawBlock::~DrawBlock(){
     std::cout << "Деструктор блока." << "\n";
 }
 
-void DrawBlock::draw(sf::RenderWindow &window, ObjectScene* abstract_scene){
-    Point point = abstract_scene->getPoint(id);
+void DrawBlock::draw(sf::RenderWindow &window, ObjectScene* scene){
+    Point point = scene->getPoint(id);
     sprite->setPosition(point.x, point.y);
     window.draw(*sprite);
 }
@@ -63,13 +63,13 @@ DrawHeadquarters::~DrawHeadquarters(){
     std::cout << "Деструктор штаба." << "\n";
 }
         
-void DrawHeadquarters::draw(RenderWindow &window, ObjectScene* abstract_scene){
-    Point point = abstract_scene->getPoint(id);
+void DrawHeadquarters::draw(RenderWindow &window, ObjectScene* scene){
+    Point point = scene->getPoint(id);
     sprite->setPosition(point.x, point.y);
-    Object*  abstract_object = abstract_scene->map_objects[id];
-    Headquarters* abstract_headquarters = dynamic_cast<Headquarters* >(abstract_object);
+    Object*  object = scene->map_objects[id];
+    Headquarters* headquarters = dynamic_cast<Headquarters* >(object);
             
-    bool is_alive = abstract_headquarters->is_alive; // Мы с самог начала думали об этом, когда разделили на сцены
+    bool is_alive = headquarters->is_alive; // Мы с самог начала думали об этом, когда разделили на сцены
     if(is_alive){ sprite = living_headquarters_sprite; } 
     else { sprite = dead_headquarters_sprite; }
 
@@ -102,10 +102,10 @@ DrawBullet::~DrawBullet(){
     std::cout << "Деструктор пули." << "\n";
 }
 
-void DrawBullet::draw(RenderWindow &window, ObjectScene* abstract_scene){
+void DrawBullet::draw(RenderWindow &window, ObjectScene* scene){
 
-    Object*  abstract_object = abstract_scene->map_objects[id];
-    Bullet* abstr_bullet = dynamic_cast<Bullet* >(abstract_object);
+    Object*  object = scene->map_objects[id];
+    Bullet* abstr_bullet = dynamic_cast<Bullet* >(object);
     int direction = abstr_bullet->get_dir();                            //получаем направление
     switch(direction)
     {
@@ -114,7 +114,7 @@ void DrawBullet::draw(RenderWindow &window, ObjectScene* abstract_scene){
         case UP:    sprite = up_sprite;    break;
         case LEFT:  sprite = left_sprite;  break;
     }
-    Point point = abstract_scene->getPoint(id);
+    Point point = scene->getPoint(id);
     sprite->setPosition(point.x, point.y);
     window.draw(*sprite);
 }
@@ -144,10 +144,10 @@ DrawTank::~DrawTank(){
     std::cout << "Деструктор танка." << "\n";
 }
         
-void DrawTank::draw(sf::RenderWindow &window, ObjectScene* abstract_scene){
+void DrawTank::draw(sf::RenderWindow &window, ObjectScene* scene){
 
-    Object*  abstract_object = abstract_scene->map_objects[id];
-    Tank* abstr_tank = dynamic_cast<Tank* >(abstract_object);
+    Object*  object = scene->map_objects[id];
+    Tank* abstr_tank = dynamic_cast<Tank* >(object);
 
     int direction = abstr_tank->get_dir();                          //получаем направление
        
@@ -158,7 +158,7 @@ void DrawTank::draw(sf::RenderWindow &window, ObjectScene* abstract_scene){
         case UP:    sprite = up_sprite;    break;
         case LEFT:  sprite = left_sprite;  break;
     }
-    Point point = abstract_scene->getPoint(id);
+    Point point = scene->getPoint(id);
     sprite->setPosition(point.x, point.y);
     window.draw(*sprite);
 }
@@ -229,9 +229,9 @@ void DrawScene::add_obj(const int id, const std::string& type){
 
 }
 
-void DrawScene::synchronize(ObjectScene *abstract_scene){
+void DrawScene::synchronize(ObjectScene *scene){
 
-        for(auto i: abstract_scene->map_objects){                       //забирает измемения из абстрактной сцены и создаёт объекты
+        for(auto i: scene->map_objects){                       //забирает измемения из абстрактной сцены и создаёт объекты
             if(object_list.find(i.first/*id*/) == object_list.end()){
                 add_obj(i.first/*id*/, i.second->data.type);            //если нет объекта в рисующей схеме
                                                                         //значит его надо создать
@@ -240,8 +240,8 @@ void DrawScene::synchronize(ObjectScene *abstract_scene){
         //сверяет изменения с абстрактной сценой и удаляет объекты
         std::vector<int> to_remove;
         for(auto i: this->object_list) {
-            if (abstract_scene->map_objects.find(i.first) ==
-                abstract_scene->map_objects.end()) {
+            if (scene->map_objects.find(i.first) ==
+                scene->map_objects.end()) {
                 delete i.second;                        //если нет объекта в абстрактной сцене
                                                         //значит его надо удалить и из нашей сцены
                 to_remove.push_back(i.first);
@@ -252,9 +252,9 @@ void DrawScene::synchronize(ObjectScene *abstract_scene){
         }
 }
 
-void DrawScene::draw(sf::RenderWindow &window, ObjectScene* abstract_scene) { 
+void DrawScene::draw(sf::RenderWindow &window, ObjectScene* scene) { 
     for (auto& i : object_list) { 
-        i.second->draw(window, abstract_scene); 
+        i.second->draw(window, scene); 
     } 
 }
 

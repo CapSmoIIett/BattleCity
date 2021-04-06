@@ -25,7 +25,7 @@ class DrawObject: public Object
         ~DrawObject();
 
         // Функция, рисования
-        virtual void draw(RenderWindow &window, ObjectScene* abstract_scene) = 0; //сам объект не имеет смысла, это интерфейс.   
+        virtual void draw(RenderWindow &window, ObjectScene* scene) = 0; //сам объект не имеет смысла, это интерфейс.   
 };
 
 //стенка
@@ -39,7 +39,7 @@ class DrawBlock: public DrawObject
         ~DrawBlock();
 
         // Функция, рисования
-        void draw(sf::RenderWindow &window, ObjectScene* abstract_scene);
+        void draw(sf::RenderWindow &window, ObjectScene* scene);
 };
 
 //штаб
@@ -60,7 +60,7 @@ class DrawHeadquarters: public DrawObject
         ~DrawHeadquarters();
         
         // Функция, рисования
-        void draw(RenderWindow &window, ObjectScene* abstract_scene); 
+        void draw(RenderWindow &window, ObjectScene* scene); 
 };
 
 class DrawBullet: public DrawObject
@@ -84,7 +84,7 @@ class DrawBullet: public DrawObject
         ~DrawBullet();
         
         // Функция, рисования
-        void draw(RenderWindow &window, ObjectScene* abstract_scene);
+        void draw(RenderWindow &window, ObjectScene* scene);
 };
 
 //цель - реализовать отрисовку танка
@@ -109,7 +109,7 @@ class DrawTank: public DrawObject
         ~DrawTank();
         
         // Функция, рисования
-        void draw(sf::RenderWindow &window, ObjectScene* abstract_scene);
+        void draw(sf::RenderWindow &window, ObjectScene* scene);
 };
 
 
@@ -152,11 +152,11 @@ class DrawScene
         void add_obj(const int id, const std::string& type);
 
         // Функция, синхронизирующая сцены
-        void synchronize(ObjectScene* abstract_scene);
+        void synchronize(ObjectScene* scene);
 
         //глобальная функция рисования
         //проходится по object_list и вызывает для draw каждого
-        void draw(sf::RenderWindow &window, ObjectScene* abstract_scene);
+        void draw(sf::RenderWindow &window, ObjectScene* scene);
 
         // Функция определяющая расположение файла с текстурами
         std::string getCurrentLocationTextures();

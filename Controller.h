@@ -54,28 +54,28 @@ class Controller {
             since_last_click = 0;
         };
 
-       void shoot(ObjectScene *abstract_scene){
-            abstract_scene->createAbctractBullet(tank_id);
+       void shoot(ObjectScene *scene){
+            scene->createAbctractBullet(tank_id);
         };
 
         // функция, следящая за танком
-        void manageTank(ObjectScene *abstract_scene)
+        void manageTank(ObjectScene *scene)
         {
-            if (abstract_scene->map_objects.find(tank_id) != abstract_scene->map_objects.end()){
-                    Tank *abstr_tank = dynamic_cast<Tank *>(abstract_scene->map_objects[tank_id]);
+            if (scene->map_objects.find(tank_id) != scene->map_objects.end()){
+                    Tank *abstr_tank = dynamic_cast<Tank *>(scene->map_objects[tank_id]);
                     
                     if (since_last_click < 30) {// если в течении последних 10 кадров небыло нажатий, то танк останавливается.
                         abstr_tank->set_dir(direct);// теперь устанавливаем направление, такое, как нашей переменной.
-                        abstract_scene->map_objects[tank_id]->set_speed(3);
+                        scene->map_objects[tank_id]->set_speed(3);
                     } 
-                    else { abstract_scene->map_objects[tank_id]->set_speed(0); }//останавливаем танк
+                    else { scene->map_objects[tank_id]->set_speed(0); }//останавливаем танк
             } 
 
             else { //танк был убит!
                 health--;
                 
                 std::cout << "Танк игрока был возрождён, осталось жизней: " << health << "\n";
-                this->tank_id = abstract_scene->addObject(start_x, start_y, "Tank");
+                this->tank_id = scene->addObject(start_x, start_y, "Tank");
                 since_last_click = 30; //пусть стоит на старте
             }
             since_last_click ++;

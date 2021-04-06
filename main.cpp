@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "ObjectScene.h"
+#include "AbstractScene.h"
 #include "Object.h"
 #include "DrawScene.h"
 #include "Controller.h"
@@ -13,9 +13,9 @@ using namespace std;
 
 int main() {
 
-    ObjectScene abstract_scene;
+    ObjectScene scene;
     fstream file("levels/1.txt");
-    abstract_scene.loadMap(file);
+    scene.loadMap(file);
     file.close();
     
     Time cycle_time = seconds(0.02);//0.02f);
@@ -25,7 +25,7 @@ int main() {
 
     Controller controller;
     controller.setStartXY(16 * 3 * 8, 24 * 3 * 8);
-    draw_scene.synchronize(&abstract_scene);/**/
+    draw_scene.synchronize(&scene);/**/
 
     Clock clock;
     Event event;
@@ -39,20 +39,20 @@ int main() {
             if (Keyboard::isKeyPressed(Keyboard::Up))   { controller.setUp();   };
             if (Keyboard::isKeyPressed(Keyboard::Left)) { controller.setLeft(); };
 
-            if (Keyboard::isKeyPressed(Keyboard::Space)){ controller.shoot(&abstract_scene);    }
+            if (Keyboard::isKeyPressed(Keyboard::Space)){ controller.shoot(&scene);    }
             
             if (Keyboard::isKeyPressed(Keyboard::Q))    { window.close();       };
             if (event.type == Event::Closed)
                 window.close();
             //else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-               //abstract_scene.map_objects[5]->set
+               //scene.map_objects[5]->set
         }
         
-        controller.manageTank(&abstract_scene);/* */
-        abstract_scene.handleTickAll();
-        draw_scene.synchronize(&abstract_scene); 
+        controller.manageTank(&scene);/* */
+        scene.handleTickAll();
+        draw_scene.synchronize(&scene); 
         window.clear();     // window.clear(sf::Color(34,15,6));
-        draw_scene.draw(window, &abstract_scene);
+        draw_scene.draw(window, &scene);
     
         window.display();
         Time elapsed_time = clock.getElapsedTime() % cycle_time;
