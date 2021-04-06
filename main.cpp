@@ -46,15 +46,15 @@ int main() {
         }
         
         controller.manageTank(&abstract_scene);/* */
-       
+        abstract_scene.handleTickAll();
         draw_scene.synchronize(&abstract_scene); 
         window.clear();     // window.clear(sf::Color(34,15,6));
         draw_scene.draw(window, &abstract_scene);
     
         window.display();
-        //Time elapsed_time = clock.getElapsedTime() % cycle_time;
+        Time elapsed_time = clock.getElapsedTime() % cycle_time;
         //std::cout << "отрисовано за " << elapsed_time.asMilliseconds() << " миллисекунд\n";
-        //sleep(cycle_time - elapsed_time);
+        sleep(cycle_time - elapsed_time);
     }
 
     return 0;

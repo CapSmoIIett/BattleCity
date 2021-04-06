@@ -25,7 +25,7 @@ struct Point                                                                    
     int x, y;
 };
 
-struct Data 
+struct Data   // TODO  Убрать
 {
     std::string str, type;
 };
@@ -71,8 +71,8 @@ class Object                                                                    
         // Здоровье объекта
         int health;
 
-        // Конструктор объекта
-        Object(const int id, sf::String name, Point point, int health = 1, int heigth = 39, int width = 39, int speed = 0);  // TODO разобраться с параметрами по умолчанию
+        // Конструктор объекта          TODO сделать у всех одинковые размеры
+        Object(const int id, sf::String name, Point point, int health = 1, int heigth = 24, int width = 24, int speed = 0);  // TODO разобраться с параметрами по умолчанию
         
         // Деструктор объекту
         ~Object(){};
@@ -109,6 +109,9 @@ class Object                                                                    
 
         // Функция обновления состояния
         virtual void handle_tick(class AbstractScene *abstract_scene) {};
+
+        //
+        virtual sf::Rect<int> get_future_rectangle(AbstractScene *abstract_scene) {return sf::Rect <int>(point.x, point.y, width, heigth);}; 
 };
 
 // Объект танка
@@ -134,13 +137,16 @@ class Tank: public Object, public Directable
         bool did_collided();
     
         // Функция, обрабатывающая получения урона
-        void make_damage(class AbstractScene *abstract_scene);
+        virtual void make_damage(class AbstractScene *abstract_scene);
 
         // Рамка, в которой будет находиться объект, если ему ничего не помешает
-        Rect <int>get_future_rectangle(class AbstractScene *abstract_scene);
+        virtual Rect<int> get_future_rectangle(class AbstractScene *abstract_scene);
 
         // Функция обновления состояния
-        void handle_tick(class AbstractScene *abstract_scene);
+        virtual void handle_tick(class AbstractScene *abstract_scene);
+
+        //
+        //sf::Rect<int> get_future_rectangle(AbstractScene *abstract_scene); 
 
     protected:
         // Функция перемещения танка

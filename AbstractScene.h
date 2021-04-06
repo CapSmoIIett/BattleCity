@@ -46,6 +46,6 @@ public:
     class Point getPoint(int id);                                
     
     //
-    void handle_tick();
+    void handleTickAll();
 };
 
