@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
 #include <iostream>
-#include "AbstractScene.h"
+#include "ObjectScene.h"
 
 #define UP 0
 #define DOWN 1
@@ -54,12 +54,12 @@ class Controller {
             since_last_click = 0;
         };
 
-       /* void choot(AbstractScene *abstract_scene){
+       void shoot(ObjectScene *abstract_scene){
             abstract_scene->createAbctractBullet(tank_id);
-        };*/
+        };
 
         // функция, следящая за танком
-        void manageTank(AbstractScene *abstract_scene)
+        void manageTank(ObjectScene *abstract_scene)
         {
             if (abstract_scene->map_objects.find(tank_id) != abstract_scene->map_objects.end()){
                     Tank *abstr_tank = dynamic_cast<Tank *>(abstract_scene->map_objects[tank_id]);

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "AbstractScene.h"
+#include "ObjectScene.h"
 #include "Object.h"
 #include "DrawScene.h"
 #include "Controller.h"
@@ -13,7 +13,7 @@ using namespace std;
 
 int main() {
 
-    AbstractScene abstract_scene;
+    ObjectScene abstract_scene;
     fstream file("levels/1.txt");
     abstract_scene.loadMap(file);
     file.close();
@@ -39,6 +39,9 @@ int main() {
             if (Keyboard::isKeyPressed(Keyboard::Up))   { controller.setUp();   };
             if (Keyboard::isKeyPressed(Keyboard::Left)) { controller.setLeft(); };
 
+            if (Keyboard::isKeyPressed(Keyboard::Space)){ controller.shoot(&abstract_scene);    }
+            
+            if (Keyboard::isKeyPressed(Keyboard::Q))    { window.close();       };
             if (event.type == Event::Closed)
                 window.close();
             //else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))

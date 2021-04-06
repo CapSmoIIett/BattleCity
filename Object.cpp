@@ -42,7 +42,7 @@ int Object::get_speed(){
     return speed;
 }
 
-Rect<int> Object::now_rectangle(AbstractScene *abstract_scene)                        
+Rect<int> Object::now_rectangle(ObjectScene *abstract_scene)                        
 {
     Point point = abstract_scene->map_objects[id]->get_point();
     return Rect <int>(point.x, point.y, width, heigth);
@@ -75,13 +75,13 @@ bool Tank::did_collided(){
     return recently_collided;
 }
 
-void Tank::make_damage(AbstractScene *abstract_scene){
+void Tank::make_damage(ObjectScene *abstract_scene){
     Object* object = abstract_scene->map_objects[id];
     Tank* tank = dynamic_cast<Tank *>(object);
     tank->set_health(tank->get_health() - 1);                 // и это ссылка, экземпляр изменился в другой сцене
 }
 
-Rect<int> Tank::get_future_rectangle(AbstractScene *abstract_scene){ 
+Rect<int> Tank::get_future_rectangle(ObjectScene *abstract_scene){ 
     Object* object = abstract_scene->map_objects[id];
     Tank* tank = dynamic_cast<Tank *>(object);
     Point point = tank->get_point();
@@ -95,7 +95,7 @@ Rect<int> Tank::get_future_rectangle(AbstractScene *abstract_scene){
     return sf::Rect <int>(point.x, point.y, width, heigth);
 }
 
-void Tank::handle_tick(AbstractScene *abstract_scene){
+void Tank::handle_tick(ObjectScene *abstract_scene){
     Rect <int>future_rectangle = get_future_rectangle(abstract_scene);
     
     for (auto i : abstract_scene->map_objects)
@@ -111,7 +111,7 @@ void Tank::handle_tick(AbstractScene *abstract_scene){
     move(abstract_scene);
 }
 
-void Tank::move(AbstractScene *abstract_scene){
+void Tank::move(ObjectScene *abstract_scene){
     Object* object = abstract_scene->map_objects[id];
     Tank* tank = dynamic_cast<Tank *>(object);
     Point point = tank->get_point();

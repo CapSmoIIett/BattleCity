@@ -36,7 +36,7 @@ DrawBlock::~DrawBlock(){
     std::cout << "Деструктор блока." << "\n";
 }
 
-void DrawBlock::draw(sf::RenderWindow &window, AbstractScene* abstract_scene){
+void DrawBlock::draw(sf::RenderWindow &window, ObjectScene* abstract_scene){
     Point point = abstract_scene->getPoint(id);
     sprite->setPosition(point.x, point.y);
     window.draw(*sprite);
@@ -63,7 +63,7 @@ DrawHeadquarters::~DrawHeadquarters(){
     std::cout << "Деструктор штаба." << "\n";
 }
         
-void DrawHeadquarters::draw(RenderWindow &window, AbstractScene* abstract_scene){
+void DrawHeadquarters::draw(RenderWindow &window, ObjectScene* abstract_scene){
     Point point = abstract_scene->getPoint(id);
     sprite->setPosition(point.x, point.y);
     Object*  abstract_object = abstract_scene->map_objects[id];
@@ -102,7 +102,7 @@ DrawBullet::~DrawBullet(){
     std::cout << "Деструктор пули." << "\n";
 }
 
-void DrawBullet::draw(RenderWindow &window, AbstractScene* abstract_scene){
+void DrawBullet::draw(RenderWindow &window, ObjectScene* abstract_scene){
 
     Object*  abstract_object = abstract_scene->map_objects[id];
     Bullet* abstr_bullet = dynamic_cast<Bullet* >(abstract_object);
@@ -144,7 +144,7 @@ DrawTank::~DrawTank(){
     std::cout << "Деструктор танка." << "\n";
 }
         
-void DrawTank::draw(sf::RenderWindow &window, AbstractScene* abstract_scene){
+void DrawTank::draw(sf::RenderWindow &window, ObjectScene* abstract_scene){
 
     Object*  abstract_object = abstract_scene->map_objects[id];
     Tank* abstr_tank = dynamic_cast<Tank* >(abstract_object);
@@ -229,7 +229,7 @@ void DrawScene::add_obj(const int id, const std::string& type){
 
 }
 
-void DrawScene::synchronize(AbstractScene *abstract_scene){
+void DrawScene::synchronize(ObjectScene *abstract_scene){
 
         for(auto i: abstract_scene->map_objects){                       //забирает измемения из абстрактной сцены и создаёт объекты
             if(object_list.find(i.first/*id*/) == object_list.end()){
@@ -252,7 +252,7 @@ void DrawScene::synchronize(AbstractScene *abstract_scene){
         }
 }
 
-void DrawScene::draw(sf::RenderWindow &window, AbstractScene* abstract_scene) { 
+void DrawScene::draw(sf::RenderWindow &window, ObjectScene* abstract_scene) { 
     for (auto& i : object_list) { 
         i.second->draw(window, abstract_scene); 
     } 

@@ -10,7 +10,7 @@
 #include <iterator>
 #include <string>
 
-#include "AbstractScene.h"
+#include "ObjectScene.h"
 
 #define UP 0
 #define DOWN 1
@@ -102,16 +102,16 @@ class Object                                                                    
         int get_speed();
        
         // Рамка, в которой сейчас находится объект
-        Rect <int>now_rectangle(class AbstractScene *abstract_scene);
+        Rect <int>now_rectangle(class ObjectScene *abstract_scene);
 
         // Функция, обрабатывающая получения урона
-        virtual void make_damage(class AbstractScene *abstract_scene) {};
+        virtual void make_damage(class ObjectScene *abstract_scene) {};
 
         // Функция обновления состояния
-        virtual void handle_tick(class AbstractScene *abstract_scene) {};
+        virtual void handle_tick(class ObjectScene *abstract_scene) {};
 
         //
-        virtual sf::Rect<int> get_future_rectangle(AbstractScene *abstract_scene) {return sf::Rect <int>(point.x, point.y, width, heigth);}; 
+        virtual sf::Rect<int> get_future_rectangle(ObjectScene *abstract_scene) {return sf::Rect <int>(point.x, point.y, width, heigth);}; 
 };
 
 // Объект танка
@@ -137,20 +137,20 @@ class Tank: public Object, public Directable
         bool did_collided();
     
         // Функция, обрабатывающая получения урона
-        virtual void make_damage(class AbstractScene *abstract_scene);
+        virtual void make_damage(class ObjectScene *abstract_scene);
 
         // Рамка, в которой будет находиться объект, если ему ничего не помешает
-        virtual Rect<int> get_future_rectangle(class AbstractScene *abstract_scene);
+        virtual Rect<int> get_future_rectangle(class ObjectScene *abstract_scene);
 
         // Функция обновления состояния
-        virtual void handle_tick(class AbstractScene *abstract_scene);
+        virtual void handle_tick(class ObjectScene *abstract_scene);
 
         //
-        //sf::Rect<int> get_future_rectangle(AbstractScene *abstract_scene); 
+        //sf::Rect<int> get_future_rectangle(ObjectScene *abstract_scene); 
 
     protected:
         // Функция перемещения танка
-        void move(class AbstractScene *abstract_scene);
+        void move(class ObjectScene *abstract_scene);
 };
 
 
