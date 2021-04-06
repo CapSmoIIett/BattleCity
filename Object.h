@@ -53,7 +53,7 @@ class Directable
 };
 
 // Класс объекта
-class Object                                                                            // бывший AbstractObject
+class Object                                                                            // бывший Object
 {
     protected:
         // Расположение объекта
@@ -184,4 +184,47 @@ class Bullet: public Object, public Directable
 
         // Деструктор пули
         ~Bullet(){};
+        
+        //
+        void move(ObjectScene *scene){
+        Object * object = scene->map_object[id];
+        Bullet *bullet = dynamic_cast<Bullet *>(object);
+        Point point = bullet->get_point();
+        //std::cout << "Координаты PhisicalBullet " << point.x << ", " << point.y << "\n";
+        int direct = bullet->get_dir();
+        switch (direct){
+            case UP:
+                point.y -= speed;
+                break;
+            case DOWN:
+                point.y += speed;
+                break;
+            case LEFT:
+                point.x -= speed;
+                break;
+            case RIGHT:
+                point.x += speed;
+                break;
+        }
+        bullet->set_point(point);
+        //std::cout << "новые координаты PhisicalBullet " << point.x << ", " << point.y << "\n";
+       };
+
+        //
+        void handle_tick(ObjectScene *scene){
+        sf::Rect <int>future_rectangle = get_future_rectangle(scene);
+        for (auto i : scene->map_objects){
+            bool is_intersect = i.second->now_rectangle(scene).intersects(future_rectangle) && i.first != id;
+            if (is_intersect){
+                // пуля нанесла урон в двух
+                i.second->make_damage(scene);
+                make_damage(scene);
+                std::cout << "Пуля столкнулась с " << scene->map_objects[i.first] <<
+                        ", здоровье = " << scene->map_objects[i.first]->get_health() << "\n";
+                return;
+            }
+        }
+        move(scene);
+    };
 };
+
