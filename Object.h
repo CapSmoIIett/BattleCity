@@ -179,7 +179,7 @@ class Bullet: public Object, public Directable
 {
     public:
         // Конструктор пули
-        Bullet(const int id, Point init_point = {0, 0}, const int dir = 0, const int health = 1): Object(id, "Bullet", init_point, health), Directable(dir)
+        Bullet(const int id, Point init_point, const int dir): Object(id, "Bullet", init_point, 1), Directable(dir)
             { std::cout << "конструктор пули\n"; };
 
         // Деструктор пули

@@ -25,8 +25,6 @@ int ObjectScene::addObject(int x, int y, String name){
             map_objects[count_id] = new DistrBlock(count_id, Point{x, y}, 1);
         } else if(name == "UnDistrBlock") {
             map_objects[count_id] = new DistrBlock(count_id, Point{x, y}, 1000);
-        } else if(name == "Bullet") {
-            map_objects[count_id] = new Bullet(count_id, Point{x, y});
         } else if(name == "Tank") {
             map_objects[count_id] = new Tank(count_id, Point{x, y});
         } else if(name == "PleerTank") { //отличие только в том, что не создаётся AI_tank
@@ -68,8 +66,10 @@ Point ObjectScene::getPoint(int id){
 }                       
     
 void ObjectScene::createAbctractBullet(int id){
-    Point point = map_objects[id]->get_point();
-    addObject(point.x, point.y, "Bullet");
+    Tank* object = dynamic_cast<Tank*>(map_objects[id]);
+    Point point = object->get_point();
+    int dir = object->get_dir();
+    map_objects[count_id] = new Bullet(count_id, point, dir);
 }                 
 
 void ObjectScene::loadMap(std::fstream& file)
