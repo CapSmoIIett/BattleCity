@@ -3,8 +3,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "ObjectScene.h"
 #include "Object.h"
+#include "ObjectScene.h"
 #include "DrawScene.h"
 #include "Controller.h"
 

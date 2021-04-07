@@ -10,6 +10,7 @@
 
 #include "Object.h"
 
+class Point;
 
 class ObjectScene{
 private:
