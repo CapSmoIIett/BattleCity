@@ -38,7 +38,7 @@ public:
     void clearDead();                                     
 
     // Функция, создающая пулю около этого танка с учётом направления дула танка
-    void createAbctractBullet(int id);                     
+    void createBullet(int id);                     
     
     // Функция, выгружающая из памяти карту.
     void loadMap(std::fstream& file);

@@ -19,7 +19,7 @@ class DrawObject: public Object
         Sprite*  sprite = nullptr; 
 
         // Конструктор Рисуемого объекта
-        DrawObject(Sprite*  sprite, int id, String name, Point point, int health, const int heigth = 0, const int width = 0, int speed = 0);
+        DrawObject(Sprite*  sprite, int id, String name, Point point);
 
         // Деструктор Рисуемого объекта
         ~DrawObject();
@@ -33,7 +33,7 @@ class DrawBlock: public DrawObject
 {
     public:
         // Конструктор рисуемого блока
-        DrawBlock(Sprite*  sprite, const int id, String name = " ", Point point = {0, 0}, int health = 1, const int heigth = 0, const int width = 0, int speed = 0);
+        DrawBlock(Sprite*  sprite, const int id, String name = " ", Point point = {0, 0});
 
         // Деструктор рисуемого блока
         ~DrawBlock();
@@ -54,7 +54,7 @@ class DrawHeadquarters: public DrawObject
     public:
         // Конструктор рисуемого штаба
         DrawHeadquarters(Sprite* living_headquarters_sprite, Sprite* dead_headquarters_sprite, const int id, String name, 
-        Point point, int health, const int heigth = 0, const int width = 0, int speed = 0);
+        Point point);
        
         // Деструктор рисуемого штаба
         ~DrawHeadquarters();
@@ -78,7 +78,7 @@ class DrawBullet: public DrawObject
     public:
         // Конструктор рисуемой пули
         DrawBullet( const int id, Sprite* up_sprite, Sprite* down_sprite, Sprite* right_sprite, Sprite* left_sprite, String name, 
-        Point point, int health, const int heigth = 0, const int width = 0, int speed = 0);
+        Point point);
 
         // Деструктор рисуемой пули
         ~DrawBullet();
@@ -103,7 +103,7 @@ class DrawTank: public DrawObject
     public:
         // Конструктор рисуемого танка
         DrawTank( const int id, Sprite* up_sprite, Sprite* down_sprite, Sprite* right_sprite, Sprite* left_sprite, String name = " ", 
-        Point point = {0, 0}, int health = 0, const int heigth = 0, const int width = 0, int speed = 0);
+        Point point = {0, 0});
 
         // Деструктор рисуемого танка
         ~DrawTank();

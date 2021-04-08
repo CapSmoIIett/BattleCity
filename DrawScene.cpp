@@ -1,15 +1,8 @@
 #include "DrawScene.h"
 
 
-DrawObject::DrawObject( Sprite*  sprite, 
-                        int id, 
-                        String name, 
-                        Point point, 
-                        int health, 
-                        const int heigth, 
-                        const int width, 
-                        int speed ):
-Object(id, name, point, health, heigth, width, speed), sprite(sprite){
+DrawObject::DrawObject( Sprite*  sprite, int id, String name, Point point):
+Object(id, name, point), sprite(sprite){
     std::cout << "Конструктор объекта." << "\n";
 }
 
@@ -21,14 +14,10 @@ DrawObject::~DrawObject(){
 
 
 DrawBlock::DrawBlock(   Sprite*  sprite, 
-                        const int id, 
+                        const int id,
                         String name, 
-                        Point point, 
-                        int health, 
-                        const int heigth, 
-                        const int width, 
-                        int speed ) : 
-DrawObject(sprite, id, name, point, health, heigth, width, speed){
+                        Point point) : 
+DrawObject(sprite, id, name, point){
     std::cout << "Конструктор блока." << "\n";
 }
 
@@ -48,12 +37,8 @@ void DrawBlock::draw(sf::RenderWindow &window, ObjectScene* scene){
 DrawHeadquarters::DrawHeadquarters( Sprite* living_headquarters_sprite, 
                                     Sprite* dead_headquarters_sprite, 
                                     const int id, String name, 
-                                    Point point, 
-                                    int health, 
-                                    const int heigth, 
-                                    const int width, 
-                                    int speed ):
-DrawObject(living_headquarters_sprite, id, name, point, health, heigth, width, speed),
+                                    Point point):
+DrawObject(living_headquarters_sprite, id, name, point),
 living_headquarters_sprite(living_headquarters_sprite), 
 dead_headquarters_sprite(dead_headquarters_sprite){
     std::cout << "Конструктор штаба." << "\n";
@@ -85,12 +70,8 @@ DrawBullet::DrawBullet( const int id,
                         Sprite* right_sprite, 
                         Sprite* left_sprite, 
                         String name, 
-                        Point point, 
-                        int health, 
-                        const int heigth, 
-                        const int width, 
-                        int speed ): 
-DrawObject(up_sprite, id, name, point, health, heigth, width, speed){
+                        Point point): 
+DrawObject(up_sprite, id, name, point){
     std::cout << "Конструктор пули." << "\n";
     this->up_sprite = up_sprite;
     this->down_sprite = down_sprite;
@@ -126,13 +107,8 @@ DrawTank::DrawTank( const int id,
                     Sprite* down_sprite, 
                     Sprite* right_sprite, 
                     Sprite* left_sprite, 
-                    String name, 
-                    Point point, 
-                    int health, 
-                    const int heigth, 
-                    const int width, 
-                    int speed): 
-DrawObject(up_sprite, id, name, point, health, heigth, width, speed){
+                    String name, Point point): 
+DrawObject(up_sprite, id, name, point){
     std::cout << "Конструктор танка." << "\n";
     this->up_sprite = up_sprite;
     this->down_sprite = down_sprite;

@@ -55,7 +55,7 @@ class Controller {
         };
 
        void shoot(ObjectScene *scene){
-            scene->createAbctractBullet(tank_id);
+            scene->createBullet(tank_id);
         };
 
         // функция, следящая за танком

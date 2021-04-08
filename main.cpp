@@ -50,6 +50,7 @@ int main() {
         
         controller.manageTank(&scene);/* */
         scene.handleTickAll();
+        scene.clearDead();
         draw_scene.synchronize(&scene); 
         window.clear();     // window.clear(sf::Color(34,15,6));
         draw_scene.draw(window, &scene);

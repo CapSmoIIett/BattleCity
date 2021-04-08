@@ -65,11 +65,12 @@ Point ObjectScene::getPoint(int id){
     return map_objects[id]->get_point();
 }                       
     
-void ObjectScene::createAbctractBullet(int id){
+void ObjectScene::createBullet(int id){
     Tank* object = dynamic_cast<Tank*>(map_objects[id]);
     Point point = object->get_point();
     int dir = object->get_dir();
     map_objects[count_id] = new Bullet(count_id, point, dir);
+    count_id++;
 }                 
 
 void ObjectScene::loadMap(std::fstream& file)
