@@ -34,20 +34,50 @@ int main() {
         while (window.pollEvent(event)) 
         {
             /**/
-            if (event.type == sf::Event::KeyReleased){
-                if (event.key.code == sf::Keyboard::Up)   {controller.stop();}
-                if (event.key.code == sf::Keyboard::Down) {controller.stop();}
-                if (event.key.code == sf::Keyboard::Left) {controller.stop();}
-                if (event.key.code == sf::Keyboard::Right){controller.stop();}
-            }
             if (event.type == sf::Event::KeyPressed){
-                if (event.key.code == sf::Keyboard::Up)   {controller.setUp();}
-                if (event.key.code == sf::Keyboard::Down) {controller.setDown();}
-                if (event.key.code == sf::Keyboard::Left) {controller.setLeft();}
-                if (event.key.code == sf::Keyboard::Right){controller.setRight();}
-
+                switch (event.key.code)
+                {
+                case sf::Keyboard::Up: {
+                    controller.setUp();
+                    break;
+                }
+                case sf::Keyboard::Down: {
+                    controller.setDown();
+                    break;
+                }
+                case sf::Keyboard::Left: {
+                    controller.setLeft();
+                    break;
+                }
+                case sf::Keyboard::Right: {
+                    controller.setRight();
+                    break;
+                }
+                }
             }
 
+
+            if (event.type == sf::Event::KeyReleased){
+                switch (event.key.code)
+                {
+                case sf::Keyboard::Up:  {
+                    controller.stop();
+                    break;
+                }
+                case sf::Keyboard::Down: {
+                    controller.stop();
+                    break;
+                }
+                case sf::Keyboard::Left: {
+                    controller.stop();
+                    break;
+                }
+                case sf::Keyboard::Right: {
+                    controller.stop();
+                    break;
+                }
+                }
+            }
             if (Keyboard::isKeyPressed(Keyboard::Space)){ controller.shoot(&scene);    }
             
             if (Keyboard::isKeyPressed(Keyboard::Q))    { window.close();       };

@@ -18,14 +18,12 @@ class Controller {
         int tank_id;   
         int health;        // здоровье игрока - количество попыток
         int direct;
-    public: int since_last_click;//счётчик "когда последнее обновление", если > 10 то скорость устанавливается в 0.       
         int start_x, start_y;
-        bool ride;
+        bool ride;          
     public:
         Controller():tank_id(-1), 
                         health(10),
                         direct(UP),
-                        since_last_click(30),
                         start_x(0),
                         start_y(0){ 
             ride = 0;
@@ -39,22 +37,18 @@ class Controller {
       
         void setUp(){
             direct = UP;
-            since_last_click = 0;
             ride = 1;
         };
         void setDown(){
             direct = DOWN;
-            since_last_click = 0;
             ride = 1;
         };
         void setLeft(){
             direct = LEFT;
-            since_last_click = 0;
             ride = 1;
         };
         void setRight(){
             direct = RIGHT;
-            since_last_click = 0;
             ride = 1;
         };
 
@@ -72,7 +66,7 @@ class Controller {
             if (scene->map_objects.find(tank_id) != scene->map_objects.end()){
                     Tank *abstr_tank = dynamic_cast<Tank *>(scene->map_objects[tank_id]);
                     
-                    if (ride) {// если в течении последних 10 кадров небыло нажатий, то танк останавливается.
+                    if (ride) {
                         abstr_tank->set_dir(direct);// теперь устанавливаем направление, такое, как нашей переменной.
                         scene->map_objects[tank_id]->set_speed(3);
                     } 
@@ -84,9 +78,8 @@ class Controller {
                 
                 std::cout << "Танк игрока был возрождён, осталось жизней: " << health << "\n";
                 this->tank_id = scene->addObject(start_x, start_y, "Tank");
-                since_last_click = 30; //пусть стоит на старте
+                ride = 0; //пусть стоит на старте
             }
-            since_last_click ++;
         }  
         
 };
