@@ -69,9 +69,8 @@ DrawBullet::DrawBullet( const int id,
                         Sprite* down_sprite, 
                         Sprite* right_sprite, 
                         Sprite* left_sprite, 
-                        String name, 
                         Point point): 
-DrawObject(up_sprite, id, name, point){
+DrawObject(up_sprite, id, "Bullet", point){
     std::cout << "Конструктор пули." << "\n";
     this->up_sprite = up_sprite;
     this->down_sprite = down_sprite;
@@ -202,7 +201,7 @@ void DrawScene::add_obj(const int id, const std::string& type){
     else if (type == "HeadquartersBlock") { object_list[id] = new DrawBlock(&iliving_headquarters_sprite, id);} 
     else if (type == "Tank")              { object_list[id] = new DrawTank (id, &tank_up_sprite2, &tank_down_sprite2, &tank_right_sprite2, &tank_left_sprite2); } 
     else if (type == "PleerTank")         { object_list[id] = new DrawTank (id, &tank_up_sprite, &tank_down_sprite, &tank_right_sprite, &tank_left_sprite); } 
-
+    else if (type == "Bullet")            { object_list[id] = new DrawBullet (id, &bullet_up_sprite, &bullet_down_sprite, &bullet_right_sprite, &bullet_left_sprite);}
 }
 
 void DrawScene::synchronize(ObjectScene *scene){

@@ -77,8 +77,8 @@ class DrawBullet: public DrawObject
 
     public:
         // Конструктор рисуемой пули
-        DrawBullet( const int id, Sprite* up_sprite, Sprite* down_sprite, Sprite* right_sprite, Sprite* left_sprite, String name, 
-        Point point);
+        DrawBullet( const int id, Sprite* up_sprite, Sprite* down_sprite, Sprite* right_sprite, Sprite* left_sprite, 
+        Point point = {0, 0});
 
         // Деструктор рисуемой пули
         ~DrawBullet();

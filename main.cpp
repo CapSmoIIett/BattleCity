@@ -34,10 +34,19 @@ int main() {
         while (window.pollEvent(event)) 
         {
             /**/
-            if (Keyboard::isKeyPressed(Keyboard::Down)) { controller.setDown(); };
-            if (Keyboard::isKeyPressed(Keyboard::Right)){ controller.setRight();};
-            if (Keyboard::isKeyPressed(Keyboard::Up))   { controller.setUp();   };
-            if (Keyboard::isKeyPressed(Keyboard::Left)) { controller.setLeft(); };
+            if (event.type == sf::Event::KeyReleased){
+                if (event.key.code == sf::Keyboard::Up)   {controller.stop();}
+                if (event.key.code == sf::Keyboard::Down) {controller.stop();}
+                if (event.key.code == sf::Keyboard::Left) {controller.stop();}
+                if (event.key.code == sf::Keyboard::Right){controller.stop();}
+            }
+            if (event.type == sf::Event::KeyPressed){
+                if (event.key.code == sf::Keyboard::Up)   {controller.setUp();}
+                if (event.key.code == sf::Keyboard::Down) {controller.setDown();}
+                if (event.key.code == sf::Keyboard::Left) {controller.setLeft();}
+                if (event.key.code == sf::Keyboard::Right){controller.setRight();}
+
+            }
 
             if (Keyboard::isKeyPressed(Keyboard::Space)){ controller.shoot(&scene);    }
             

@@ -103,7 +103,7 @@ void Tank::handle_tick(ObjectScene *scene){
         bool is_intersect = i.second->now_rectangle(scene).intersects(future_rectangle) && i.first != id;
         if (is_intersect){
             this->recently_collided = true; //Это для AITank.нет урона при наезде танка
-           std::cout << "танк столкнулся c " << "\n";
+           std::cout << "танк столкнулся c " << i.second->data.type << "\n";
             return;
         }
     }
@@ -127,11 +127,18 @@ void Tank::move(ObjectScene *scene){
 }
 /////////////////////////////////////////////////////////////////////////////////
 
+Bullet::Bullet(const int id, Point init_point, const int dir): 
+Object(id, "Bullet", init_point, 1, 4 *3, 4*3, 10), Directable(dir) { 
+    std::cout << "конструктор пули\n"; 
+};
+
+
+
 void Bullet::move(ObjectScene *scene){
         Object * object = scene->map_objects[id];
         Bullet *bullet = dynamic_cast<Bullet *>(object);
         Point point = bullet->get_point();
-        //std::cout << "Координаты PhisicalBullet " << point.x << ", " << point.y << "\n";
+        std::cout << "Координаты PhisicalBullet " << point.x << ", " << point.y << "\n";
         int direct = bullet->get_dir();
         switch (direct){
             case UP:
@@ -148,7 +155,7 @@ void Bullet::move(ObjectScene *scene){
                 break;
         }
         bullet->set_point(point);
-        //std::cout << "новые координаты PhisicalBullet " << point.x << ", " << point.y << "\n";
+        std::cout << "новые координаты PhisicalBullet " << point.x << ", " << point.y << "\n";
 }
 
 void Bullet::handle_tick(ObjectScene *scene){
@@ -159,7 +166,7 @@ void Bullet::handle_tick(ObjectScene *scene){
                 // пуля нанесла урон в двух
                 i.second->make_damage(scene);
                 make_damage(scene);
-                //std::cout << "Пуля столкнулась с " << scene->map_objects[i.first] <<
+                std::cout << "Пуля " << i.first << "столкнулась с " << i.second->data.type << "\n";
                 //       ", здоровье = " << scene->map_objects[i.first]->get_health() << "\n";
                 return;
             }

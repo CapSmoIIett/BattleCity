@@ -18,9 +18,9 @@ class Controller {
         int tank_id;   
         int health;        // здоровье игрока - количество попыток
         int direct;
-        int since_last_click;//счётчик "когда последнее обновление", если > 10 то скорость устанавливается в 0.       
+    public: int since_last_click;//счётчик "когда последнее обновление", если > 10 то скорость устанавливается в 0.       
         int start_x, start_y;
-
+        bool ride;
     public:
         Controller():tank_id(-1), 
                         health(10),
@@ -28,7 +28,7 @@ class Controller {
                         since_last_click(30),
                         start_x(0),
                         start_y(0){ 
-
+            ride = 0;
         };
          ~Controller(){};
 
@@ -40,19 +40,27 @@ class Controller {
         void setUp(){
             direct = UP;
             since_last_click = 0;
+            ride = 1;
         };
         void setDown(){
             direct = DOWN;
             since_last_click = 0;
+            ride = 1;
         };
         void setLeft(){
             direct = LEFT;
             since_last_click = 0;
+            ride = 1;
         };
         void setRight(){
             direct = RIGHT;
             since_last_click = 0;
+            ride = 1;
         };
+
+        void stop(){
+            ride = 0;
+        }
 
        void shoot(ObjectScene *scene){
             scene->createBullet(tank_id);
@@ -64,7 +72,7 @@ class Controller {
             if (scene->map_objects.find(tank_id) != scene->map_objects.end()){
                     Tank *abstr_tank = dynamic_cast<Tank *>(scene->map_objects[tank_id]);
                     
-                    if (since_last_click < 30) {// если в течении последних 10 кадров небыло нажатий, то танк останавливается.
+                    if (ride) {// если в течении последних 10 кадров небыло нажатий, то танк останавливается.
                         abstr_tank->set_dir(direct);// теперь устанавливаем направление, такое, как нашей переменной.
                         scene->map_objects[tank_id]->set_speed(3);
                     } 

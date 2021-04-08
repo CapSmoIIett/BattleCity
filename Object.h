@@ -160,6 +160,11 @@ class DistrBlock: public Object
     public:
         DistrBlock(const int id, Point point = {0,0}, const int health = 1):Object(id, "DistrBlock", point, health)
             { std::cout << "конструктор разрушимого блока\n"; }
+
+        virtual void make_damage(class ObjectScene* scene) {
+            //Object* object = scene->
+            health--;
+        }
 };
 
 // Штаб
@@ -179,11 +184,10 @@ class Bullet: public Object, public Directable
 {
     public:
         // Конструктор пули
-        Bullet(const int id, Point init_point, const int dir): Object(id, "Bullet", init_point, 1), Directable(dir)
-            { std::cout << "конструктор пули\n"; };
+        Bullet(const int id, Point init_point, const int dir);
 
         // Деструктор пули
-        ~Bullet(){};
+        ~Bullet(){ std::cout << "Деструктор пули\n"; };
         
         //
         virtual void make_damage(ObjectScene* scene);
