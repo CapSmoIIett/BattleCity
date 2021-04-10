@@ -208,6 +208,7 @@ void DrawScene::synchronize(ObjectScene *scene){
 
         for(auto i: scene->map_objects){                       //забирает измемения из абстрактной сцены и создаёт объекты
             if(object_list.find(i.first/*id*/) == object_list.end()){
+                if (i.second->data.type == "Spawner") continue;         // Пропускаем спавнеры
                 add_obj(i.first/*id*/, i.second->data.type);            //если нет объекта в рисующей схеме
                                                                         //значит его надо создать
             }

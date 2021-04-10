@@ -33,11 +33,11 @@ int ObjectScene::addObject(int x, int y, String name){
             map_objects[count_id] = new Object(count_id, "WaterBlock", Point{x, y});
         }/* else if(name == "HeadquartersBlock") {
             map_objects[count_id] = new Headquarters(count_id, Point{x, y});
-        }/* else if(name == "Spawner") {
-            map_objects[count_id] = new Object(count_id, "Spawner", Point{x, y}, 1000);
+        }*/ else if(name == "Spawner") {
+            map_objects[count_id] = new Object(count_id, "Spawner", Point{x, y}, 1000, 0, 0);
         } else if(name == "Explosion") {
             map_objects[count_id] = new Object(count_id, "Explosion", Point{x, y}, 1000);
-        }*/
+        }
     count_id++;
     return count_id - 1; 
 }                                        

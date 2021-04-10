@@ -7,7 +7,7 @@
 #include "ObjectScene.h"
 #include "DrawScene.h"
 #include "Controller.h"
-
+#include "AI.h"
 
 using namespace std;
 
@@ -18,6 +18,8 @@ int main() {
     scene.loadMap(file);
     file.close();
     
+    AIScene ai_scene(&scene, 1);
+
     Time cycle_time = seconds(0.02);//0.02f);
     RenderWindow window(VideoMode(624, 624), "BattleCity");
     DrawScene draw_scene;
@@ -88,6 +90,8 @@ int main() {
         }
         
         controller.manageTank(&scene);/* */
+        ai_scene.setComands(&scene);
+        ai_scene.synchronize(&scene);
         scene.handleTickAll();
         scene.clearDead();
         draw_scene.synchronize(&scene); 

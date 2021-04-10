@@ -61,7 +61,7 @@ class Controller {
         };
 
         // функция, следящая за танком
-        void manageTank(ObjectScene *scene)
+        virtual void manageTank(ObjectScene *scene)
         {
             if (scene->map_objects.find(tank_id) != scene->map_objects.end()){
                     Tank *abstr_tank = dynamic_cast<Tank *>(scene->map_objects[tank_id]);
