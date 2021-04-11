@@ -25,11 +25,73 @@ struct AIPoint{
     };
 };
 
-class AIController : Controller{
+class AIController { 
     
+     private:
+        
+        int tank_id;   
+        int direct;
+        int start_x, start_y;
+        bool ride;          
     public:
-        virtual void manageTank();
+        AIController(int id, int x, int y):
+                        tank_id(id), 
+                        direct(UP),
+                        start_x(0),
+                        start_y(0){ 
+            ride = 1;
+        };
+        ~AIController(){};
 
+        void setStartXY(int x, int y){
+            start_x = x;
+            start_y = y;
+        }
+      
+        void setUp(){
+            direct = UP;
+            ride = 1;
+        };
+        void setDown(){
+            direct = DOWN;
+            ride = 1;
+        };
+        void setLeft(){
+            direct = LEFT;
+            ride = 1;
+        };
+        void setRight(){
+            direct = RIGHT;
+            ride = 1;
+        };
+
+        void stop(int direction){
+            if (direct == direction)        // Что бы при изменнении направления танк не останавливался
+                ride = 0;
+        }
+
+       void shoot(ObjectScene *scene){
+            scene->createBullet(tank_id);
+        };
+
+        // функция, следящая за танком
+        virtual void manageTank(ObjectScene *scene)
+        {
+            if (scene->map_objects.find(tank_id) != scene->map_objects.end()){
+                    Tank *abstr_tank = dynamic_cast<Tank *>(scene->map_objects[tank_id]);
+                    
+                    if (ride) {
+                        abstr_tank->set_dir(direct);// теперь устанавливаем направление, такое, как нашей переменной.
+                        scene->map_objects[tank_id]->set_speed(3);
+                    }
+                    if (abstr_tank->did_collided()){
+                        direct++;
+                        if(direct > 3) direct = 0;
+                    } 
+                    //else { scene->map_objects[tank_id]->set_speed(0); }//оста
+            } 
+        }  
+        
 };
 
 class AIScene {
@@ -53,18 +115,35 @@ class AIScene {
                     spawners.push_back(i.second->get_point());
             }
             last_spawn = clock.getElapsedTime();
-            time_to_spawn = rand() % 10 + 100; 
+            time_to_spawn = rand() % 5 + 3; 
         };
         
         // ОБновлять состояние сцены (синхронизировать ее с ObjectScene)
         void synchronize(ObjectScene* scene){
-            if (clock.getElapsedTime() - last_spawn <= sf::seconds(time_to_spawn) &&
+
+            for (int i = 0; i < tanks.size(); i++) {            // Если танк был уничтожен - 
+                if (scene->map_objects.find(tanks[i]) ==
+                   scene->map_objects.end()) {
+                    map_ai_tanks.erase(tanks[i]);
+                    this->tanks.erase(tanks.begin() + i);       // удаляем его из нашего списка
+                }
+            }
+        
+            if (clock.getElapsedTime() - last_spawn >= sf::seconds(time_to_spawn) &&
                 tanks.size() < maxTanks){
-                int spawn = rand() % spawners.size() - 1;       // Выбираем случайный спавнер
+                int spawn = rand() % (spawners.size());       // Выбираем случайный спавнер
                 Point point = spawners[spawn];
+
+                std::cout << "\n\n\n" << spawn << " " << point.x << " " << point.y << "\n";
                 std::cout << "Spawn tank" << tanks.size() + 1 << "\n";
-                tanks.push_back(scene->addObject(point.x, point.y, "Tank"));
+
+                int id = scene->addObject(point.x, point.y, "Tank");
+                tanks.push_back(id);
+                map_ai_tanks[id] = new AIController (id, point.x, point.y);
+
+                // Устанавливаем новые значения для спавнов
                 last_spawn = clock.getElapsedTime();
+                time_to_spawn = rand() % 5 + 3;
             }
         }
 
@@ -73,9 +152,9 @@ class AIScene {
         }
 
         //
-        void manageAllAITanks (){                              
+        void manageAllAITanks (ObjectScene* scene){                              
             for (auto i : map_ai_tanks){
-                i.second->manageTank();
+                i.second->manageTank(scene);
             }
         }
     

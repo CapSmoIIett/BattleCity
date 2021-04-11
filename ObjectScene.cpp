@@ -27,7 +27,7 @@ int ObjectScene::addObject(int x, int y, String name){
             map_objects[count_id] = new Object(count_id, "UnDistrBlock", Point{x, y}, 100000);
         } else if(name == "Tank") {
             map_objects[count_id] = new Tank(count_id, Point{x, y});
-        } else if(name == "PleerTank") { //отличие только в том, что не создаётся AI_tank
+        } else if(name == "PlayerTank") { //отличие только в том, что не создаётся AI_tank
             map_objects[count_id] = new Tank(count_id, Point{x, y});
        } else if(name == "WaterBlock") {
             map_objects[count_id] = new Object(count_id, "WaterBlock", Point{x, y});
@@ -48,10 +48,10 @@ void ObjectScene::clearDead(){
         if(i.second->health <= 0){
             to_remove.push_back(i.first);                                           // Добавляем в очередь на удаление
 
-            if(i.second->serialise().type == "Tank" or i.second->serialise().type == "PlayerTank"){
+            /*if(i.second->serialise().type == "Tank" or i.second->serialise().type == "PlayerTank"){
                 Point point = i.second->get_point();
                 addObject(point.x, point.y, "Explosion");
-            }
+            }*/
                 //---циклические зависимости возникают, не получается убрать в объект---
         }
     }

@@ -14,7 +14,7 @@ using namespace std;
 int main() {
 
     ObjectScene scene;
-    fstream file("levels/1.txt");
+    fstream file("levels/p.txt");
     scene.loadMap(file);
     file.close();
     
@@ -59,23 +59,23 @@ int main() {
             }
 
 
-            if (event.type == sf::Event::KeyReleased){
+            else if (event.type == sf::Event::KeyReleased){
                 switch (event.key.code)
                 {
                 case sf::Keyboard::Up:  {
-                    controller.stop();
+                    controller.stop(UP);
                     break;
                 }
                 case sf::Keyboard::Down: {
-                    controller.stop();
+                    controller.stop(DOWN);
                     break;
                 }
                 case sf::Keyboard::Left: {
-                    controller.stop();
+                    controller.stop(LEFT);
                     break;
                 }
                 case sf::Keyboard::Right: {
-                    controller.stop();
+                    controller.stop(RIGHT);
                     break;
                 }
                 }
@@ -92,6 +92,7 @@ int main() {
         controller.manageTank(&scene);/* */
         ai_scene.setComands(&scene);
         ai_scene.synchronize(&scene);
+        ai_scene.manageAllAITanks(&scene);
         scene.handleTickAll();
         scene.clearDead();
         draw_scene.synchronize(&scene); 

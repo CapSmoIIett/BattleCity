@@ -52,8 +52,9 @@ class Controller {
             ride = 1;
         };
 
-        void stop(){
-            ride = 0;
+        void stop(int direction){
+            if (direct == direction)        // Что бы при изменнении направления танк не останавливался
+                ride = 0;
         }
 
        void shoot(ObjectScene *scene){
@@ -77,7 +78,7 @@ class Controller {
                 health--;
                 
                 std::cout << "Танк игрока был возрождён, осталось жизней: " << health << "\n";
-                this->tank_id = scene->addObject(start_x, start_y, "Tank");
+                this->tank_id = scene->addObject(start_x, start_y, "PlayerTank");
                 ride = 0; //пусть стоит на старте
             }
         }  

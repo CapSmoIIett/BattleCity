@@ -67,7 +67,8 @@ Object( id,
         heigth, 
         width, 
         speed), 
-Directable(dir){ 
+Directable(dir),
+recently_collided(false){ 
     std::cout << "конструктор танка\n"; 
 }
 
