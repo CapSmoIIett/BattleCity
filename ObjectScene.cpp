@@ -28,7 +28,7 @@ int ObjectScene::addObject(int x, int y, String name){
         } else if(name == "Tank") {
             map_objects[count_id] = new Tank(count_id, Point{x, y});
         } else if(name == "PlayerTank") { //отличие только в том, что не создаётся AI_tank
-            map_objects[count_id] = new Tank(count_id, Point{x, y});
+            map_objects[count_id] = new Tank(count_id, Point{x, y}, 0, "PlayerTank");
        } else if(name == "WaterBlock") {
             map_objects[count_id] = new Object(count_id, "WaterBlock", Point{x, y});
         }/* else if(name == "HeadquartersBlock") {
@@ -73,7 +73,7 @@ void ObjectScene::createBullet(int id){
     int dir = object->get_dir();
     //map_objects[count_id] = new Bullet(count_id, point, dir);
     sf::Time now = clock.getElapsedTime();
-    if(now - object->last_shoot > sf::seconds(1)){
+    if(now - object->last_shoot > sf::seconds(0.5)){
         switch (dir) {
             case DOWN:  map_objects[count_id] = new Bullet(count_id, {point.x + 14, point.y + 45}, dir);
                 break;

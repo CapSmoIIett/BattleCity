@@ -55,13 +55,14 @@ Rect<int> Object::now_rectangle(ObjectScene *scene)
 
 Tank::Tank( const int id,
             Point init_point, 
-            const int dir, 
+            const int dir,
+            sf::String name, 
             const int health, 
             const int heigth, 
             const int width, 
             int speed ): 
 Object( id, 
-        "Tank",
+        name,
         init_point, 
         health, 
         heigth, 

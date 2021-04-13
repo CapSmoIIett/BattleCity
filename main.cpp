@@ -14,11 +14,11 @@ using namespace std;
 int main() {
 
     ObjectScene scene;
-    fstream file("levels/p.txt");
+    fstream file("levels/1.txt");
     scene.loadMap(file);
     file.close();
     
-    AIScene ai_scene(&scene, 1);
+    AIScene ai_scene(&scene, 15);
 
     Time cycle_time = seconds(0.02);//0.02f);
     RenderWindow window(VideoMode(624, 624), "BattleCity");
@@ -26,7 +26,9 @@ int main() {
 
 
     Controller controller;
+    Controller controller2;
     controller.setStartXY(16 * 3 * 8, 24 * 3 * 8);
+    controller2.setStartXY(16 * 3 * 6, 24 * 3 * 8);
     draw_scene.synchronize(&scene);/**/
 
     Clock clock;
@@ -55,6 +57,23 @@ int main() {
                     controller.setRight();
                     break;
                 }
+                case sf::Keyboard::W: {
+                    controller2.setUp();
+                    break;
+                }
+                case sf::Keyboard::A: {
+                    controller2.setLeft();
+                    break;
+                }
+                case sf::Keyboard::S: {
+                    controller2.setDown();
+                    break;
+                }
+                case sf::Keyboard::D: {
+                    controller2.setRight();
+                    break;
+                }
+
                 }
             }
 
@@ -78,10 +97,28 @@ int main() {
                     controller.stop(RIGHT);
                     break;
                 }
+                case sf::Keyboard::W: {
+                    controller2.stop(UP);
+                    break;
+                }
+                case sf::Keyboard::A: {
+                    controller2.stop(RIGHT);
+                    break;
+                }
+                case sf::Keyboard::S: {
+                    controller2.stop(DOWN);
+                    break;
+                }
+                case sf::Keyboard::D: {
+                    controller2.stop(RIGHT);
+                    break;
+                }
                 }
             }
             if (Keyboard::isKeyPressed(Keyboard::Space)){ controller.shoot(&scene);    }
             
+            if (Keyboard::isKeyPressed(Keyboard::Tab)){ controller2.shoot(&scene);    }
+
             if (Keyboard::isKeyPressed(Keyboard::Q))    { window.close();       };
             if (event.type == Event::Closed)
                 window.close();
@@ -89,9 +126,12 @@ int main() {
                //scene.map_objects[5]->set
         }
         
+        //ai_scene.setComands(&scene);
         controller.manageTank(&scene);/* */
-        ai_scene.setComands(&scene);
+        controller2.manageTank(&scene);
+        
         ai_scene.synchronize(&scene);
+        ai_scene.setComands(&scene);
         ai_scene.manageAllAITanks(&scene);
         scene.handleTickAll();
         scene.clearDead();

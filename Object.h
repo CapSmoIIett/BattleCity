@@ -17,6 +17,7 @@
 #define LEFT 2
 #define RIGHT 3
 
+#define BLOCKSIZE 24
 
 using namespace sf;
 
@@ -128,7 +129,7 @@ class Tank: public Object, public Directable
 
     public:
         // Конструктор танка
-        Tank(const int id, Point init_point = {50, 50}, const int dir = 0, const int health = 1, const int heigth = 39, const int width = 39, int speed = 0);  // TODO Разобраться с порядком параметров
+        Tank(const int id, Point init_point = {50, 50}, const int dir = 0, sf::String name = "Tank", const int health = 1, const int heigth = 39, const int width = 39, int speed = 0);  // TODO Разобраться с порядком параметров
 
         // Деструктор танка
         ~Tank(){};
