@@ -152,6 +152,8 @@ class Tank: public Object, public Directable
     protected:
         // Функция перемещения танка
         void move(class ObjectScene *scene);
+
+        //friend void AIController::manageTank();
 };
 
 

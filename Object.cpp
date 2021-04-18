@@ -105,7 +105,7 @@ void Tank::handle_tick(ObjectScene *scene){
         bool is_intersect = i.second->now_rectangle(scene).intersects(future_rectangle) && i.first != id;
         if (is_intersect){
             this->recently_collided = true; //Это для AITank.нет урона при наезде танка
-           std::cout << "танк столкнулся c " << i.second->data.type << "\n";
+            std::cout << "танк столкнулся c " << i.second->data.type << "\n";
             return;
         }
     }
