@@ -21,66 +21,27 @@ class Controller {
         int start_x, start_y;
         bool ride;          
     public:
-        Controller():tank_id(-1), 
-                        health(10),
-                        direct(UP),
-                        start_x(0),
-                        start_y(0){ 
-            ride = 0;
-        };
-         ~Controller(){};
-
-        void setStartXY(int x, int y){
-            start_x = x;
-            start_y = y;
-        }
+        //
+        Controller();
+        //
+         ~Controller();
+        //
+        void setStartXY(int x, int y);
       
-        void setUp(){
-            direct = UP;
-            ride = 1;
-        };
-        void setDown(){
-            direct = DOWN;
-            ride = 1;
-        };
-        void setLeft(){
-            direct = LEFT;
-            ride = 1;
-        };
-        void setRight(){
-            direct = RIGHT;
-            ride = 1;
-        };
+        //
+        void setUp();
+        //
+        void setDown();
+        //
+        void setLeft();
+        //
+        void setRight();
 
-        void stop(int direction){
-            if (direct == direction)        // Что бы при изменнении направления танк не останавливался
-                ride = 0;
-        }
-
-       void shoot(ObjectScene *scene){
-            scene->createBullet(tank_id);
-        };
+        //
+        void stop(int direction);
+        //
+        void shoot(ObjectScene *scene);
 
         // функция, следящая за танком
-        virtual void manageTank(ObjectScene *scene)
-        {
-            if (scene->map_objects.find(tank_id) != scene->map_objects.end()){
-                    Tank *abstr_tank = dynamic_cast<Tank *>(scene->map_objects[tank_id]);
-                    
-                    if (ride) {
-                        abstr_tank->set_dir(direct);// теперь устанавливаем направление, такое, как нашей переменной.
-                        scene->map_objects[tank_id]->set_speed(3);
-                    } 
-                    else { scene->map_objects[tank_id]->set_speed(0); }//останавливаем танк
-            } 
-
-            else { //танк был убит!
-                health--;
-                
-                std::cout << "Танк игрока был возрождён, осталось жизней: " << health << "\n";
-                this->tank_id = scene->addObject(start_x, start_y, "PlayerTank");
-                ride = 0; //пусть стоит на старте
-            }
-        }  
-        
+        virtual void manageTank(ObjectScene *scene);
 };

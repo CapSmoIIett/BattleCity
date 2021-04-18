@@ -19,58 +19,55 @@ struct Command {
 
 class AIController
 {
+    private:
+        int tank_id;
+        int direction;
+        int start_x, start_y;
+        Command* command;
 
-private:
-    int tank_id;
-    int direction;
-    int start_x, start_y;
-    Command* command;
+    public:
+        AIController(int id, int x, int y);
 
-public:
-    AIController(int id, int x, int y);
+        ~AIController();
 
-    ~AIController();
+        void setStartXY(int x, int y);
 
-    void setStartXY(int x, int y);
+        void setUp();
+        void setDown();
+        void setLeft();
+        void setRight();
+        
+        void setCommand(Command com){
+            command = new Command(com);
+        };
 
-    void setUp();
-    void setDown();
-    void setLeft();
-    void setRight();
-    
-    void setCommand(Command com){
-        command = new Command(com);
-    };
+        void shoot(ObjectScene*);
 
-    void shoot(ObjectScene*);
-
-    // функция, следящая за танком
-    virtual void manageTank(ObjectScene *scene);
+        // функция, следящая за танком
+        virtual void manageTank(ObjectScene *scene);
 };
 
 class AIScene
 {
-private:
-    std::unordered_map<int, AIController *> map_ai_tanks;
-    std::vector<int> tanks;
-    //std::unordered_map<int, Controller*> map_ai_control;
-    //std::unordered_map<Point, AIPoint*> map_points;
-    std::vector<Point> spawners;
-    int player_tank;
-    sf::Clock clock;
-    sf::Time last_spawn;
-    int time_to_spawn;
-    int maxTanks;
+    private:
+        std::unordered_map<int, AIController *> map_ai_tanks;
+        std::vector<Point> spawners;
+        std::vector<int> player_tank;
+        sf::Clock clock;
+        sf::Time last_spawn;
+        int time_to_spawn;
+        int maxTanks;
 
-public:
-    AIScene(ObjectScene *scene, int max);
+    public:
+        //
+        AIScene(ObjectScene *scene, int max);
 
-    // ОБновлять состояние сцены (синхронизировать ее с ObjectScene)
-    void synchronize(ObjectScene *scene);
+        // ОБновлять состояние сцены (синхронизировать ее с ObjectScene)
+        void synchronize(ObjectScene *scene);
 
-    //
-    void setCommands(ObjectScene *scene);
+        //
+        void setCommands(ObjectScene *scene);
 
-    //
-    void manageAllAITanks(ObjectScene *scene);
+        //
+        void manageAllAITanks(ObjectScene *scene);
 };

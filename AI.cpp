@@ -86,28 +86,26 @@ AIScene::AIScene(ObjectScene *scene, int max) : maxTanks(max) {
 void AIScene::synchronize(ObjectScene *scene) {
     for (auto i : scene->map_objects){
         if (i.second->data.type == "PlayerTank")
-            player_tank = i.first;
+            player_tank.push_back(i.first);
     }
 
-    for (int i = 0; i < tanks.size(); i++) { // Если танк был уничтожен -
-        if (scene->map_objects.find(tanks[i]) ==
+    for (auto i : map_ai_tanks) { // Если танк был уничтожен -
+        if (scene->map_objects.find(i.first) ==
             scene->map_objects.end()) {
-            map_ai_tanks.erase(tanks[i]);
-            this->tanks.erase(tanks.begin() + i); // удаляем его из нашего списка
+            map_ai_tanks.erase(i.first);    // удаляем его из нашего списка
         }
     }
 
     if (clock.getElapsedTime() - last_spawn >= sf::seconds(time_to_spawn) &&
-            tanks.size() < maxTanks) {
+            map_ai_tanks.size() < maxTanks) {
         int spawn = rand() % (spawners.size()); // Выбираем случайный спавнер
         Point point = spawners[spawn];
 
         std::cout << "\n\n\n"
                   << spawn << " " << point.x << " " << point.y << "\n";
-        std::cout << "Spawn tank" << tanks.size() + 1 << "\n";
+        std::cout << "Spawn tank" << map_ai_tanks.size() + 1 << "\n";
 
         int id = scene->addObject(point.x, point.y, "Tank");
-        tanks.push_back(id);
         map_ai_tanks[id] = new AIController(id, point.x, point.y);
 
         // Устанавливаем новые значения для спавнов
@@ -117,29 +115,31 @@ void AIScene::synchronize(ObjectScene *scene) {
 }
 
 void AIScene::setCommands(ObjectScene *scene) {
-    if (scene->map_objects.find(player_tank) != scene->map_objects.end()) {
-        Point player_point = scene->map_objects[player_tank]->get_point();
-        for (int i : tanks) {
-            Object *object = scene->map_objects[i];
-            Tank *tank = dynamic_cast<Tank *>(object);
-            Point point = tank->get_point();
-            if (player_point.x - point.x < 5 &&
-                player_point.x - point.x > -5) {
-                if (player_point.y > point.y) { // если игрок ниже
-                    map_ai_tanks[object->id]->setCommand(Command(DOWN, 1));
+    for (int player : player_tank) {
+        if (scene->map_objects.find(player) != scene->map_objects.end()) {
+            Point player_point = scene->map_objects[player]->get_point();
+            for (auto i : map_ai_tanks) {
+                Object *object = scene->map_objects[i.first];
+                Tank *tank = dynamic_cast<Tank *>(object);
+                Point point = tank->get_point();
+                if (player_point.x - point.x < 5 &&
+                    player_point.x - point.x > -5) {
+                    if (player_point.y > point.y) { // если игрок ниже
+                        map_ai_tanks[object->id]->setCommand(Command(DOWN, 1));
+                    }
+                    else {
+                        map_ai_tanks[object->id]->setCommand(Command(UP, 1));
+                    }
                 }
-                else {
-                    map_ai_tanks[object->id]->setCommand(Command(UP, 1));
-                }
-            }
-            if (player_point.y - point.y < 5 &&
-                player_point.y - point.y > -5) {
-                if (player_point.x > point.x) { // если игрок правее
-                    map_ai_tanks[object->id]->setCommand(Command(RIGHT, 1));
-                }
-                else
-                {
-                    map_ai_tanks[object->id]->setCommand(Command(LEFT, 1));
+                if (player_point.y - point.y < 5 &&
+                    player_point.y - point.y > -5) {
+                    if (player_point.x > point.x) { // если игрок правее
+                        map_ai_tanks[object->id]->setCommand(Command(RIGHT, 1));
+                    }
+                    else
+                    {
+                        map_ai_tanks[object->id]->setCommand(Command(LEFT, 1));
+                    }
                 }
             }
         }
