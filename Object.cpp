@@ -140,7 +140,7 @@ void Bullet::move(ObjectScene *scene){
         Object * object = scene->map_objects[id];
         Bullet *bullet = dynamic_cast<Bullet *>(object);
         Point point = bullet->get_point();
-        std::cout << "Координаты PhisicalBullet " << point.x << ", " << point.y << "\n";
+        //std::cout << "Координаты PhisicalBullet " << point.x << ", " << point.y << "\n";
         int direct = bullet->get_dir();
         switch (direct){
             case UP:
@@ -157,7 +157,7 @@ void Bullet::move(ObjectScene *scene){
                 break;
         }
         bullet->set_point(point);
-        std::cout << "новые координаты PhisicalBullet " << point.x << ", " << point.y << "\n";
+        //std::cout << "новые координаты PhisicalBullet " << point.x << ", " << point.y << "\n";
 }
 
 void Bullet::handle_tick(ObjectScene *scene){

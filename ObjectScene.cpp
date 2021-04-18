@@ -68,7 +68,13 @@ Point ObjectScene::getPoint(int id){
 void ObjectScene::createBullet(int id){
     //напоминание: танк 15*3 на 15*3
     //пуля 4*3 на 4*3
-    Tank* object = dynamic_cast<Tank*>(map_objects[id]);
+    Tank* object;
+    try {
+        object = dynamic_cast<Tank*>(map_objects.at(id));     // .at - вызывает out_of_range если данный ключ не занят
+    }
+    catch (...) {
+        return;
+    }
     Point point = object->get_point();
     int dir = object->get_dir();
     //map_objects[count_id] = new Bullet(count_id, point, dir);
