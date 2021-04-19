@@ -1,5 +1,6 @@
 #include "AI.h"
 
+
 AIController::AIController(int id, int x, int y) : tank_id(id),
 direction(UP),
 start_x(0),
@@ -42,21 +43,24 @@ void AIController::manageTank(ObjectScene *scene) {
         Tank *tank = dynamic_cast<Tank *>(scene->map_objects[tank_id]);
         
         if (is_shoot) {
-            shoot(scene);             // если необходимо выстрелить - стреляем
+            shoot(scene);               // если необходимо выстрелить - стреляем
             is_shoot = 0;
         }
 
-        if (command != nullptr) {                                               // если есть команда на выполнение
-            tank->set_dir(command->direction);                                  // Устанавоиваем направление
+        if (command != nullptr) {                               // если есть команда на выполнение
+            tank->set_dir(command->direction);                  // Устанавоиваем направление
             Rect <int>future_rectangle = tank->get_future_rectangle(scene);
             bool is_intersect = tank->now_rectangle(scene).intersects(future_rectangle) && tank_id != tank->id;
-            if (is_intersect) {                                                 // Если из-зи этого будет столкновение возвращаем все параметры - команда не выполнена
+
+            // Если из-зи этого будет столкновение возвращаем все параметры - команда не выполнена
+            if (is_intersect) {         
                 tank->set_dir(direction);
             }
+            // Если поворот пройдет успешно
             else {
-                direction = command->direction;                     // мы полностью изменяем направление
+                direction = command->direction;                 // мы полностью изменяем направление
                 if (command->is_shoot)  is_shoot = 1;
-                command = nullptr;                              // убираем команду - она выполнена 
+                command = nullptr;                              // и убираем команду, т.к. она выполнена 
             };
         }
 
@@ -64,10 +68,11 @@ void AIController::manageTank(ObjectScene *scene) {
 
         if (tank->did_collided()) {
             command = nullptr;              // Столкновение обнуляет команду
+            is_shoot = 0;
             direction = rand() % 4;
             tank->set_dir(direction);
         }
-    }        //else { scene->map_objects[tank_id]->set_speed(0); }//оста
+    }   
 }
 
 
@@ -84,15 +89,14 @@ AIScene::AIScene(ObjectScene *scene, int max) : maxTanks(max) {
 
     // ОБновлять состояние сцены (синхронизировать ее с ObjectScene)
 void AIScene::synchronize(ObjectScene *scene) {
-    for (auto i : scene->map_objects){
+    for (auto i : scene->map_objects){                  // ОБновляем список игроков
         if (i.second->data.type == "PlayerTank")
             player_tank.push_back(i.first);
     }
 
-    for (auto i : map_ai_tanks) { // Если танк был уничтожен -
-        if (scene->map_objects.find(i.first) ==
-            scene->map_objects.end()) {
-            map_ai_tanks.erase(i.first);    // удаляем его из нашего списка
+    for (auto i : map_ai_tanks) {                       // Если танк был уничтожен -
+        if (scene->map_objects.find(i.first) == scene->map_objects.end()) {
+            map_ai_tanks.erase(i.first);                // удаляем его из нашего списка
         }
     }
 
@@ -115,30 +119,34 @@ void AIScene::synchronize(ObjectScene *scene) {
 }
 
 void AIScene::setCommands(ObjectScene *scene) {
-    for (int player : player_tank) {
+    for (int player : player_tank) {                        // Для каждого игрока
         if (scene->map_objects.find(player) != scene->map_objects.end()) {
             Point player_point = scene->map_objects[player]->get_point();
-            for (auto i : map_ai_tanks) {
+            for (auto i : map_ai_tanks) {                   // Проверяем каждый ИИ
                 Object *object = scene->map_objects[i.first];
                 Tank *tank = dynamic_cast<Tank *>(object);
                 Point point = tank->get_point();
-                if (player_point.x - point.x < 5 &&
-                    player_point.x - point.x > -5) {
-                    if (player_point.y > point.y) { // если игрок ниже
-                        map_ai_tanks[object->id]->setCommand(Command(DOWN, 1));
+                if (player_point.x - point.x < 5 &&         
+                    player_point.x - point.x > -5) {        // Если игрок и ИИ на одной вертикали 
+                    if (player_point.y > point.y) {         // если игрок ниже
+                        if (checkVisibility(scene, point, DOWN))
+                            map_ai_tanks[object->id]->setCommand(Command(DOWN, 1));
                     }
                     else {
-                        map_ai_tanks[object->id]->setCommand(Command(UP, 1));
+                        if (checkVisibility(scene, point, UP))
+                            map_ai_tanks[object->id]->setCommand(Command(UP, 1));
                     }
                 }
                 if (player_point.y - point.y < 5 &&
-                    player_point.y - point.y > -5) {
-                    if (player_point.x > point.x) { // если игрок правее
-                        map_ai_tanks[object->id]->setCommand(Command(RIGHT, 1));
+                    player_point.y - point.y > -5) {        // Если игрок и ИИ на одной горизонтали
+                    if (player_point.x > point.x) {         // если игрок правее
+                        if (checkVisibility(scene, point, RIGHT))
+                            map_ai_tanks[object->id]->setCommand(Command(RIGHT, 1));
                     }
                     else
                     {
-                        map_ai_tanks[object->id]->setCommand(Command(LEFT, 1));
+                        if (checkVisibility(scene, point, LEFT))
+                            map_ai_tanks[object->id]->setCommand(Command(LEFT, 1));
                     }
                 }
             }
@@ -150,4 +158,47 @@ void AIScene::manageAllAITanks(ObjectScene *scene) {
     for (auto i : map_ai_tanks) {
         i.second->manageTank(scene);
     }
+}
+
+bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
+    // Данный вариант не работает и слишком замедляет игру
+    /*int width;
+    int height;
+    switch (dir)            // Квадрат видимости должен быть идентичен траектории пули
+    {
+        case UP:    point.y -= 625;
+                    point.x += 4;         
+                    height   = 625;
+                    width    = 4;
+                    break;
+        case DOWN:  point.y += 39;
+                    point.x += 4;         
+                    height   = 625;
+                    width    = 4;
+                    break;
+        case LEFT:  point.y += 4;
+                    point.x -= 625;         
+                    height   = 4;
+                    width    = 625;
+                    break;
+        case RIGHT: point.y += 4;
+                    point.x += 39;         
+                    height   = 4;
+                    width    = 625;
+                    break;
+    }
+    sf::Rect <int>visibility = sf::Rect <int>(point.x, point.y, width, height);
+    for (auto i : scene->map_objects){
+        bool is_intersect = i.second->now_rectangle(scene).intersects(visibility);
+        if (is_intersect) {
+            if (i.second->data.type == String("PlayerTank")){           // если столкнулся не с игроком
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+    return false;*/
+    return true;
 }

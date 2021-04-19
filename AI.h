@@ -70,4 +70,8 @@ class AIScene
 
         //
         void manageAllAITanks(ObjectScene *scene);
-};
+
+    private:
+        // Проверяет видит ли ИИ игрока (непозволяет стрелять сквозь стены)
+        bool checkVisibility (ObjectScene *scene, Point point, int dir);
+}; 
