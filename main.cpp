@@ -117,7 +117,7 @@ int main() {
             }
             if (Keyboard::isKeyPressed(Keyboard::Space)){ controller.shoot(&scene);    }
             
-            if (Keyboard::isKeyPressed(Keyboard::Tab)){ controller2.shoot(&scene);    }
+            if (Keyboard::isKeyPressed(Keyboard::Tab))  { controller2.shoot(&scene);    }
 
             if (Keyboard::isKeyPressed(Keyboard::Q))    { window.close();       };
             if (event.type == Event::Closed)

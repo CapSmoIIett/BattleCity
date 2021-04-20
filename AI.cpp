@@ -162,43 +162,67 @@ void AIScene::manageAllAITanks(ObjectScene *scene) {
 
 bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
     // Данный вариант не работает и слишком замедляет игру
-    /*int width;
-    int height;
+    sf::String name_closer;
+    //Point point_closer = {-1, -1};
+    int difference = 625; 
+
+    // Ищем ближайший объект к танку(ИИ)
+    // если это игорок - то возвращаем true
     switch (dir)            // Квадрат видимости должен быть идентичен траектории пули
     {
-        case UP:    point.y -= 625;
-                    point.x += 4;         
-                    height   = 625;
-                    width    = 4;
-                    break;
-        case DOWN:  point.y += 39;
-                    point.x += 4;         
-                    height   = 625;
-                    width    = 4;
-                    break;
-        case LEFT:  point.y += 4;
-                    point.x -= 625;         
-                    height   = 4;
-                    width    = 625;
-                    break;
-        case RIGHT: point.y += 4;
-                    point.x += 39;         
-                    height   = 4;
-                    width    = 625;
-                    break;
-    }
-    sf::Rect <int>visibility = sf::Rect <int>(point.x, point.y, width, height);
-    for (auto i : scene->map_objects){
-        bool is_intersect = i.second->now_rectangle(scene).intersects(visibility);
-        if (is_intersect) {
-            if (i.second->data.type == String("PlayerTank")){           // если столкнулся не с игроком
-                return true;
+        case UP: {
+            for (auto i : scene->map_objects){
+                Point p = i.second->get_point();
+                if (i.second->data.type == "Tank") continue;
+                if (p.x - point.x < 13 &&         
+                    p.x - point.x > -13)
+                    if (difference > point.y - p.y){        // Если растояние (разница в точках) меньше 
+                        name_closer = i.second->data.type;  
+                        difference = point.y - p.y;         
+                    }
             }
-            else {
-                return false;
+            break;
+        }
+        case DOWN:  {
+            for (auto i : scene->map_objects){
+                Point p = i.second->get_point();
+                if (i.second->data.type == "Tank") continue;
+                if (p.x - point.x < 13 &&         
+                    p.x - point.x > -13)
+                    if (difference > p.y - point.y){        // Если растояние (разница в точках) меньше 
+                        name_closer = i.second->data.type;  
+                        difference = p.y - point.y;         
+                    }
             }
+            break;
+        }
+        case LEFT:  {
+            for (auto i : scene->map_objects){
+                Point p = i.second->get_point();
+                if (i.second->data.type == "Tank") continue;
+                if (p.y - point.y < 13 &&
+                    p.y - point.y > -13)
+                    if (difference > point.y - p.y){        // Если растояние (разница в точках) меньше 
+                        name_closer = i.second->data.type;  
+                        difference = point.y - p.y;         
+                    }
+            }
+            break;
+        }
+        case RIGHT: {
+            for (auto i : scene->map_objects){
+                Point p = i.second->get_point();
+                if (i.second->data.type == "Tank") continue;
+                if (p.y - point.y < 13 &&
+                    p.y - point.y > -13)
+                    if (difference > p.y - point.y){        // Если растояние (разница в точках) меньше 
+                        name_closer = i.second->data.type;  
+                        difference = p.y - point.y;         
+                    }
+            }
+            break;
         }
     }
-    return false;*/
-    return true;
+
+    return name_closer == "PlayerTank";
 }
