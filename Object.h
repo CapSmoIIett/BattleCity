@@ -168,11 +168,8 @@ class DistrBlock: public Object
 class Headquarters: public Object
 {
     public:
-        // Состояние - жив или нет
-        bool is_alive;
-
         // Конструктор штаба
-        Headquarters(const int id, Point point):Object(id, "Headquarters", point, 1), is_alive(true)
+        Headquarters(const int id, Point point):Object(id, "Headquarters", point, 3, SIZEBLOCK * 2, SIZEBLOCK * 2)
             { std::cout << "конструктор штаба\n"; }
 };
 

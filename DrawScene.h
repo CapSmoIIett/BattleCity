@@ -53,8 +53,8 @@ class DrawHeadquarters: public DrawObject
 
     public:
         // Конструктор рисуемого штаба
-        DrawHeadquarters(Sprite* living_headquarters_sprite, Sprite* dead_headquarters_sprite, const int id, String name, 
-        Point point);
+        DrawHeadquarters(Sprite* living_headquarters_sprite, Sprite* dead_headquarters_sprite, const int id, 
+        Point point = {0,0});
        
         // Деструктор рисуемого штаба
         ~DrawHeadquarters();

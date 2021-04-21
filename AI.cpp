@@ -119,7 +119,47 @@ void AIScene::synchronize(ObjectScene *scene) {
 }
 
 void AIScene::setCommands(ObjectScene *scene) {
-    for (int player : player_tank) {                        // Для каждого игрока
+    std::vector<Point> player_points;
+    for (int player : player_tank){
+        if (scene->map_objects.find(player) != scene->map_objects.end()) 
+            player_points.push_back(scene->map_objects[player]->get_point());
+    }
+
+    for (auto i : map_ai_tanks) {                   // Проверяем каждый ИИ
+        Object *object = scene->map_objects[i.first];
+        Tank *tank = dynamic_cast<Tank *>(object);
+        Point point = tank->get_point();
+        for (auto player_point : player_points) {
+            if (player_point.x - point.x < 5 &&         
+                player_point.x - point.x > -5) {        // Если игрок и ИИ на одной вертикали 
+                if (player_point.y > point.y) {         // если игрок ниже
+                    if (checkVisibility(scene, point, DOWN))
+                        map_ai_tanks[object->id]->setCommand(Command(DOWN, 1));
+                        break;
+                }
+                else {
+                    if (checkVisibility(scene, point, UP))
+                        map_ai_tanks[object->id]->setCommand(Command(UP, 1));
+                        break;
+                }
+            }
+            if (player_point.y - point.y < 5 &&
+                player_point.y - point.y > -5) {        // Если игрок и ИИ на одной горизонтали
+                if (player_point.x > point.x) {         // если игрок правее
+                    if (checkVisibility(scene, point, RIGHT))
+                        map_ai_tanks[object->id]->setCommand(Command(RIGHT, 1));
+                        break;
+                }
+                else
+                {
+                    if (checkVisibility(scene, point, LEFT))
+                        map_ai_tanks[object->id]->setCommand(Command(LEFT, 1));
+                        break;
+                }
+            }
+        }
+    }
+    /*for (int player : player_tank) {                        // Для каждого игрока
         if (scene->map_objects.find(player) != scene->map_objects.end()) {
             Point player_point = scene->map_objects[player]->get_point();
             for (auto i : map_ai_tanks) {                   // Проверяем каждый ИИ
@@ -151,7 +191,7 @@ void AIScene::setCommands(ObjectScene *scene) {
                 }
             }
         }
-    }
+    }*/
 }
 
 void AIScene::manageAllAITanks(ObjectScene *scene) {
