@@ -31,9 +31,9 @@ int ObjectScene::addObject(int x, int y, String name){
             map_objects[count_id] = new Tank(count_id, Point{x, y}, 0, "PlayerTank");
        } else if(name == "WaterBlock") {
             map_objects[count_id] = new Object(count_id, "WaterBlock", Point{x, y});
-        }/* else if(name == "HeadquartersBlock") {
+        } else if(name == "Headquarters") {
             map_objects[count_id] = new Headquarters(count_id, Point{x, y});
-        }*/ else if(name == "Spawner") {
+        } else if(name == "Spawner") {
             map_objects[count_id] = new Object(count_id, "Spawner", Point{x, y}, 1000, 0, 0);
         } else if(name == "Explosion") {
             map_objects[count_id] = new Object(count_id, "Explosion", Point{x, y}, 1000);
@@ -46,8 +46,11 @@ void ObjectScene::clearDead(){
     std::vector <int> to_remove;
     for(auto i: map_objects){
         if(i.second->health <= 0){
+            if(i.second->data.type == "Headquarters") continue;
             to_remove.push_back(i.first);                                           // Добавляем в очередь на удаление
-
+            /*
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+            */
             /*if(i.second->serialise().type == "Tank" or i.second->serialise().type == "PlayerTank"){
                 Point point = i.second->get_point();
                 addObject(point.x, point.y, "Explosion");
@@ -108,7 +111,7 @@ void ObjectScene::loadMap(std::fstream& file)
                 case '#': this->addObject(x, y, "DistrBlock");        break;
                 case '@': this->addObject(x, y, "UnDistrBlock");      break;
                 case '.': break;
-                case '!': this->addObject(x, y, "HeadquartersBlock"); break;    // База                          
+                case '!': this->addObject(x, y, "Headquarters"); break;    // База                          
                 case '~': this->addObject(x, y, "WaterBlock");        break;    // Вода                           
                 case 's': this->addObject(x, y, "Spawner");           break;    // Создатель танков                           
             }

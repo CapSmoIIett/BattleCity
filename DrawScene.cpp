@@ -36,9 +36,9 @@ void DrawBlock::draw(sf::RenderWindow &window, ObjectScene* scene){
 
 DrawHeadquarters::DrawHeadquarters( Sprite* living_headquarters_sprite, 
                                     Sprite* dead_headquarters_sprite, 
-                                    const int id, String name, 
+                                    const int id, 
                                     Point point):
-DrawObject(living_headquarters_sprite, id, name, point),
+DrawObject(living_headquarters_sprite, id, "Headquarters", point),
 living_headquarters_sprite(living_headquarters_sprite), 
 dead_headquarters_sprite(dead_headquarters_sprite){
     std::cout << "Конструктор штаба." << "\n";
@@ -52,11 +52,14 @@ void DrawHeadquarters::draw(RenderWindow &window, ObjectScene* scene){
     Point point = scene->getPoint(id);
     sprite->setPosition(point.x, point.y);
     Object*  object = scene->map_objects[id];
-    Headquarters* headquarters = dynamic_cast<Headquarters* >(object);
+    //Headquarters* headquarters = dynamic_cast<Headquarters* >(object);
             
-    bool is_alive = headquarters->is_alive; // Мы с самог начала думали об этом, когда разделили на сцены
-    if(is_alive){ sprite = living_headquarters_sprite; } 
-    else { sprite = dead_headquarters_sprite; }
+    
+    if(object->get_health() >= 0)
+        sprite = living_headquarters_sprite; 
+    else 
+        sprite = dead_headquarters_sprite;
+         
 
     window.draw(*sprite);
 }    
@@ -152,7 +155,7 @@ DrawScene::DrawScene(){
     setImage(indestructible_block_sprite, 256, 16, 8, 8);
     setImage(water_sprite, 256, 48, 8, 8);
 
-    // Штаб
+    // Штаб 
     setImage(iliving_headquarters_sprite, 304, 32, 16, 16);
     setImage(dead_headquarters_sprite, 320, 32, 16, 16);
 
@@ -198,7 +201,7 @@ void DrawScene::add_obj(const int id, const std::string& type){
          if (type == "DistrBlock")        { object_list[id] = new DrawBlock(&block_sprite, id); } 
     else if (type == "UnDistrBlock")      { object_list[id] = new DrawBlock(&indestructible_block_sprite, id); } 
     else if (type == "WaterBlock")        { object_list[id] = new DrawBlock(&water_sprite, id);} 
-    else if (type == "HeadquartersBlock") { object_list[id] = new DrawBlock(&iliving_headquarters_sprite, id);} 
+    else if (type == "Headquarters")      { object_list[id] = new DrawHeadquarters(&iliving_headquarters_sprite, &dead_headquarters_sprite, id);} 
     else if (type == "Tank")              { object_list[id] = new DrawTank (id, &tank_up_sprite2, &tank_down_sprite2, &tank_right_sprite2, &tank_left_sprite2); } 
     else if (type == "PlayerTank")         { object_list[id] = new DrawTank (id, &tank_up_sprite, &tank_down_sprite, &tank_right_sprite, &tank_left_sprite); } 
     else if (type == "Bullet")            { object_list[id] = new DrawBullet (id, &bullet_up_sprite, &bullet_down_sprite, &bullet_right_sprite, &bullet_left_sprite);}
@@ -211,6 +214,8 @@ void DrawScene::synchronize(ObjectScene *scene){
                 if (i.second->data.type == "Spawner") continue;         // Пропускаем спавнеры
                 add_obj(i.first/*id*/, i.second->data.type);            //если нет объекта в рисующей схеме
                                                                         //значит его надо создать
+                       // Пропускаем спавнеры
+                //add_obj(i.first/*id*/, i.second->data.type);  
             }
         }
         //сверяет изменения с абстрактной сценой и удаляет объекты

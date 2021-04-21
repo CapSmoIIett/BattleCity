@@ -70,7 +70,9 @@ class Object                                                                    
         Object(const int id, sf::String name, Point point, int health = 1, int heigth = SIZEBLOCK * PROPORTION, int width = SIZEBLOCK * PROPORTION, int speed = 0);  // TODO разобраться с параметрами по умолчанию
         
         // Деструктор объекту
-        ~Object(){};
+        ~Object(){
+            std::cout <<"Деструктор   " << data.type << "\n";
+        };
 
         // Сеттер расположения объекта
         void set_point(Point point);
@@ -158,6 +160,10 @@ class DistrBlock: public Object
         DistrBlock(const int id, Point point = {0,0}, const int health = 1):Object(id, "DistrBlock", point, health)
             { std::cout << "конструктор разрушимого блока\n"; }
 
+        ~DistrBlock(){
+            std::cout <<"Деструктор разрушимого блока\n";
+        };
+
         virtual void make_damage(class ObjectScene* scene) {
             //Object* object = scene->
             health--;
@@ -169,11 +175,14 @@ class Headquarters: public Object
 {
     public:
         // Состояние - жив или нет
-        bool is_alive;
 
         // Конструктор штаба
-        Headquarters(const int id, Point point):Object(id, "Headquarters", point, 1), is_alive(true)
+        Headquarters(const int id, Point point):Object(id, "Headquarters", point, 3, SIZEBLOCK * PROPORTION * 2, SIZEBLOCK * PROPORTION * 2)
             { std::cout << "конструктор штаба\n"; }
+
+        virtual void make_damage(class ObjectScene *scene) { 
+            health--; 
+        };
 };
 
 // Пуля

@@ -129,7 +129,7 @@ void AIScene::setCommands(ObjectScene *scene) {
                 if (player_point.x - point.x < 5 &&         
                     player_point.x - point.x > -5) {        // Если игрок и ИИ на одной вертикали 
                     if (player_point.y > point.y) {         // если игрок ниже
-                        if (checkVisibility(scene, point, DOWN))
+                        if (checkVisibility(scene, point, DOWN)) 
                             map_ai_tanks[object->id]->setCommand(Command(DOWN, 1));
                     }
                     else {
