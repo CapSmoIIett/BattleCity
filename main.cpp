@@ -28,7 +28,7 @@ int main() {
     Controller controller;
     Controller controller2;
     controller.setStartXY(16 * 3 * 8, 24 * 3 * 8);
-    controller2.setStartXY(16 * 3 * 6, 24 * 3 * 8);
+    controller2.setStartXY(16 * 3 * 4, 24 * 3 * 8);
     draw_scene.synchronize(&scene);/**/
 
     Clock clock;
