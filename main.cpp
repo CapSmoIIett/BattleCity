@@ -9,6 +9,11 @@
 #include "Controller.h"
 #include "AI.h"
 
+
+#ifndef win
+    #include <unistd.h>
+#endif
+
 using namespace std;
 
 int main() {
@@ -18,7 +23,7 @@ int main() {
     scene.loadMap(file);
     file.close();
     
-    AIScene ai_scene(&scene, 1);
+    AIScene ai_scene(&scene, 10);
 
     Time cycle_time = seconds(0.02);//0.02f);
     RenderWindow window(VideoMode(624, 624), "BattleCity");
@@ -35,6 +40,8 @@ int main() {
     Event event;
     while (window.isOpen()) 
     {
+        
+
         while (window.pollEvent(event)) 
         {
             /**/
@@ -73,7 +80,6 @@ int main() {
                     controller2.setRight();
                     break;
                 }
-
                 }
             }
 

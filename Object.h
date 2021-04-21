@@ -11,13 +11,7 @@
 #include <string>
 
 #include "ObjectScene.h"
-
-#define UP 0
-#define DOWN 1
-#define LEFT 2
-#define RIGHT 3
-
-#define BLOCKSIZE 24
+#include "Constants.h"
 
 using namespace sf;
 
@@ -73,7 +67,7 @@ class Object                                                                    
         int health;
 
         // Конструктор объекта          TODO сделать у всех одинковые размеры
-        Object(const int id, sf::String name, Point point, int health = 1, int heigth = 24, int width = 24, int speed = 0);  // TODO разобраться с параметрами по умолчанию
+        Object(const int id, sf::String name, Point point, int health = 1, int heigth = SIZEBLOCK * PROPORTION, int width = SIZEBLOCK * PROPORTION, int speed = 0);  // TODO разобраться с параметрами по умолчанию
         
         // Деструктор объекту
         ~Object(){};
@@ -129,7 +123,7 @@ class Tank: public Object, public Directable
 
     public:
         // Конструктор танка
-        Tank(const int id, Point init_point = {50, 50}, const int dir = 0, sf::String name = "Tank", const int health = 1, const int heigth = 39, const int width = 39, int speed = 0);  // TODO Разобраться с порядком параметров
+        Tank(const int id, Point init_point = {50, 50}, const int dir = 0, sf::String name = "Tank", const int health = 1, const int heigth = SIZETANK * PROPORTION, const int width = SIZETANK * PROPORTION, int speed = 0);  // TODO Разобраться с порядком параметров
 
         // Деструктор танка
         ~Tank(){};
