@@ -7,6 +7,6 @@ all:
 	g++ -g -c Controller.cpp
 	g++ -g -c AI.cpp
 	
-	g++ -g main.o Object.o ObjectScene.o DrawScene.o Controller.o AI.o -lsfml-graphics -lsfml-window -lsfml-system
+	g++ -g main.o Object.o ObjectScene.o DrawScene.o Controller.o AI.o -lsfml-graphics -lsfml-window -lsfml-system -pthread	
 	./a.out 
 	#clear
