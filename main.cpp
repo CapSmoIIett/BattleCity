@@ -145,7 +145,7 @@ int main() {
             //std::thread thManageTank2(&Controller::manageTank, controller2, &scene);  
         #else
             controller.manageTank(&scene);/* */
-            controller2.manageTank(&scene);
+            //controller2.manageTank(&scene);
         #endif
 
         #ifndef win
