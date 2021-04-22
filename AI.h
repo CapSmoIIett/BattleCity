@@ -57,6 +57,7 @@ class AIScene
         sf::Time last_spawn;
         int time_to_spawn;
         int maxTanks;
+        Point headquarters_point;
 
     public:
         //

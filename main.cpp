@@ -9,6 +9,12 @@
 #include "Controller.h"
 #include "AI.h"
 
+#define win
+#ifndef win
+    #include <unistd.h>
+    #include <thread>
+#endif
+
 using namespace std;
 
 int main() {
@@ -18,7 +24,7 @@ int main() {
     scene.loadMap(file);
     file.close();
     
-    AIScene ai_scene(&scene, 1);
+    AIScene ai_scene(&scene, 10);
 
     Time cycle_time = seconds(0.02);//0.02f);
     RenderWindow window(VideoMode(624, 624), "BattleCity");
@@ -33,8 +39,14 @@ int main() {
 
     Clock clock;
     Event event;
+
+
+
+
     while (window.isOpen()) 
     {
+
+
         while (window.pollEvent(event)) 
         {
             /**/
@@ -73,7 +85,6 @@ int main() {
                     controller2.setRight();
                     break;
                 }
-
                 }
             }
 
@@ -117,7 +128,7 @@ int main() {
             }
             if (Keyboard::isKeyPressed(Keyboard::Space)){ controller.shoot(&scene);    }
             
-            if (Keyboard::isKeyPressed(Keyboard::Tab)){ controller2.shoot(&scene);    }
+            if (Keyboard::isKeyPressed(Keyboard::Tab))  { controller2.shoot(&scene);    }
 
             if (Keyboard::isKeyPressed(Keyboard::Q))    { window.close();       };
             if (event.type == Event::Closed)
@@ -127,8 +138,20 @@ int main() {
         }
         
         //ai_scene.setComands(&scene);
-        controller.manageTank(&scene);/* */
-        controller2.manageTank(&scene);
+        // ManageTank только устанавливает направление и скорость
+        #ifndef win
+            std::thread thManageTank (&Controller::manageTank, controller, &scene); 
+            controller2.manageTank(&scene); 
+            //std::thread thManageTank2(&Controller::manageTank, controller2, &scene);  
+        #else
+            controller.manageTank(&scene);/* */
+            //controller2.manageTank(&scene);
+        #endif
+
+        #ifndef win
+            thManageTank.join();
+            //thManageTank2.join();
+        #endif
         
         ai_scene.synchronize(&scene);
         ai_scene.setCommands(&scene);

@@ -11,13 +11,7 @@
 #include <string>
 
 #include "ObjectScene.h"
-
-#define UP 0
-#define DOWN 1
-#define LEFT 2
-#define RIGHT 3
-
-#define BLOCKSIZE 24
+#include "Constants.h"
 
 using namespace sf;
 
@@ -73,10 +67,12 @@ class Object                                                                    
         int health;
 
         // Конструктор объекта          TODO сделать у всех одинковые размеры
-        Object(const int id, sf::String name, Point point, int health = 1, int heigth = 24, int width = 24, int speed = 0);  // TODO разобраться с параметрами по умолчанию
+        Object(const int id, sf::String name, Point point, int health = 1, int heigth = SIZEBLOCK * PROPORTION, int width = SIZEBLOCK * PROPORTION, int speed = 0);  // TODO разобраться с параметрами по умолчанию
         
         // Деструктор объекту
-        ~Object(){};
+        ~Object(){
+            std::cout <<"Деструктор   " << data.type << "\n";
+        };
 
         // Сеттер расположения объекта
         void set_point(Point point);
@@ -129,7 +125,7 @@ class Tank: public Object, public Directable
 
     public:
         // Конструктор танка
-        Tank(const int id, Point init_point = {50, 50}, const int dir = 0, sf::String name = "Tank", const int health = 1, const int heigth = 39, const int width = 39, int speed = 0);  // TODO Разобраться с порядком параметров
+        Tank(const int id, Point init_point = {50, 50}, const int dir = 0, sf::String name = "Tank", const int health = 1, const int heigth = SIZETANK * PROPORTION, const int width = SIZETANK * PROPORTION, int speed = 0);  // TODO Разобраться с порядком параметров
 
         // Деструктор танка
         ~Tank(){};
@@ -164,6 +160,10 @@ class DistrBlock: public Object
         DistrBlock(const int id, Point point = {0,0}, const int health = 1):Object(id, "DistrBlock", point, health)
             { std::cout << "конструктор разрушимого блока\n"; }
 
+        ~DistrBlock(){
+            std::cout <<"Деструктор разрушимого блока\n";
+        };
+
         virtual void make_damage(class ObjectScene* scene) {
             //Object* object = scene->
             health--;
@@ -175,11 +175,14 @@ class Headquarters: public Object
 {
     public:
         // Состояние - жив или нет
-        bool is_alive;
 
         // Конструктор штаба
-        Headquarters(const int id, Point point):Object(id, "Headquarters", point, 1), is_alive(true)
+        Headquarters(const int id, Point point):Object(id, "Headquarters", point, 3, SIZEBLOCK * PROPORTION * 2, SIZEBLOCK * PROPORTION * 2)
             { std::cout << "конструктор штаба\n"; }
+
+        virtual void make_damage(class ObjectScene *scene) { 
+            health--; 
+        };
 };
 
 // Пуля
