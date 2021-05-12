@@ -203,7 +203,7 @@ void DrawScene::add_obj(const int id, const std::string& type){
     else if (type == "WaterBlock")        { object_list[id] = new DrawBlock(&water_sprite, id);} 
     else if (type == "Headquarters")      { object_list[id] = new DrawHeadquarters(&iliving_headquarters_sprite, &dead_headquarters_sprite, id);} 
     else if (type == "Tank")              { object_list[id] = new DrawTank (id, &tank_up_sprite2, &tank_down_sprite2, &tank_right_sprite2, &tank_left_sprite2); } 
-    else if (type == "PlayerTank")         { object_list[id] = new DrawTank (id, &tank_up_sprite, &tank_down_sprite, &tank_right_sprite, &tank_left_sprite); } 
+    else if (type == "PlayerTank")        { object_list[id] = new DrawTank (id, &tank_up_sprite, &tank_down_sprite, &tank_right_sprite, &tank_left_sprite); } 
     else if (type == "Bullet")            { object_list[id] = new DrawBullet (id, &bullet_up_sprite, &bullet_down_sprite, &bullet_right_sprite, &bullet_left_sprite);}
 }
 
