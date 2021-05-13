@@ -7,7 +7,7 @@
 	menuTexture1.loadFromFile("images/111.png");   // 1 игрок
 	menuTexture2.loadFromFile("images/222.png");   // 2 игрока
 	menuTexture3.loadFromFile("images/333.png");   // выход
-	aboutTexture.loadFromFile("images/about.png"); // фон
+//	aboutTexture.loadFromFile("images/about.png"); // фон
 //	menuBackground.loadFromFile("images/Penguins.jpg");
 	Sprite menu1(menuTexture1), menu2(menuTexture2), menu3(menuTexture3), about(aboutTexture), menuBg(menuBackground);
 	bool isMenu = 1;
