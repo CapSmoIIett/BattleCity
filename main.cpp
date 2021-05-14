@@ -10,15 +10,16 @@
 #include "AI.h"
 
 #include "Client.h"
+#include "Server.h"
 
 
 using namespace std;
 
-#define client
+#define CLIENT
 
 int main() {
 
-#ifndef client
+#ifndef CLIENT
     // Server 
 
     ObjectScene scene;
@@ -42,7 +43,7 @@ int main() {
     Clock clock;
     Event event;
 
-
+    Server server;
 
 
     while (window.isOpen()) 
@@ -155,6 +156,8 @@ int main() {
         window.display();
         Time elapsed_time = clock.getElapsedTime() % cycle_time;
         //std::cout << "отрисовано за " << elapsed_time.asMilliseconds() << " миллисекунд\n";
+        server.synchronize(&scene);
+        server.Send();
         sleep(cycle_time - elapsed_time);
     }
 #else
@@ -171,6 +174,8 @@ int main() {
 
     Clock clock;
     Event event;
+
+    Client client;
 
 
     while (window.isOpen()) 
@@ -233,8 +238,11 @@ int main() {
         controller.manageTank(&scene);/* */
         //controller2.manageTank(&scene);
 
-        scene.handleTickAll();
-        scene.clearDead();
+        //scene.handleTickAll();
+        //scene.clearDead();
+        client.Get();
+        client.updateFromServer(&scene);
+
         draw_scene.synchronize(&scene); 
         window.clear();     // window.clear(sf::Color(34,15,6));
         draw_scene.draw(window, &scene);
