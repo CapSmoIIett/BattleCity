@@ -20,11 +20,6 @@ struct Point                                                                    
     int x, y;
 };
 
-struct Data   // TODO  Убрать
-{
-    std::string str, type;
-};
-
 // Класс объектов с напралением
 class Directable
 {
@@ -60,18 +55,18 @@ class Object                                                                    
 
     public:
         // Тип объекта
-        Data data;
+        int type;
         // Айди объекта
         const int id;
         // Здоровье объекта
         int health;
 
         // Конструктор объекта          TODO сделать у всех одинковые размеры
-        Object(const int id, sf::String name, Point point, int health = 1, int heigth = SIZEBLOCK * PROPORTION, int width = SIZEBLOCK * PROPORTION, int speed = 0);  // TODO разобраться с параметрами по умолчанию
+        Object(const int id, int type, Point point, int health = 1, int heigth = SIZEBLOCK * PROPORTION, int width = SIZEBLOCK * PROPORTION, int speed = 0);  // TODO разобраться с параметрами по умолчанию
         
         // Деструктор объекту
         ~Object(){
-            std::cout <<"Деструктор   " << data.type << "\n";
+            //std::cout <<"Деструктор   " << type << "\n";
         };
 
         // Сеттер расположения объекта
@@ -85,12 +80,6 @@ class Object                                                                    
         
         // Геттер здоровья
         int get_health();
-
-        // Геттер типа объекта
-        virtual Data serialise(){ return data;};
-
-        // Сеттер Типа объекта
-        virtual void apply(Data d){ this->data = d;};
 
         // Сеттер скорости
         void set_speed(int speed);
@@ -125,7 +114,7 @@ class Tank: public Object, public Directable
 
     public:
         // Конструктор танка
-        Tank(const int id, Point init_point = {50, 50}, const int dir = 0, sf::String name = "Tank", const int health = 1, const int heigth = SIZETANK * PROPORTION, const int width = SIZETANK * PROPORTION, int speed = 0);  // TODO Разобраться с порядком параметров
+        Tank(const int id, Point init_point = {50, 50}, const int dir = 0, int type = TANK, const int health = 1, const int heigth = SIZETANK * PROPORTION, const int width = SIZETANK * PROPORTION, int speed = 0);  // TODO Разобраться с порядком параметров
 
         // Деструктор танка
         ~Tank(){};
@@ -157,7 +146,7 @@ class Tank: public Object, public Directable
 class DistrBlock: public Object
 {
     public:
-        DistrBlock(const int id, Point point = {0,0}, const int health = 1):Object(id, "DistrBlock", point, health)
+        DistrBlock(const int id, Point point = {0,0}, const int health = 1):Object(id, DISTR_BLOCK, point, health)
             { std::cout << "конструктор разрушимого блока\n"; }
 
         ~DistrBlock(){
@@ -177,7 +166,7 @@ class Headquarters: public Object
         // Состояние - жив или нет
 
         // Конструктор штаба
-        Headquarters(const int id, Point point):Object(id, "Headquarters", point, 3, SIZEBLOCK * PROPORTION * 2, SIZEBLOCK * PROPORTION * 2)
+        Headquarters(const int id, Point point):Object(id, HEADQUARTERS, point, 3, SIZEBLOCK * PROPORTION * 2, SIZEBLOCK * PROPORTION * 2)
             { std::cout << "конструктор штаба\n"; }
 
         virtual void make_damage(class ObjectScene *scene) { 

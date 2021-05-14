@@ -1,11 +1,12 @@
 #include "ObjectScene.h"
+#include "Constants.h"
 
 ObjectScene::ObjectScene(){
     std::cout << "Конструктор абстрактной сцены." << "\n";
-    map_objects[1] = new Object(1, "UnDistrBlock", Point{0, -16}, 1000, 12, 625); // Верхняя граница карты
-    map_objects[2] = new Object(2, "UnDistrBlock", Point{0, 625}, 1000, 12, 625); // Нижняя граница карты
-    map_objects[3] = new Object(3, "UnDistrBlock", Point{-16, 0}, 1000, 625, 12); // Левая граница карты
-    map_objects[4] = new Object(4, "UnDistrBlock", Point{625, 0}, 1000, 625, 12); // Правая граница карты
+    map_objects[1] = new Object(1, UNDISTR_BLOCK, Point{0, -16}, 1000, 12, 625); // Верхняя граница карты
+    map_objects[2] = new Object(2, UNDISTR_BLOCK, Point{0, 625}, 1000, 12, 625); // Нижняя граница карты
+    map_objects[3] = new Object(3, UNDISTR_BLOCK, Point{-16, 0}, 1000, 625, 12); // Левая граница карты
+    map_objects[4] = new Object(4, UNDISTR_BLOCK, Point{625, 0}, 1000, 625, 12); // Правая граница карты
     count_id = 5;
 }
    
@@ -19,24 +20,24 @@ int ObjectScene::addObject(Object* object){
     return count_id - 1;
 }   
 
-int ObjectScene::addObject(int x, int y, String name){
-    //map_objects[count_id] = new Object(count_id, name, Point {x, y}, 1);
-    if(name == "DistrBlock") {
+int ObjectScene::addObject(int x, int y, int type){
+    //map_objects[count_id] = new Object(count_id, type, Point {x, y}, 1);
+    if(type == DISTR_BLOCK) {
             map_objects[count_id] = new DistrBlock(count_id, Point{x, y}, 1);
-        } else if(name == "UnDistrBlock") {
-            map_objects[count_id] = new Object(count_id, "UnDistrBlock", Point{x, y}, 100000);
-        } else if(name == "Tank") {
+        } else if(type == UNDISTR_BLOCK) {
+            map_objects[count_id] = new Object(count_id, UNDISTR_BLOCK, Point{x, y}, 100000);
+        } else if(type == TANK) {
             map_objects[count_id] = new Tank(count_id, Point{x, y});
-        } else if(name == "PlayerTank") { //отличие только в том, что не создаётся AI_tank
-            map_objects[count_id] = new Tank(count_id, Point{x, y}, 0, "PlayerTank");
-        } else if(name == "WaterBlock") {
-            map_objects[count_id] = new Object(count_id, "WaterBlock", Point{x, y});
-        } else if(name == "Headquarters") {
+        } else if(type == PLAYER_TANK) { //отличие только в том, что не создаётся AI_tank
+            map_objects[count_id] = new Tank(count_id, Point{x, y}, 0, PLAYER_TANK);
+        } else if(type == WATER_BLOCK){
+            map_objects[count_id] = new Object(count_id, WATER_BLOCK, Point{x, y});
+        } else if(type == HEADQUARTERS) {
             map_objects[count_id] = new Headquarters(count_id, Point{x, y});
-        } else if(name == "Spawner") {
-            map_objects[count_id] = new Object(count_id, "Spawner", Point{x, y}, 1000, 0, 0);
-        } else if(name == "Explosion") {
-            map_objects[count_id] = new Object(count_id, "Explosion", Point{x, y}, 1000);
+        } else if(type == SPAWNER) {
+            map_objects[count_id] = new Object(count_id, SPAWNER, Point{x, y}, 1000, 0, 0);
+        } else if(type == EXPLOSION) {
+            map_objects[count_id] = new Object(count_id, EXPLOSION, Point{x, y}, 1000);
         }
     count_id++;
     return count_id - 1; 
@@ -46,12 +47,12 @@ void ObjectScene::clearDead(){
     std::vector <int> to_remove;
     for(auto i: map_objects){
         if(i.second->health <= 0){
-            if(i.second->data.type == "Headquarters") continue;
+            if(i.second->type == HEADQUARTERS) continue;
             to_remove.push_back(i.first);                                           // Добавляем в очередь на удаление
             /*
             AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
             */
-            /*if(i.second->serialise().type == "Tank" or i.second->serialise().type == "PlayerTank"){
+            /*if(i.second->serialise().type == TANK or i.second->serialise().type == PLAYER_TANK){
                 Point point = i.second->get_point();
                 addObject(point.x, point.y, "Explosion");
             }*/
@@ -108,12 +109,12 @@ void ObjectScene::loadMap(std::fstream& file)
         for (auto& i : str){
             switch(i)
             {
-                case '#': this->addObject(x, y, "DistrBlock");        break;
-                case '@': this->addObject(x, y, "UnDistrBlock");      break;
+                case '#': this->addObject(x, y, DISTR_BLOCK);        break;
+                case '@': this->addObject(x, y, UNDISTR_BLOCK);      break;
                 case '.': break;
-                case '!': this->addObject(x, y, "Headquarters"); break;    // База                          
-                case '~': this->addObject(x, y, "WaterBlock");        break;    // Вода                           
-                case 's': this->addObject(x, y, "Spawner");           break;    // Создатель танков                           
+                case '!': this->addObject(x, y, HEADQUARTERS); break;    // База                          
+                case '~': this->addObject(x, y, WATER_BLOCK);        break;    // Вода                           
+                case 's': this->addObject(x, y, SPAWNER);           break;    // Создатель танков                           
             }
             x += 24; //3 * 8(px в блоке)
         }

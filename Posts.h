@@ -22,7 +22,7 @@ struct Post
 
         // Нас интересует только:
         // id, Имя, Местоположение, Здоровье
-        size = sizeof(int) + sizeof(object.data.type) +
+        size = sizeof(int) + sizeof(object.type) +
             sizeof(Point) + sizeof(int);
 
         answer = new unsigned char[size];

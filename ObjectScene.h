@@ -32,7 +32,7 @@ public:
     int addObject(class Object*);        
 
     // Функция, добавляющая объект в массив объектов
-    int addObject(int, int, sf::String);                                     
+    int addObject(int x, int y, int type);                                     
 
     // Функция, очищающая список объектов от убитых, с health <= 0
     void clearDead();                                     

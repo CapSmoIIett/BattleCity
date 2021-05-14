@@ -41,13 +41,13 @@ Server::~Server()
 void Server::synchronize(ObjectScene *scene)
 {
     for(auto i: scene->map_objects){                       
-        if (i.second->data.type == "Spawner") 
+        if (i.second->type == SPAWNER) 
             continue;         // Пропускаем спавнеры
 
         if (object_list.find(i.first) == object_list.end())
         {
-            object_list[i.first] = new Object (i.first, i.second->data.type, i.second->get_point(), i.second->get_health());
-            posts.push(Object (i.first, i.second->data.type, i.second->get_point(), i.second->get_health()));
+            object_list[i.first] = new Object (i.first, i.second->type, i.second->get_point(), i.second->get_health());
+            posts.push(Object (i.first, i.second->type, i.second->get_point(), i.second->get_health()));
              
         }
     }
@@ -101,7 +101,7 @@ void Server::Send()
 void* encrypt(Object obj , int& size)
 {
     unsigned char* answer = 0;
-    size = sizeof(int) + sizeof(obj.data.type) +
+    size = sizeof(int) + sizeof(obj.type) +
             sizeof(Point) + sizeof(int);
 
         answer = new unsigned char[size];

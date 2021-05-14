@@ -1,8 +1,8 @@
 #include "DrawScene.h"
 
 
-DrawObject::DrawObject( Sprite*  sprite, int id, String name, Point point):
-Object(id, name, point), sprite(sprite){
+DrawObject::DrawObject( Sprite*  sprite, int id, int type, Point point):
+Object(id, type, point), sprite(sprite){
     std::cout << "Конструктор объекта." << "\n";
 }
 
@@ -15,9 +15,9 @@ DrawObject::~DrawObject(){
 
 DrawBlock::DrawBlock(   Sprite*  sprite, 
                         const int id,
-                        String name, 
+                        int type, 
                         Point point) : 
-DrawObject(sprite, id, name, point){
+DrawObject(sprite, id, type, point){
     std::cout << "Конструктор блока." << "\n";
 }
 
@@ -38,7 +38,7 @@ DrawHeadquarters::DrawHeadquarters( Sprite* living_headquarters_sprite,
                                     Sprite* dead_headquarters_sprite, 
                                     const int id, 
                                     Point point):
-DrawObject(living_headquarters_sprite, id, "Headquarters", point),
+DrawObject(living_headquarters_sprite, id, HEADQUARTERS, point),
 living_headquarters_sprite(living_headquarters_sprite), 
 dead_headquarters_sprite(dead_headquarters_sprite){
     std::cout << "Конструктор штаба." << "\n";
@@ -73,7 +73,7 @@ DrawBullet::DrawBullet( const int id,
                         Sprite* right_sprite, 
                         Sprite* left_sprite, 
                         Point point): 
-DrawObject(up_sprite, id, "Bullet", point){
+DrawObject(up_sprite, id, BULLET, point){
     std::cout << "Конструктор пули." << "\n";
     this->up_sprite = up_sprite;
     this->down_sprite = down_sprite;
@@ -109,8 +109,9 @@ DrawTank::DrawTank( const int id,
                     Sprite* down_sprite, 
                     Sprite* right_sprite, 
                     Sprite* left_sprite, 
-                    String name, Point point): 
-DrawObject(up_sprite, id, name, point){
+                    int type, 
+                    Point point): 
+DrawObject(up_sprite, id, type, point){
     std::cout << "Конструктор танка." << "\n";
     this->up_sprite = up_sprite;
     this->down_sprite = down_sprite;
@@ -194,25 +195,25 @@ void DrawScene::setImage(Sprite &sprite, int a, int b, int c, int d){
     sprite.scale(3, 3); 
 }
        
-void DrawScene::add_obj(const int id, const std::string& type){
+void DrawScene::add_obj(const int id, int type){
     // собираем объекты в зависимости от их типа
     std::cout << id << "\n";
     std::cout << type << "\n";
-         if (type == "DistrBlock")        { object_list[id] = new DrawBlock(&block_sprite, id); } 
-    else if (type == "UnDistrBlock")      { object_list[id] = new DrawBlock(&indestructible_block_sprite, id); } 
-    else if (type == "WaterBlock")        { object_list[id] = new DrawBlock(&water_sprite, id);} 
-    else if (type == "Headquarters")      { object_list[id] = new DrawHeadquarters(&iliving_headquarters_sprite, &dead_headquarters_sprite, id);} 
-    else if (type == "Tank")              { object_list[id] = new DrawTank (id, &tank_up_sprite2, &tank_down_sprite2, &tank_right_sprite2, &tank_left_sprite2); } 
-    else if (type == "PlayerTank")        { object_list[id] = new DrawTank (id, &tank_up_sprite, &tank_down_sprite, &tank_right_sprite, &tank_left_sprite); } 
-    else if (type == "Bullet")            { object_list[id] = new DrawBullet (id, &bullet_up_sprite, &bullet_down_sprite, &bullet_right_sprite, &bullet_left_sprite);}
+         if (type == DISTR_BLOCK)        { object_list[id] = new DrawBlock(&block_sprite, id); } 
+    else if (type == UNDISTR_BLOCK)      { object_list[id] = new DrawBlock(&indestructible_block_sprite, id); } 
+    else if (type == WATER_BLOCK)        { object_list[id] = new DrawBlock(&water_sprite, id);} 
+    else if (type == HEADQUARTERS)       { object_list[id] = new DrawHeadquarters(&iliving_headquarters_sprite, &dead_headquarters_sprite, id);} 
+    else if (type == TANK)               { object_list[id] = new DrawTank (id, &tank_up_sprite2, &tank_down_sprite2, &tank_right_sprite2, &tank_left_sprite2); } 
+    else if (type == PLAYER_TANK)        { object_list[id] = new DrawTank (id, &tank_up_sprite, &tank_down_sprite, &tank_right_sprite, &tank_left_sprite); } 
+    else if (type == BULLET)             { object_list[id] = new DrawBullet (id, &bullet_up_sprite, &bullet_down_sprite, &bullet_right_sprite, &bullet_left_sprite);}
 }
 
 void DrawScene::synchronize(ObjectScene *scene){
 
         for(auto i: scene->map_objects){                       //забирает измемения из абстрактной сцены и создаёт объекты
             if(object_list.find(i.first/*id*/) == object_list.end()){
-                if (i.second->data.type == "Spawner") continue;         // Пропускаем спавнеры
-                add_obj(i.first/*id*/, i.second->data.type);            //если нет объекта в рисующей схеме
+                if (i.second->type == SPAWNER) continue;         // Пропускаем спавнеры
+                add_obj(i.first/*id*/, i.second->type);            //если нет объекта в рисующей схеме
                                                                         //значит его надо создать
                        // Пропускаем спавнеры
                 //add_obj(i.first/*id*/, i.second->data.type);  

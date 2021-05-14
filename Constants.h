@@ -13,3 +13,14 @@
 #define DELETE 1
 #define MOVE   2
 #define TURN   3
+
+#define OBJECT          0
+#define TANK            10
+#define PLAYER_TANK     11
+#define DISTR_BLOCK     20
+#define UNDISTR_BLOCK   21
+#define WATER_BLOCK     22
+#define HEADQUARTERS    3 
+#define SPAWNER         4
+#define BULLET          5
+#define EXPLOSION       6

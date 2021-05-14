@@ -61,7 +61,7 @@ void Controller::manageTank(ObjectScene *scene) {
         health--;
                 
         std::cout << "Танк игрока был возрождён, осталось жизней: " << health << "\n";
-        this->tank_id = scene->addObject(start_x, start_y, "PlayerTank");
+        this->tank_id = scene->addObject(start_x, start_y, PLAYER_TANK);
         ride = 0; //пусть стоит на старте
     }
 }  
