@@ -29,7 +29,7 @@ int ObjectScene::addObject(int x, int y, String name){
             map_objects[count_id] = new Tank(count_id, Point{x, y});
         } else if(name == "PlayerTank") { //отличие только в том, что не создаётся AI_tank
             map_objects[count_id] = new Tank(count_id, Point{x, y}, 0, "PlayerTank");
-       } else if(name == "WaterBlock") {
+        } else if(name == "WaterBlock") {
             map_objects[count_id] = new Object(count_id, "WaterBlock", Point{x, y});
         } else if(name == "Headquarters") {
             map_objects[count_id] = new Headquarters(count_id, Point{x, y});
