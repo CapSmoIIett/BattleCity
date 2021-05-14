@@ -47,7 +47,7 @@ void Server::synchronize(ObjectScene *scene)
         if (object_list.find(i.first) == object_list.end())
         {
             object_list[i.first] = new Object (i.first, i.second->type, i.second->get_point(), i.second->get_health());
-            posts.push(Object (i.first, i.second->type, i.second->get_point(), i.second->get_health()));
+            posts.push({Post(i.first, CREATE, Object (i.first, i.second->type, i.second->get_point(), i.second->get_health()))});
              
         }
     }
@@ -69,7 +69,6 @@ void Server::synchronize(ObjectScene *scene)
 void Server::Send()
 {
     char* buf;
-    int bytes_read;
     
     sock = accept(listener, NULL, NULL);
         if(sock < 0)
@@ -78,37 +77,27 @@ void Server::Send()
             exit(3);
         }
 
+        unsigned char* number = new unsigned char [sizeof(int)];
+
+        intToByte(posts.size(), number);
+
+        // отправляем количество изменений
+        send(sock, number, sizeof(int), 0);
+
         // Мы отправляем все изменения 
         while (!posts.empty())
         {
             while (*buf == 0)
             {
                 int size = 0;
-                void* post = NULL;//encrypt(posts.top());
+                Post post = posts.top();
 
                 // send* - отправляет сообщения в сокет
-                send(sock, post, size, 0);
+                send(sock, post.encrypt(), POST_SIZE, 0);
 
                 // recv* - получить сообщение из сокета
-                bytes_read = recv(sock, buf, 1, 0);
+                recv(sock, buf, 1, 0);
             }
             posts.pop();
-        }  
-            
-        
-}
-
-void* encrypt(Object obj , int& size)
-{
-    unsigned char* answer = 0;
-    size = sizeof(int) + sizeof(obj.type) +
-            sizeof(Point) + sizeof(int);
-
-        answer = new unsigned char[size];
-        
-        
-        
-    
-
-        return (void*) answer;
-}
+        }     
+    delete[] number;

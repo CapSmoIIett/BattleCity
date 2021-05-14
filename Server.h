@@ -1,3 +1,5 @@
+#pragma once 
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -23,9 +25,6 @@ public:
     // 
     void Send();  
 
-    //
-    void* encrypt(Object);
-
     // Обновляется и обновляет текущую объектную сцену
     void synchronize(ObjectScene *scene);
 
@@ -34,7 +33,7 @@ public:
 
 private:
     std::unordered_map <int, Object*> object_list;
-    std::stack<Object> posts;
+    std::stack<Post> posts;
     //std::vector<int> clients;
 
     int client;

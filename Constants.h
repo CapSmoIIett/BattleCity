@@ -20,7 +20,9 @@
 #define DISTR_BLOCK     20
 #define UNDISTR_BLOCK   21
 #define WATER_BLOCK     22
-#define HEADQUARTERS    3 
-#define SPAWNER         4
+#define HEADQUARTERS    31 
+#define SPAWNER         32
 #define BULLET          5
 #define EXPLOSION       6
+
+#define POST_SIZE       24
