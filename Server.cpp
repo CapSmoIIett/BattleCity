@@ -101,3 +101,4 @@ void Server::Send()
             posts.pop();
         }     
     delete[] number;
+}

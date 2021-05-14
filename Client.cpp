@@ -66,10 +66,11 @@ void Client::updateFromServer(ObjectScene *scene)
         switch (post.change)
         {
         case CREATE:
-
+        {
             Point p = obj.get_point();
             scene->addObject(p.x, p.y, obj.type);
             break;
+        }
         
         default:
             break;

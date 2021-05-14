@@ -15,7 +15,7 @@
 
 using namespace std;
 
-#define CLIENT
+//#define CLIENT
 
 int main() {
 
