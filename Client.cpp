@@ -1,5 +1,6 @@
 #include "Client.h"
 
-void Client::synchronize(ObjectScene *scene){
+void Client::synchronize(ObjectScene *scene)
+{
 
 }

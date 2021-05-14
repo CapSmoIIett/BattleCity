@@ -2,10 +2,8 @@
 
 Server::Server()
 {
-    int listener;
+    
     struct sockaddr_in addr;
-    char buf[1024];
-    int bytes_read;
 
     // SOCK_STREAM - Обеспечивает создание двусторонних надежных и 
     // последовательных потоков байтов , поддерживающих соединения
@@ -32,30 +30,85 @@ Server::Server()
     // listen - слушать соединения на сокете  
     listen(listener, 1);
     
-    while(1)
-    {
-        // accept - принять соединение на сокете
-        sock = accept(listener, NULL, NULL);
-        if(sock < 0)
-        {
-            perror("accept");
-            exit(3);
-        }
-
-        while(1)
-        {
-            // recv* - получить сообщение из сокета
-            bytes_read = recv(sock, buf, 1024, 0);
-            if(bytes_read <= 0) break;
-            // send* - отправляет сообщения в сокет  
-            send(sock, buf, bytes_read, 0);
-        }
-    }
-    
 }
 
 Server::~Server()
 {
     // Закрываем сокет
     close(sock);
+}
+
+void Server::synchronize(ObjectScene *scene)
+{
+    for(auto i: scene->map_objects){                       
+        if (i.second->data.type == "Spawner") 
+            continue;         // Пропускаем спавнеры
+
+        if (object_list.find(i.first) == object_list.end())
+        {
+            object_list[i.first] = new Object (i.first, i.second->data.type, i.second->get_point(), i.second->get_health());
+            posts.push(Object (i.first, i.second->data.type, i.second->get_point(), i.second->get_health()));
+             
+        }
+    }
+        //сверяет изменения с абстрактной сценой и удаляет объекты
+        std::vector<int> to_remove;
+        for(auto i: this->object_list) {
+            if (scene->map_objects.find(i.first) ==
+                scene->map_objects.end()) {
+                delete i.second;                        //если нет объекта в абстрактной сцене
+                                                        //значит его надо удалить и из нашей сцены
+                to_remove.push_back(i.first);
+            }
+        }
+        for (auto i : to_remove) {
+            object_list.erase(i);
+        }
+}
+
+void Server::Send()
+{
+    char* buf;
+    int bytes_read;
+    
+    sock = accept(listener, NULL, NULL);
+        if(sock < 0)
+        {
+            perror("accept");
+            exit(3);
+        }
+
+        // Мы отправляем все изменения 
+        while (!posts.empty())
+        {
+            while (*buf == 0)
+            {
+                int size = 0;
+                void* post = NULL;//encrypt(posts.top());
+
+                // send* - отправляет сообщения в сокет
+                send(sock, post, size, 0);
+
+                // recv* - получить сообщение из сокета
+                bytes_read = recv(sock, buf, 1, 0);
+            }
+            posts.pop();
+        }  
+            
+        
+}
+
+void* encrypt(Object obj , int& size)
+{
+    unsigned char* answer = 0;
+    size = sizeof(int) + sizeof(obj.data.type) +
+            sizeof(Point) + sizeof(int);
+
+        answer = new unsigned char[size];
+        
+        
+        
+    
+
+        return (void*) answer;
 }
