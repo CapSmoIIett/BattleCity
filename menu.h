@@ -3,6 +3,7 @@
  using namespace sf;
  
  void menu(RenderWindow & window) {
+	//int end = 0;
 	Texture bcTexture, menuTexture1, menuTexture2, menuTexture3, tankTexture;
 	bcTexture.loadFromFile("battle-city.png");  // battle city
 	menuTexture1.loadFromFile("Player1.png");   // 1 игрок
@@ -41,7 +42,8 @@
  
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
-			if (menuNum == 1 || menuNum == 2) isMenu = false;//если нажали первую кнопку, то выходим из меню 
+			if (menuNum == 1) {isMenu = false; /*end = 1;*/}//если нажали первую кнопку, то выходим из меню 
+			if (menuNum == 2) {isMenu = false;/* end = 2;*/}//если нажали первую кнопку, то выходим из меню 
 			if (menuNum == 3)  { window.close(); isMenu = false; }
  
 		}
@@ -55,4 +57,6 @@
 		
 		window.display();
 	}
+	//return end;
 }
+
