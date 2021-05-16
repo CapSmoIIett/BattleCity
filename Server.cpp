@@ -14,11 +14,13 @@ Server::Server()
         exit(1);
     }
     
+    //TODO искать свободный порт
     // hton* и ntoh* переводят данные из узлового порядка
     // расположения байтов в сетевой и наоборот
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(3425);
-    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_port = htons(8888);
+    //addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_addr.s_addr = INADDR_ANY;
 
     // bind - привязывает к сокету sockfd локальный адрес
     if(bind(listener, (struct sockaddr *)&addr, sizeof(addr)) < 0)
@@ -27,9 +29,13 @@ Server::Server()
         exit(2);
     }
 
-    // listen - слушать соединения на сокете  
-    listen(listener, 1);
-    
+    // listen - слушать соединения на сокете 
+    if (listen(listener, 1) < 0)
+    {
+        exit (2);
+    }
+ 
+    std::cout << "Connect" << "\n";
 }
 
 Server::~Server()
@@ -68,36 +74,52 @@ void Server::synchronize(ObjectScene *scene)
 
 void Server::Send()
 {
-    char* buf;
+    char buf;
     
-    sock = accept(listener, NULL, NULL);
-        if(sock < 0)
-        {
-            perror("accept");
-            exit(3);
-        }
+    int client;
+	struct sockaddr_in addr_client;
+
+    sock = accept(listener, (struct sockaddr *)&addr_client, (socklen_t*)&client);
+    if(sock < 0)
+    {
+        perror("accept");
+        exit(3);
+    }
+    
 
         unsigned char* number = new unsigned char [sizeof(int)];
 
         intToByte(posts.size(), number);
 
         // отправляем количество изменений
-        send(sock, number, sizeof(int), 0);
+        //send(sock, number, sizeof(int), 0);
+        write(sock , number, sizeof(int));
+
+        std::cout << "Размер отправил" << "\n";
+
+        recv(sock, &buf, sizeof(char), 0);
+
+        std::cout << "Ответ получил" << "\n";
 
         // Мы отправляем все изменения 
         while (!posts.empty())
         {
-            while (*buf == 0)
-            {
-                int size = 0;
+            buf = 0;
+            int size = 0;
                 Post post = posts.top();
 
                 // send* - отправляет сообщения в сокет
                 send(sock, post.encrypt(), POST_SIZE, 0);
 
+                std::cout << post.object.get_point().x 
+                    << post.object.get_point().x << "\n";
+                std::cout << "Post отправил" << "\n";
+
                 // recv* - получить сообщение из сокета
-                recv(sock, buf, 1, 0);
-            }
+                recv(sock, &buf, sizeof(char), 0);
+
+                std::cout << "Ответ получил" << "\n";
+            
             posts.pop();
         }     
     delete[] number;

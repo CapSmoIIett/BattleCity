@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <stack>
+#include <arpa/inet.h>
 
 #include "Object.h"
 #include "Posts.h"
@@ -24,7 +25,7 @@
 class Client
 {
 public:
-    Client();
+    Client(char *  ip = "127.0.0.1");
     ~Client();
 
     //

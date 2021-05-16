@@ -2,10 +2,14 @@
 
 void intToByte(int n, unsigned char* result) {
 
-     result[0] = n & 0x000000ff;
-     result[1] = n & 0x0000ff00 >> 8;
-     result[2] = n & 0x00ff0000 >> 16;
-     result[3] = n & 0xff000000 >> 24; 
+    result[0] = n % 256;
+    n /= 256;
+    result[1] = n % 256;
+    n /= 256;
+    result[2] = n % 256;
+    n /= 256;
+    result[3] = n % 256;
+    n /= 256;
 }
 
 int byteToInt(unsigned char* byte) {

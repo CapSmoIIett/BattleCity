@@ -44,8 +44,8 @@ struct Post
         intToByte(object.type, answer + 4);
         intToByte(object.get_point().x, answer + 8);
         intToByte(object.get_point().y, answer + 12);
-        intToByte(object.health, answer + 8);
-        intToByte(change, answer + 8);  
+        intToByte(object.health, answer + 16);
+        intToByte(change, answer + 20);  
 
         return answer;
     }
@@ -57,8 +57,8 @@ struct Post
         int type =  byteToInt(message + 4);
         int x = byteToInt(message + 8);
         int y = byteToInt(message + 12);
-        int health = byteToInt(message + 8);
-        int change = byteToInt(message + 8);  
+        int health = byteToInt(message + 16);
+        int change = byteToInt(message + 20);  
 
         return Post (id, change, Object(id, type, {x, y}, health));
     }

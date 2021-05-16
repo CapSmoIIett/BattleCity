@@ -235,7 +235,7 @@ int main() {
             //else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                //scene.map_objects[5]->set
         }
-        controller.manageTank(&scene);/* */
+        //controller.manageTank(&scene);/* */
         //controller2.manageTank(&scene);
 
         //scene.handleTickAll();
