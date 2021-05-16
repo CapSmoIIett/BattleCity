@@ -3,12 +3,13 @@
  using namespace sf;
  
  void menu(RenderWindow & window) {
-	Texture bcTexture, menuTexture1, menuTexture2, menuTexture3;
+	Texture bcTexture, menuTexture1, menuTexture2, menuTexture3, tankTexture;
 	bcTexture.loadFromFile("battle-city.png");  // battle city
 	menuTexture1.loadFromFile("Player1.png");   // 1 игрок
 	menuTexture2.loadFromFile("Player2.png");   // 2 игрока
 	menuTexture3.loadFromFile("EXIT.png");      // выход
-	Sprite bc(bcTexture), menu1(menuTexture1), menu2(menuTexture2), menu3(menuTexture3);
+	tankTexture.loadFromFile("tank.png");      		// 
+	Sprite bc(bcTexture), menu1(menuTexture1), menu2(menuTexture2), menu3(menuTexture3), tank1(tankTexture), tank2(tankTexture);
 	bool isMenu = 1;
 	int menuNum = 0;
 	bc.setPosition(100, 50);
@@ -19,6 +20,11 @@
 	menu2.scale(3, 3);
 	menu3.setPosition(200, 440);
 	menu3.scale(3, 3);
+	tank1.setPosition(100, 250);
+	tank1.scale(3, 3);
+	tank2.setPosition(500, 500);
+	tank2.scale(3, 3);
+	tank2.rotate(180);
  
 	//////////////////////////////МЕНЮ///////////////////
 	while (isMenu && (!Keyboard::isKeyPressed(Keyboard::Escape))) // оставлять esc?
@@ -40,6 +46,8 @@
  
 		}
 		
+		window.draw(tank1);
+		window.draw(tank2);
 		window.draw(bc);
 		window.draw(menu1);
 		window.draw(menu2);
