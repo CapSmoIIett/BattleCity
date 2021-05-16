@@ -2,14 +2,14 @@
 
 
 Object::Object( const int id, 
-                sf::String type,
+                int type,
                 Point point,   
                 int health, 
                 const int heigth, 
                 const int width, 
                 int speed ):
 id(id),
-data({type,type}),
+type(type),
 point(point), 
 health(health),
 heigth(heigth), 
@@ -56,7 +56,7 @@ Rect<int> Object::now_rectangle(ObjectScene *scene)
 Tank::Tank( const int id,
             Point init_point, 
             const int dir,
-            sf::String name, 
+            int name, 
             const int health, 
             const int heigth, 
             const int width, 
@@ -130,7 +130,7 @@ void Tank::move(ObjectScene *scene){
 /////////////////////////////////////////////////////////////////////////////////
 
 Bullet::Bullet(const int id, Point init_point, const int dir): 
-Object(id, "Bullet", init_point, 1, 4 *3, 4*3, 10), Directable(dir) { 
+Object(id, BULLET, init_point, 1, 4 *3, 4*3, 10), Directable(dir) { 
     std::cout << "конструктор пули\n"; 
 };
 
@@ -168,7 +168,7 @@ void Bullet::handle_tick(ObjectScene *scene){
                 // пуля нанесла урон в двух
                 i.second->make_damage(scene);
                 make_damage(scene);
-                std::cout << "Пуля " << i.first << "столкнулась с " << i.second->data.type << "\n";
+                std::cout << "Пуля " << i.first << "столкнулась с " << i.second->type << "\n";
                 //       ", здоровье = " << scene->map_objects[i.first]->get_health() << "\n";
                 return;
             }

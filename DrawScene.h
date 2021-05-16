@@ -19,7 +19,7 @@ class DrawObject: public Object
         Sprite*  sprite = nullptr; 
 
         // Конструктор Рисуемого объекта
-        DrawObject(Sprite*  sprite, int id, String name, Point point);
+        DrawObject(Sprite*  sprite, int id, int type, Point point);
 
         // Деструктор Рисуемого объекта
         ~DrawObject();
@@ -33,7 +33,7 @@ class DrawBlock: public DrawObject
 {
     public:
         // Конструктор рисуемого блока
-        DrawBlock(Sprite*  sprite, const int id, String name = " ", Point point = {0, 0});
+        DrawBlock(Sprite*  sprite, const int id, int name = DISTR_BLOCK, Point point = {0, 0});
 
         // Деструктор рисуемого блока
         ~DrawBlock();
@@ -101,7 +101,7 @@ class DrawTank: public DrawObject
 
     public:
         // Конструктор рисуемого танка
-        DrawTank( const int id, Sprite* up_sprite, Sprite* down_sprite, Sprite* right_sprite, Sprite* left_sprite, String name = " ", 
+        DrawTank( const int id, Sprite* up_sprite, Sprite* down_sprite, Sprite* right_sprite, Sprite* left_sprite, int name = TANK, 
         Point point = {0, 0});
 
         // Деструктор рисуемого танка
@@ -148,7 +148,7 @@ class DrawScene
         void setImage(Sprite &sprite, int a, int b, int c, int d);
 
         // Функция, добавляющая объект
-        void add_obj(const int id, const std::string& type);
+        void add_obj(const int id, int type);
 
         // Функция, синхронизирующая сцены
         void synchronize(ObjectScene* scene);

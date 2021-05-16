@@ -8,12 +8,7 @@
 #include "DrawScene.h"
 #include "Controller.h"
 #include "AI.h"
-
-#define win
-#ifndef win
-    #include <unistd.h>
-    #include <thread>
-#endif
+#include "menu.h"
 
 using namespace std;
 
@@ -40,7 +35,7 @@ int main() {
     Clock clock;
     Event event;
 
-
+    menu(window);
 
 
     while (window.isOpen()) 
@@ -137,22 +132,10 @@ int main() {
                //scene.map_objects[5]->set
         }
         
-        //ai_scene.setComands(&scene);
-        // ManageTank только устанавливает направление и скорость
-        #ifndef win
-            std::thread thManageTank (&Controller::manageTank, controller, &scene); 
-            controller2.manageTank(&scene); 
-            //std::thread thManageTank2(&Controller::manageTank, controller2, &scene);  
-        #else
-            controller.manageTank(&scene);/* */
-            //controller2.manageTank(&scene);
-        #endif
 
-        #ifndef win
-            thManageTank.join();
-            //thManageTank2.join();
-        #endif
-        
+        controller.manageTank(&scene);/* */
+        //controller2.manageTank(&scene);
+
         ai_scene.synchronize(&scene);
         ai_scene.setCommands(&scene);
         ai_scene.manageAllAITanks(&scene);

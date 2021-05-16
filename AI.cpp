@@ -80,9 +80,9 @@ void AIController::manageTank(ObjectScene *scene) {
 
 AIScene::AIScene(ObjectScene *scene, int max) : maxTanks(max) {
     for (auto i : scene->map_objects) { // Получаем точки спавнеров
-        if (i.second->data.type == "Spawner")
+        if (i.second->type == SPAWNER)
             spawners.push_back(i.second->get_point());
-        if (i.second->data.type == "Headquarters")
+        if (i.second->type == HEADQUARTERS)
             //player_tank.push_back(i.first);
             headquarters_point = i.second->get_point();
     }
@@ -93,7 +93,7 @@ AIScene::AIScene(ObjectScene *scene, int max) : maxTanks(max) {
     // ОБновлять состояние сцены (синхронизировать ее с ObjectScene)
 void AIScene::synchronize(ObjectScene *scene) {
     for (auto i : scene->map_objects){                  // ОБновляем список игроков
-        if (i.second->data.type == "PlayerTank")
+        if (i.second->type == PLAYER_TANK)
             player_tank.push_back(i.first);
     }
 
@@ -112,7 +112,7 @@ void AIScene::synchronize(ObjectScene *scene) {
                   << spawn << " " << point.x << " " << point.y << "\n";
         std::cout << "Spawn tank" << map_ai_tanks.size() + 1 << "\n";
 
-        int id = scene->addObject(point.x, point.y, "Tank");
+        int id = scene->addObject(point.x, point.y, TANK);
         map_ai_tanks[id] = new AIController(id, point.x, point.y);
 
         // Устанавливаем новые значения для спавнов
@@ -266,7 +266,7 @@ void AIScene::manageAllAITanks(ObjectScene *scene) {
 
 bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
     // Данный вариант не работает и слишком замедляет игру
-    sf::String name_closer;
+    int name_closer;
     //Point point_closer = {-1, -1};
     int difference = 625; 
 
@@ -277,11 +277,11 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
         case UP: {
             for (auto i : scene->map_objects){
                 Point p = i.second->get_point();
-                if (i.second->data.type == "Tank") continue;
+                if (i.second->type == TANK) continue;
                 if (p.x - point.x < 13 &&         
                     p.x - point.x > -13)
                     if (difference > point.y - p.y){        // Если растояние (разница в точках) меньше 
-                        name_closer = i.second->data.type;  
+                        name_closer = i.second->type;  
                         difference = point.y - p.y;         
                     }
             }
@@ -290,11 +290,11 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
         case DOWN:  {
             for (auto i : scene->map_objects){
                 Point p = i.second->get_point();
-                if (i.second->data.type == "Tank") continue;
+                if (i.second->type == TANK) continue;
                 if (p.x - point.x < 13 &&         
                     p.x - point.x > -13)
                     if (difference > p.y - point.y){        // Если растояние (разница в точках) меньше 
-                        name_closer = i.second->data.type;  
+                        name_closer = i.second->type;  
                         difference = p.y - point.y;         
                     }
             }
@@ -303,11 +303,11 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
         case LEFT:  {
             for (auto i : scene->map_objects){
                 Point p = i.second->get_point();
-                if (i.second->data.type == "Tank") continue;
+                if (i.second->type == TANK) continue;
                 if (p.y - point.y < 13 &&
                     p.y - point.y > -13)
                     if (difference > point.y - p.y){        // Если растояние (разница в точках) меньше 
-                        name_closer = i.second->data.type;  
+                        name_closer = i.second->type;  
                         difference = point.y - p.y;         
                     }
             }
@@ -316,11 +316,11 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
         case RIGHT: {
             for (auto i : scene->map_objects){
                 Point p = i.second->get_point();
-                if (i.second->data.type == "Tank") continue;
+                if (i.second->type == TANK) continue;
                 if (p.y - point.y < 13 &&
                     p.y - point.y > -13)
                     if (difference > p.y - point.y){        // Если растояние (разница в точках) меньше 
-                        name_closer = i.second->data.type;  
+                        name_closer = i.second->type;  
                         difference = p.y - point.y;         
                     }
             }
@@ -328,5 +328,5 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
         }
     }
 
-    return name_closer == "PlayerTank";
+    return name_closer == PLAYER_TANK;
 }
