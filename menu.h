@@ -2,14 +2,14 @@
 #include <SFML/Graphics.hpp>
  using namespace sf;
  
- void menu(RenderWindow & window) {
-	//int end = 0;
+ int menu(RenderWindow & window) {
+	int end = 0;
 	Texture bcTexture, menuTexture1, menuTexture2, menuTexture3, tankTexture;
 	bcTexture.loadFromFile("battle-city.png");  // battle city
 	menuTexture1.loadFromFile("Player1.png");   // 1 игрок
 	menuTexture2.loadFromFile("Player2.png");   // 2 игрока
 	menuTexture3.loadFromFile("EXIT.png");      // выход
-	tankTexture.loadFromFile("tank.png");      		// 
+	tankTexture.loadFromFile("tank.png");      	// танк
 	Sprite bc(bcTexture), menu1(menuTexture1), menu2(menuTexture2), menu3(menuTexture3), tank1(tankTexture), tank2(tankTexture);
 	bool isMenu = 1;
 	int menuNum = 0;
@@ -28,7 +28,7 @@
 	tank2.rotate(180);
  
 	//////////////////////////////МЕНЮ///////////////////
-	while (isMenu && (!Keyboard::isKeyPressed(Keyboard::Escape))) // оставлять esc?
+	while (isMenu)
 	{
 		menu1.setColor(Color::White);
 		menu2.setColor(Color::White);
@@ -42,9 +42,9 @@
  
 		if (Mouse::isButtonPressed(Mouse::Left))
 		{
-			if (menuNum == 1) {isMenu = false; /*end = 1;*/}//если нажали первую кнопку, то выходим из меню 
-			if (menuNum == 2) {isMenu = false;/* end = 2;*/}//если нажали первую кнопку, то выходим из меню 
-			if (menuNum == 3)  { window.close(); isMenu = false; }
+			if (menuNum == 1) { isMenu = false; end = 1;/**/}//если нажали первую кнопку, то выходим из меню 
+			if (menuNum == 2) { isMenu = false; end = 2;/**/}//если нажали первую кнопку, то выходим из меню 
+			if (menuNum == 3) { window.close(); isMenu = false; }
  
 		}
 		
@@ -57,6 +57,6 @@
 		
 		window.display();
 	}
-	//return end;
+	return end;
 }
 
