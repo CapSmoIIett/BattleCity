@@ -59,9 +59,9 @@ void endGame(RenderWindow & window)
 	int menuNum = 0;
 	bc.setPosition(100, 50);
 	bc.scale(0.3, 0.3);
-    menu3.setPosition(250, 440);
+    menu3.setPosition(260, 440);
 	menu3.scale(3, 3);
-    end.setPosition(200, 250);
+    end.setPosition(210, 250);
 	end.scale(0.3, 0.3);
     tank1.setPosition(100, 250);
 	tank1.scale(3, 3);
@@ -103,19 +103,15 @@ void DrawHeadquarters::draw(RenderWindow &window, ObjectScene* scene){
     if(object->get_health() > 0)
        { sprite = living_headquarters_sprite; window.draw(*sprite);}
     else 
-       {    /*sprite = dead_headquarters_sprite;
+       {    
+            sprite = dead_headquarters_sprite;
             sprite->setPosition(point.x, point.y);
+            //window.clear();
             window.draw(*sprite);
-            
-            
-
             window.display();
-            Time t1 = seconds(3);
-            sleep(t1);*/
+            Time t1 = seconds(2);
+            sleep(t1);
             endGame(window);
-            /*//window.clear(Color(0, 0, 0));
-            //window.display();
-            window.close();*/
        } 
 }    
 
