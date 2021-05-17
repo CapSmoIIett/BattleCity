@@ -1,6 +1,5 @@
 #include "DrawScene.h"
 
-
 DrawObject::DrawObject( Sprite*  sprite, int id, int type, Point point):
 Object(id, type, point), sprite(sprite){
     std::cout << "Конструктор объекта." << "\n";
@@ -47,7 +46,53 @@ dead_headquarters_sprite(dead_headquarters_sprite){
 DrawHeadquarters::~DrawHeadquarters(){
     std::cout << "Деструктор штаба." << "\n";
 }
-        
+
+void endGame(RenderWindow & window)
+{
+    Texture bcTexture, menuTexture3, endTexture, tankTexture;
+	bcTexture.loadFromFile("battle-city.png");  // battle city
+	menuTexture3.loadFromFile("EXIT.png");      // выход
+    endTexture.loadFromFile("end.png");         // 
+    tankTexture.loadFromFile("tank.png");      	// танк
+	Sprite bc(bcTexture), menu3(menuTexture3), end(endTexture), tank1(tankTexture), tank2(tankTexture);
+	bool isMenu = 1;
+	int menuNum = 0;
+	bc.setPosition(100, 50);
+	bc.scale(0.3, 0.3);
+    menu3.setPosition(250, 440);
+	menu3.scale(3, 3);
+    end.setPosition(200, 250);
+	end.scale(0.3, 0.3);
+    tank1.setPosition(100, 250);
+	tank1.scale(3, 3);
+	tank2.setPosition(500, 500);
+	tank2.scale(3, 3);
+	tank2.rotate(180);
+ 
+	/////////////////////////////////////////////////
+	while (isMenu)
+	{
+		menu3.setColor(Color::White);
+		menuNum = 0;
+		window.clear(Color(0, 0, 0)); // 129, 181, 221
+ 
+		if (IntRect(200, 440, 300, 50).contains(Mouse::getPosition(window))) { menu3.setColor(Color::Red); menuNum = 3; }
+ 
+		if (Mouse::isButtonPressed(Mouse::Left))
+		{
+			if (menuNum == 3) { window.close(); isMenu = false; } 
+		}
+	
+        window.draw(tank1);
+		window.draw(tank2);
+		window.draw(bc);
+        window.draw(end);
+		window.draw(menu3);
+		
+		window.display();
+	}
+} 
+
 void DrawHeadquarters::draw(RenderWindow &window, ObjectScene* scene){
     Point point = scene->getPoint(id);
     sprite->setPosition(point.x, point.y);
@@ -55,17 +100,24 @@ void DrawHeadquarters::draw(RenderWindow &window, ObjectScene* scene){
     //Headquarters* headquarters = dynamic_cast<Headquarters* >(object);
             
     
-    if(object->get_health() >= 0)
-        sprite = living_headquarters_sprite; 
+    if(object->get_health() > 0)
+       { sprite = living_headquarters_sprite; window.draw(*sprite);}
     else 
-        sprite = dead_headquarters_sprite;
-         
+       {    /*sprite = dead_headquarters_sprite;
+            sprite->setPosition(point.x, point.y);
+            window.draw(*sprite);
+            
+            
 
-    window.draw(*sprite);
+            window.display();
+            Time t1 = seconds(3);
+            sleep(t1);*/
+            endGame(window);
+            /*//window.clear(Color(0, 0, 0));
+            //window.display();
+            window.close();*/
+       } 
 }    
-
-
-
 
 DrawBullet::DrawBullet( const int id, 
                         Sprite* up_sprite, 
@@ -89,6 +141,7 @@ void DrawBullet::draw(RenderWindow &window, ObjectScene* scene){
 
     Object*  object = scene->map_objects[id];
     Bullet* abstr_bullet = dynamic_cast<Bullet* >(object);
+    
     int direction = abstr_bullet->get_dir();                            //получаем направление
     switch(direction)
     {
