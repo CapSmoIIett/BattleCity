@@ -27,7 +27,7 @@ int main() {
     scene.loadMap(file);
     file.close();
     
-    AIScene ai_scene(&scene, 10);
+    AIScene ai_scene(&scene, 3);
 
     Time cycle_time = seconds(0.02);//0.02f);
     RenderWindow window(VideoMode(624, 624), "BattleCity");
@@ -142,7 +142,7 @@ int main() {
         
 
         controller.manageTank(&scene);/* */
-        //controller2.manageTank(&scene);
+        controller2.manageTank(&scene);
 
         ai_scene.synchronize(&scene);
         ai_scene.setCommands(&scene);

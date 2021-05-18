@@ -13,3 +13,10 @@ all:
 	g++ -g *.o -lsfml-graphics -lsfml-window -lsfml-system -pthread	
 	./a.out 
 	#clear
+	
+Nast:
+	hpp2plantuml  -i ObjectScene.h -i Constants.h -i Controller.h -i DrawScene.h -o anastasiia.puml 
+	
+		#-i Object.h
+Mat:
+	hpp2plantuml  -i AI.h -i Client.h -i Constants.h -i Post.h -i Server.h -o matvey.puml 

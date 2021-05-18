@@ -18,6 +18,10 @@ using namespace sf;
 struct Point                                                                             //точка, возвращаемая абстрактным классом для отрисовки текстуры
 { 
     int x, y;
+
+    Point& operator= (const Point& point);
+    friend bool operator== (const Point& left, const Point& right);
+    friend bool operator!= (const Point& left, const Point& right);
 };
 
 // Класс объектов с напралением

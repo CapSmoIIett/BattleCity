@@ -14,8 +14,6 @@ struct Post
     // Нас интересует только:
     // id, Имя, Местоположение, Здоровь, change
     // size = sizeof(int) + sizeof(object.type) +
-    //     sizeof(Point) + sizeof(int) + sizeof(int);
-    static const int size = 24;
 
     Object object;
     
@@ -38,7 +36,7 @@ struct Post
 
     unsigned char* encrypt()
     {
-        unsigned char* answer = new unsigned char[size];
+        unsigned char* answer = new unsigned char[POST_SIZE];
         
         intToByte(object.id, answer);
         intToByte(object.type, answer + 4);

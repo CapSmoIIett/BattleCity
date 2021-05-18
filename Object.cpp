@@ -1,5 +1,26 @@
 #include "Object.h"
 
+Point& Point::operator= (const Point& point)
+{
+    if (this == &point)
+    {
+        return *this;
+    }
+
+    x = point.x;
+    y = point.y;
+
+    return *this;
+}
+
+bool operator==(const Point& left, const Point& right)
+{
+    return (left.x == right.x) && (left.y == right.y);
+}
+bool operator!=(const Point& left, const Point& right)
+{
+    return (left.x != right.x) || (left.y != right.y);
+}
 
 Object::Object( const int id, 
                 int type,

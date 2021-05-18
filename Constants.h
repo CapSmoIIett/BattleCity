@@ -25,4 +25,4 @@
 #define BULLET          5
 #define EXPLOSION       6
 
-#define POST_SIZE       24
+#define POST_SIZE       48

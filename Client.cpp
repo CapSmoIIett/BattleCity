@@ -92,10 +92,28 @@ void Client::updateFromServer(ObjectScene *scene)
         case CREATE:
         {
             Point p = obj.get_point();
-            scene->addObject(p.x, p.y, obj.type);
+            scene->addObject(post.id, obj);
             break;
         }
-        
+        case DELETE:
+        {
+            auto it = scene->map_objects.find(post.id);
+            if (it == scene->map_objects.end()) break;
+            scene->map_objects.erase(it);   
+            break;
+        }
+        case MOVE:
+        {
+            auto it = scene->map_objects.find(post.id);
+            if (it == scene->map_objects.end()) break;
+            (*it).second->set_point(obj.get_point());
+            break;
+        }
+        case TURN:
+        {
+
+            break;
+        }
         default:
             break;
         }
