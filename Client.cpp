@@ -59,10 +59,10 @@ void Client::Get()
 
     while (size)
     {
-        unsigned char message[POST_SIZE];
+        unsigned char message[POST_SC_SIZE];
         
         // принимаем пост
-        recv(sock, message, POST_SIZE, 0);
+        recv(sock, message, POST_SC_SIZE, 0);
 
         std::cout << "Post " << size << " получил" << "\n";
 
@@ -72,7 +72,7 @@ void Client::Get()
 
         std::cout << "Ответ отправил" << "\n";
 
-        Post post(message);
+        PostSC post(message);
         posts.push(post);
         //recv(sock, buf, sizeof(message), 0);
         size--;
@@ -83,7 +83,7 @@ void Client::updateFromServer(ObjectScene *scene)
 {
     while (!posts.empty())
     {
-        Post post = posts.top();
+        PostSC post = posts.top();
         posts.pop();
 
         switch (post.change)

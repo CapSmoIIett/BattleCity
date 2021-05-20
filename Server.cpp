@@ -66,7 +66,7 @@ void Server::synchronize(ObjectScene *scene)
         if (obj == object_list.end())
         {
             addObject(i.first, *i.second);
-            posts.push(Post(i.first, CREATE, Object (i.first, i.second->type, i.second->get_point(), i.second->get_health())));
+            posts.push(PostSC(i.first, CREATE, Object (i.first, i.second->type, i.second->get_point(), i.second->get_health())));
             continue; 
         }
 
@@ -84,7 +84,8 @@ void Server::synchronize(ObjectScene *scene)
             
             if (dir_obj != dir_obj_s)
             {
-                posts.push(Post(i.first, TURN, Object(i.first, i.second->type, i.second->get_point()), dir_obj_s));
+                ((*obj).second)->set_direction(dir_obj_s);
+                posts.push(PostSC(i.first, TURN, Object(i.first, i.second->type, i.second->get_point()), dir_obj_s));
                 //continue;
             }
         }
@@ -93,11 +94,11 @@ void Server::synchronize(ObjectScene *scene)
         if  (i.second->get_point() != (*obj).second->get_point())
         {
             (*obj).second->set_point(i.second->get_point());
-            posts.push(Post(i.first, MOVE, Object (i.first, i.second->type, i.second->get_point())));
+            posts.push(PostSC(i.first, MOVE, Object (i.first, i.second->type, i.second->get_point())));
             continue;
         }
         
-        // ДЛя изменения направлдения необходимо переписать Post с объединением
+        // ДЛя изменения направлдения необходимо переписать PostSC с объединением
         //if (i.second->dir != (*obj).second->get_point())
     }
     
@@ -109,7 +110,7 @@ void Server::synchronize(ObjectScene *scene)
             delete i.second;                        //если нет объекта в абстрактной сцене
                                                     //значит его надо удалить и из нашей сцены
             to_remove.push_back(i.first);
-            posts.push(Post(i.first, DELETE, Object (i.first, i.second->type, i.second->get_point())));
+            posts.push(PostSC(i.first, DELETE, Object (i.first, i.second->type, i.second->get_point())));
         }
     }
     for (auto i : to_remove) {
@@ -140,10 +141,10 @@ void Server::Send()
         {
             buf = 0;
             int size = 0;
-                Post post = posts.top();
+                PostSC post = posts.top();
 
                 // send* - отправляет сообщения в сокет
-                send(sock, post.encrypt(), POST_SIZE, 0);
+                send(sock, post.encrypt(), POST_SC_SIZE, 0);
 
                 /*
                 std::cout << post.object.get_point().x 

@@ -6,7 +6,7 @@
 void intToByte(int n, unsigned char* result);
 int byteToInt(unsigned char* byte);
 
-struct Post
+struct PostSC
 {
     int id;
     int change;
@@ -30,7 +30,7 @@ struct Post
         direction = dir;
     }
     
-    Post(int id, int change, Object obj, int dir = 0) :
+    PostSC(int id, int change, Object obj, int dir = 0) :
     id(id),
     change(change),
     type(obj.type),
@@ -40,7 +40,7 @@ struct Post
         
     }
 
-    Post(unsigned char* message) :
+    PostSC(unsigned char* message) :
     id(byteToInt(message)),
     change(byteToInt(message + 16)),
     type(byteToInt(message + 4)),
@@ -53,7 +53,7 @@ struct Post
 
     unsigned char* encrypt()
     {
-        unsigned char* answer = new unsigned char[POST_SIZE];
+        unsigned char* answer = new unsigned char[POST_SC_SIZE];
         
         intToByte(id, answer);
         intToByte(type, answer + 4);
@@ -65,7 +65,7 @@ struct Post
         return answer;
     }
 
-    Post static dencrypt(unsigned char* message)
+    PostSC static dencrypt(unsigned char* message)
     {
         
         int id =  byteToInt(message); 
@@ -75,7 +75,7 @@ struct Post
         int change = byteToInt(message + 16); 
         int direction = byteToInt(message + 20); 
 
-        return Post (id, change, Object(id, type, {x, y}), direction);
+        return PostSC (id, change, Object(id, type, {x, y}), direction);
     }
 };
 

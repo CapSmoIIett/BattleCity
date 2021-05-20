@@ -35,7 +35,7 @@ public:
 
 private:
     std::unordered_map <int, Object*> object_list;
-    std::stack<Post> posts;
+    std::stack<PostSC> posts;
     //std::vector<int> clients;
 
     int client;
