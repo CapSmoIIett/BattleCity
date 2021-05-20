@@ -31,6 +31,8 @@ public:
     // Обновляется и обновляет других игроков  
     void checkClients();
 
+    void addObject(int x, Object&);
+
 private:
     std::unordered_map <int, Object*> object_list;
     std::stack<Post> posts;

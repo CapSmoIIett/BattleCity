@@ -62,21 +62,31 @@ void Server::synchronize(ObjectScene *scene)
     
         auto obj = object_list.find(i.first);
 
-        if (i.second->type == TANK ||
-            i.second->type == PLAYER_TANK ||
-            i.second->type == BULLET)
-        {
-            int dir_scene = dynamic_cast<Directable*>(i.second)->get_dir();
-            //int dir_obj =  static_cast<Directable*>(&obj).get_dir();
-            //if (dir )
-        }
-
         // Поиск под пункт Create
         if (obj == object_list.end())
         {
-            object_list[i.first] = new Object (i.first, i.second->type, i.second->get_point(), i.second->get_health());
+            addObject(i.first, *i.second);
             posts.push(Post(i.first, CREATE, Object (i.first, i.second->type, i.second->get_point(), i.second->get_health())));
             continue; 
+        }
+
+        // поиск под Turn
+        if (i.second->type == BULLET ||
+            i.second->type == TANK   ||
+            i.second->type == PLAYER_TANK)
+        {
+            /*
+            int dir_obj_s = dynamic_cast<Directable*>(i.second)->get_dir();
+            int dir_obj  = (dynamic_cast<Directable*>((*obj).second))->get_dir();
+            */
+            int dir_obj_s = i.second->get_direction();
+            int dir_obj  = ((*obj).second)->get_direction();
+            
+            if (dir_obj != dir_obj_s)
+            {
+                posts.push(Post(i.first, TURN, Object(i.first, i.second->type, i.second->get_point()), dir_obj_s));
+                //continue;
+            }
         }
 
         //  Поиск под пункт Move
@@ -135,9 +145,11 @@ void Server::Send()
                 // send* - отправляет сообщения в сокет
                 send(sock, post.encrypt(), POST_SIZE, 0);
 
+                /*
                 std::cout << post.object.get_point().x 
                     << post.object.get_point().y << "\n";
                 std::cout << "Post отправил" << "\n";
+                */
 
                 // recv* - получить сообщение из сокета
                 recv(sock, &buf, sizeof(char), 0);
@@ -147,4 +159,31 @@ void Server::Send()
             posts.pop();
         }     
     delete[] number;
+}
+
+void Server::addObject(int id , Object& obj){
+    //map_objects[id] = new Object(id, type, Point {x, y}, 1);
+    //TODO заменить на switch
+    Point point = obj.get_point();
+    int type = obj.type;
+
+    if(type == DISTR_BLOCK) {
+            object_list[id] = new DistrBlock(id, point, 1);
+        } else if(type == UNDISTR_BLOCK) {
+            object_list[id] = new Object(id, UNDISTR_BLOCK, point, 100000);
+        } else if(type == TANK) {
+            object_list[id] = new Tank(id, point, obj.get_direction());
+        } else if(type == PLAYER_TANK) { //отличие только в том, что не создаётся AI_tank
+            object_list[id] = new Tank(id, point, obj.get_direction(), PLAYER_TANK);
+        } else if(type == WATER_BLOCK){
+            object_list[id] = new Object(id, WATER_BLOCK, point);
+        } else if(type == HEADQUARTERS) {
+            object_list[id] = new Headquarters(id, point);
+        } else if(type == SPAWNER) {
+            object_list[id] = new Object(id, SPAWNER, point, 1000, 0, 0);
+        } else if(type == EXPLOSION) {
+            object_list[id] = new Object(id, EXPLOSION, point, 1000);
+        } else if(type == BULLET) {
+            object_list[id] = new Bullet(id, point, obj.get_direction());
+        }
 }

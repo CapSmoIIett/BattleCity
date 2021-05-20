@@ -51,19 +51,33 @@ int ObjectScene::addObject(int id, Object obj)
     //TODO заменить на switch
     if(obj.type == DISTR_BLOCK) {
             map_objects[id] = new DistrBlock(id, obj.get_point(), 1);
-        } else if(obj.type == UNDISTR_BLOCK) {
+        } 
+        else if(obj.type == UNDISTR_BLOCK) {
             map_objects[id] = new Object(id, UNDISTR_BLOCK, obj.get_point(), 100000);
-        } else if(obj.type == TANK) {
+        } 
+        else if(obj.type == TANK) {
             map_objects[id] = new Tank(id, obj.get_point());
-        } else if(obj.type == PLAYER_TANK) { //отличие только в том, что не создаётся AI_tank
+        } 
+        else if(obj.type == PLAYER_TANK) { //отличие только в том, что не создаётся AI_tank
             map_objects[id] = new Tank(id, obj.get_point(), 0, PLAYER_TANK);
-        } else if(obj.type == WATER_BLOCK){
+        } 
+        else if(obj.type == BULLET)
+        {
+            // Костыль для клиента
+            int dir = obj.get_direction();
+            map_objects[id] = new Bullet(id, obj.get_point(), dir);
+            //map_objects[id] = new Object(id, BULLET, obj.get_point(), dir);
+        } 
+        else if(obj.type == WATER_BLOCK){
             map_objects[id] = new Object(id, WATER_BLOCK, obj.get_point());
-        } else if(obj.type == HEADQUARTERS) {
+        } 
+        else if(obj.type == HEADQUARTERS) {
             map_objects[id] = new Headquarters(id, obj.get_point());
-        } else if(obj.type == SPAWNER) {
+        } 
+        else if(obj.type == SPAWNER) {
             map_objects[id] = new Object(id, SPAWNER, obj.get_point(), 1000, 0, 0);
-        } else if(obj.type == EXPLOSION) {
+        } 
+        else if(obj.type == EXPLOSION) {
             map_objects[id] = new Object(id, EXPLOSION, obj.get_point(), 1000);
         }
     return id; 

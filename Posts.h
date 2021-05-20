@@ -10,26 +10,43 @@ struct Post
 {
     int id;
     int change;
+    Point point;
+    int type;
+    int direction;
+
+    /*
+        для Create - id, point, type
+        для Delete - id
+        для Move   - id, point
+        для Turn   - id, type, diretory
+    */
 
     // Нас интересует только:
     // id, Имя, Местоположение, Здоровь, change
     // size = sizeof(int) + sizeof(object.type) +
-
-    Object object;
     
-    Post(int id, int change, Object obj) :
+    void set_dir(int dir)
+    {
+        direction = dir;
+    }
+    
+    Post(int id, int change, Object obj, int dir = 0) :
     id(id),
     change(change),
-    object(obj)
+    type(obj.type),
+    point(obj.get_point()),
+    direction(dir)
     {
         
     }
 
     Post(unsigned char* message) :
     id(byteToInt(message)),
-    change(byteToInt(message + 20)),
-    object(byteToInt(message), byteToInt(message + 4), 
-    {byteToInt(message + 8), byteToInt(message + 12)}, byteToInt(message + 16))
+    change(byteToInt(message + 16)),
+    type(byteToInt(message + 4)),
+    point({byteToInt(message + 8),
+    byteToInt(message + 12)}),
+    direction(byteToInt(message + 20))    
     {
     
     }
@@ -38,12 +55,12 @@ struct Post
     {
         unsigned char* answer = new unsigned char[POST_SIZE];
         
-        intToByte(object.id, answer);
-        intToByte(object.type, answer + 4);
-        intToByte(object.get_point().x, answer + 8);
-        intToByte(object.get_point().y, answer + 12);
-        intToByte(object.health, answer + 16);
-        intToByte(change, answer + 20);  
+        intToByte(id, answer);
+        intToByte(type, answer + 4);
+        intToByte(point.x, answer + 8);
+        intToByte(point.y, answer + 12);
+        intToByte(change, answer + 16); 
+        intToByte(direction, answer + 20); 
 
         return answer;
     }
@@ -55,10 +72,10 @@ struct Post
         int type =  byteToInt(message + 4);
         int x = byteToInt(message + 8);
         int y = byteToInt(message + 12);
-        int health = byteToInt(message + 16);
-        int change = byteToInt(message + 20);  
+        int change = byteToInt(message + 16); 
+        int direction = byteToInt(message + 20); 
 
-        return Post (id, change, Object(id, type, {x, y}, health));
+        return Post (id, change, Object(id, type, {x, y}), direction);
     }
 };
 

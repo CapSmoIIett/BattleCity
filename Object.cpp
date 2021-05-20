@@ -69,8 +69,21 @@ Rect<int> Object::now_rectangle(ObjectScene *scene)
     return Rect <int>(point.x, point.y, width, heigth);
 }
 
+Object& Object::operator= (const Object& obj)
+{
+    if (this == &obj)
+    {
+        return *this;
+    }
 
+    this->point =obj.point;
+    this->speed = obj.speed;
+    //this->id = obj.id;
+    this->type = obj.type;
+    this->health = obj.health;
 
+    return *this;
+}
 
 
 
@@ -200,6 +213,29 @@ void Bullet::handle_tick(ObjectScene *scene){
 void Bullet::make_damage(ObjectScene * scene){
         Object* object =  scene->map_objects[id];
         object->set_health(( object->get_health())-1);
+}
+
+
+
+
+
+int Tank::get_direction() 
+{
+    return get_dir();
+}
+void Tank::set_direction(int n) 
+{
+    set_dir(n);
+}
+
+int Bullet::get_direction() 
+{
+
+    return get_dir();
+}
+void Bullet::set_direction(int n) 
+{
+    set_dir(n);
 }
 
 
