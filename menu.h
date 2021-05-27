@@ -80,7 +80,7 @@ void win(RenderWindow & window)
 	bc.scale(0.3, 0.3);
     menu3.setPosition(260, 440);
 	menu3.scale(3, 3);
-    end.setPosition(140, 200);
+    end.setPosition(150, 200);
 	end.scale(1.5, 1.5);
     tank1.setPosition(80, 250);
 	tank1.scale(3, 3);
@@ -115,8 +115,7 @@ void win(RenderWindow & window)
 
 void player1(RenderWindow & window, Event event, Clock clock, Controller controller, ObjectScene scene, AIScene ai_scene, DrawScene draw_scene, Time cycle_time)
 {
-    Time ttime = seconds(60);
-    Clock cclock;
+    Clock clock1;
 
 	while (window.isOpen()) 
         {
@@ -188,8 +187,8 @@ void player1(RenderWindow & window, Event event, Clock clock, Controller control
             Time elapsed_time = clock.getElapsedTime() % cycle_time;
             sleep(cycle_time - elapsed_time);
 
-            int timer = cclock.getElapsedTime().asSeconds();
-            if(timer >= 3)
+            int timer = clock1.getElapsedTime().asSeconds();
+            if(timer >= 300)
             {
                 win(window);
                 //std::fstream file("levels/2.txt");
@@ -197,13 +196,13 @@ void player1(RenderWindow & window, Event event, Clock clock, Controller control
                 //file.close();
                 //window.clear(); 
                 //controller.setStartXY(16 * 3 * 8, 24 * 3 * 8);
-            }
-            
+            } 
         }
 }
 
 void player2(RenderWindow & window, Event event, Clock clock, Controller controller, Controller controller2, ObjectScene scene, AIScene ai_scene, DrawScene draw_scene, Time cycle_time)
 {
+    Clock clock2;
 	while (window.isOpen()) 
         {
             while (window.pollEvent(event)) 
@@ -311,5 +310,11 @@ void player2(RenderWindow & window, Event event, Clock clock, Controller control
             Time elapsed_time = clock.getElapsedTime() % cycle_time;
             //std::cout << "отрисовано за " << elapsed_time.asMilliseconds() << " миллисекунд\n";
             sleep(cycle_time - elapsed_time);
+
+            int timer = clock2.getElapsedTime().asSeconds();
+            if(timer >= 300)
+            {
+                win(window);
+            }
         }
 }

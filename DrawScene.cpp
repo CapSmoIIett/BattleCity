@@ -190,9 +190,6 @@ void DrawTank::draw(sf::RenderWindow &window, ObjectScene* scene){
     } 
 }
 
-
-
-
 DrawScene::DrawScene(){
     std::cout << "Конструктор DrawScene." << "\n";
 

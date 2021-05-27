@@ -1,6 +1,6 @@
  #include "Controller.h"
- //#include "GameOver.h"
  #include "DrawScene.h"
+ 
 
 Controller::Controller() : 
 tank_id(-1), 
