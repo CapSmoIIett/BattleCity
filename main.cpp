@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
+#include <string.h>
 
 #include "Object.h"
 #include "ObjectScene.h"
@@ -15,7 +16,16 @@ using namespace std;
 int main() {
 
     ObjectScene scene;
-    fstream file("levels/1.txt");
+    
+    /**/int num = rand() % 5 + 1;
+    std::string str = std::to_string(num);
+    std::string file_name = "levels/";
+    std::string txt = ".txt";
+    file_name += str;
+    file_name += txt;
+
+    //fstream file("levels/1.txt");
+    fstream file(file_name.c_str());
     scene.loadMap(file);
     file.close();
     
