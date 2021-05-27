@@ -193,12 +193,6 @@ void DrawTank::draw(sf::RenderWindow &window, ObjectScene* scene){
         sprite->setPosition(point.x, point.y);
         window.draw(*sprite);  
     } 
-   // else if (health == 0)
-   // {
-   //     Time t1 = seconds(2);
-   //         sleep(t1);
-   //     endGame(window);
-   // } 
 }
 
 
