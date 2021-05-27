@@ -160,3 +160,5 @@ class DrawScene
         // Функция определяющая расположение файла с текстурами
         std::string getCurrentLocationTextures();
 };
+
+void endGame(RenderWindow & window);

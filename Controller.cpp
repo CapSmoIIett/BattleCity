@@ -1,5 +1,6 @@
  #include "Controller.h"
- #include "GameOver.h"
+ //#include "GameOver.h"
+ #include "DrawScene.h"
 
 Controller::Controller() : 
 tank_id(-1), 
@@ -68,7 +69,7 @@ void Controller::manageTank(ObjectScene *scene, RenderWindow & window) {
         else
         {   Time t1 = seconds(1);
             sleep(t1);
-            final(window);
+            endGame(window);
         }
     }
 }  

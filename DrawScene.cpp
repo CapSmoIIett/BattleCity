@@ -1,4 +1,5 @@
 #include "DrawScene.h"
+//#include "GameOver.h"
 
 DrawObject::DrawObject( Sprite*  sprite, int id, int type, Point point):
 Object(id, type, point), sprite(sprite){
@@ -8,9 +9,6 @@ Object(id, type, point), sprite(sprite){
 DrawObject::~DrawObject(){
     std::cout << "Деструктор объекта." << "\n";
 }
-
-
-
 
 DrawBlock::DrawBlock(   Sprite*  sprite, 
                         const int id,
@@ -29,9 +27,6 @@ void DrawBlock::draw(sf::RenderWindow &window, ObjectScene* scene){
     sprite->setPosition(point.x, point.y);
     window.draw(*sprite);
 }
-
-
-
 
 DrawHeadquarters::DrawHeadquarters( Sprite* living_headquarters_sprite, 
                                     Sprite* dead_headquarters_sprite, 
