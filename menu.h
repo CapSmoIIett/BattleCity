@@ -121,7 +121,7 @@ void player1(RenderWindow & window, Event event, Clock clock, Controller control
             }
             
 
-            controller.manageTank(&scene);
+            controller.manageTank(&scene, window);
 
             ai_scene.synchronize(&scene);
             ai_scene.setCommands(&scene);
@@ -231,8 +231,8 @@ void player2(RenderWindow & window, Event event, Clock clock, Controller control
             }
             
 
-            controller.manageTank(&scene);/* */
-            controller2.manageTank(&scene);
+            controller.manageTank(&scene, window);/* */
+            controller2.manageTank(&scene, window);
 
             ai_scene.synchronize(&scene);
             ai_scene.setCommands(&scene);

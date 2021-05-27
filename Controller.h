@@ -43,5 +43,5 @@ class Controller {
         void shoot(ObjectScene *scene);
 
         // функция, следящая за танком
-        virtual void manageTank(ObjectScene *scene);
+        virtual void manageTank(ObjectScene *scene, RenderWindow & window);
 };

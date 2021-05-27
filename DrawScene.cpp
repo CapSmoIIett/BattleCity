@@ -109,7 +109,7 @@ void DrawHeadquarters::draw(RenderWindow &window, ObjectScene* scene){
             //window.clear();
             window.draw(*sprite);
             window.display();
-            Time t1 = seconds(2);
+            Time t1 = seconds(1);
             sleep(t1);
             endGame(window);
        } 
@@ -175,20 +175,30 @@ DrawTank::~DrawTank(){
 void DrawTank::draw(sf::RenderWindow &window, ObjectScene* scene){
 
     Object*  object = scene->map_objects[id];
-    Tank* abstr_tank = dynamic_cast<Tank* >(object);
 
-    int direction = abstr_tank->get_dir();                          //получаем направление
-       
-    switch(direction) 
-    {
-        case DOWN:  sprite = down_sprite;  break;
-        case RIGHT: sprite = right_sprite; break;
-        case UP:    sprite = up_sprite;    break;
-        case LEFT:  sprite = left_sprite;  break;
-    }
-    Point point = scene->getPoint(id);
-    sprite->setPosition(point.x, point.y);
-    window.draw(*sprite);
+    if(object->get_health() > 0)
+    {    
+        Tank* abstr_tank = dynamic_cast<Tank* >(object);
+ 
+        int direction = abstr_tank->get_dir();                          //получаем направление
+        
+        switch(direction) 
+        {
+            case DOWN:  sprite = down_sprite;  break;
+            case RIGHT: sprite = right_sprite; break;
+            case UP:    sprite = up_sprite;    break;
+            case LEFT:  sprite = left_sprite;  break;
+        }
+        Point point = scene->getPoint(id);
+        sprite->setPosition(point.x, point.y);
+        window.draw(*sprite);  
+    } 
+   // else if (health == 0)
+   // {
+   //     Time t1 = seconds(2);
+   //         sleep(t1);
+   //     endGame(window);
+   // } 
 }
 
 
