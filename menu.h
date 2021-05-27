@@ -1,5 +1,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <fstream>
 
 #include "DrawScene.h"
 #include "Controller.h"
@@ -23,7 +25,7 @@
 	menu1.scale(3, 3);
 	menu2.setPosition(200, 380);
 	menu2.scale(3, 3);
-	menu3.setPosition(200, 440);
+	menu3.setPosition(250, 440);
 	menu3.scale(3, 3);
 	tank1.setPosition(100, 250);
 	tank1.scale(3, 3);
@@ -64,8 +66,58 @@
 	return end;
 }
 
+void win(RenderWindow & window)
+{
+    Texture bcTexture, menuTexture3, endTexture, tankTexture;
+	bcTexture.loadFromFile("battle-city.png");  // battle city
+	menuTexture3.loadFromFile("EXIT.png");      // выход
+    endTexture.loadFromFile("win.png");         // 
+    tankTexture.loadFromFile("tank.png");      	// танк
+	Sprite bc(bcTexture), menu3(menuTexture3), end(endTexture), tank1(tankTexture), tank2(tankTexture);
+	bool isMenu = 1;
+	int menuNum = 0;
+	bc.setPosition(100, 50);
+	bc.scale(0.3, 0.3);
+    menu3.setPosition(260, 440);
+	menu3.scale(3, 3);
+    end.setPosition(140, 200);
+	end.scale(1.5, 1.5);
+    tank1.setPosition(80, 250);
+	tank1.scale(3, 3);
+	tank2.setPosition(520, 500);
+	tank2.scale(3, 3);
+	tank2.rotate(180);
+ 
+	/////////////////////////////////////////////////
+	while (isMenu)
+	{
+		menu3.setColor(Color::White);
+		menuNum = 0;
+		window.clear(Color(0, 0, 0)); // 129, 181, 221
+ 
+		if (IntRect(200, 440, 300, 50).contains(Mouse::getPosition(window))) { menu3.setColor(Color::Red); menuNum = 3; }
+ 
+		if (Mouse::isButtonPressed(Mouse::Left))
+		{
+			if (menuNum == 3) { window.close(); isMenu = false; } 
+		}
+	
+        window.draw(tank1);
+		window.draw(tank2);
+		window.draw(bc);
+        window.draw(end);
+		window.draw(menu3);
+		
+		window.display();
+	}
+}
+
+
 void player1(RenderWindow & window, Event event, Clock clock, Controller controller, ObjectScene scene, AIScene ai_scene, DrawScene draw_scene, Time cycle_time)
 {
+    Time ttime = seconds(60);
+    Clock cclock;
+
 	while (window.isOpen()) 
         {
             while (window.pollEvent(event)) 
@@ -119,7 +171,6 @@ void player1(RenderWindow & window, Event event, Clock clock, Controller control
                 if (event.type == Event::Closed)
                     window.close();
             }
-            
 
             controller.manageTank(&scene, window);
 
@@ -133,8 +184,21 @@ void player1(RenderWindow & window, Event event, Clock clock, Controller control
             draw_scene.draw(window, &scene);
         
             window.display();
+            
             Time elapsed_time = clock.getElapsedTime() % cycle_time;
             sleep(cycle_time - elapsed_time);
+
+            int timer = cclock.getElapsedTime().asSeconds();
+            if(timer >= 3)
+            {
+                win(window);
+                //std::fstream file("levels/2.txt");
+                //scene.loadMap(file);
+                //file.close();
+                //window.clear(); 
+                //controller.setStartXY(16 * 3 * 8, 24 * 3 * 8);
+            }
+            
         }
 }
 
@@ -208,7 +272,7 @@ void player2(RenderWindow & window, Event event, Clock clock, Controller control
                         break;
                     }
                     case sf::Keyboard::A: {
-                        controller2.stop(RIGHT);
+                        controller2.stop(LEFT);
                         break;
                     }
                     case sf::Keyboard::S: {
