@@ -2,8 +2,11 @@
 
 Server::Server()
 {
-    
+    int client;
+	struct sockaddr_in addr_client;   
     struct sockaddr_in addr;
+
+    //std::cout << "size" << sizeof(Post) << "\n";
 
     // SOCK_STREAM - Обеспечивает создание двусторонних надежных и 
     // последовательных потоков байтов , поддерживающих соединения
@@ -14,11 +17,13 @@ Server::Server()
         exit(1);
     }
     
+    //TODO искать свободный порт
     // hton* и ntoh* переводят данные из узлового порядка
     // расположения байтов в сетевой и наоборот
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(3425);
-    addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_port = htons(8888);
+    //addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    addr.sin_addr.s_addr = INADDR_ANY;
 
     // bind - привязывает к сокету sockfd локальный адрес
     if(bind(listener, (struct sockaddr *)&addr, sizeof(addr)) < 0)
@@ -27,9 +32,20 @@ Server::Server()
         exit(2);
     }
 
-    // listen - слушать соединения на сокете  
-    listen(listener, 1);
-    
+    // listen - слушать соединения на сокете 
+    if (listen(listener, 1) < 0)
+    {
+        exit (2);
+    }
+
+    sock = accept(listener, (struct sockaddr *)&addr_client, (socklen_t*)&client);
+    if(sock < 0)
+    {
+        perror("accept");
+        exit(3);
+    }
+ 
+    std::cout << "Connect" << "\n";
 }
 
 Server::~Server()
@@ -43,72 +59,217 @@ void Server::synchronize(ObjectScene *scene)
     for(auto i: scene->map_objects){                       
         if (i.second->type == SPAWNER) 
             continue;         // Пропускаем спавнеры
+    
+        auto obj = object_list.find(i.first);
 
-        if (object_list.find(i.first) == object_list.end())
+        // Поиск под пункт Create
+        if (obj == object_list.end())
         {
-            object_list[i.first] = new Object (i.first, i.second->type, i.second->get_point(), i.second->get_health());
-            posts.push(Object (i.first, i.second->type, i.second->get_point(), i.second->get_health()));
-             
+            addObject(i.first, *i.second);
+            posts.push(PostSC(i.first, CREATE, Object (i.first, i.second->type, i.second->get_point(), i.second->get_health())));
+            continue; 
         }
-    }
-        //сверяет изменения с абстрактной сценой и удаляет объекты
-        std::vector<int> to_remove;
-        for(auto i: this->object_list) {
-            if (scene->map_objects.find(i.first) ==
-                scene->map_objects.end()) {
-                delete i.second;                        //если нет объекта в абстрактной сцене
-                                                        //значит его надо удалить и из нашей сцены
-                to_remove.push_back(i.first);
+
+        // поиск под Turn
+        if (i.second->type == BULLET ||
+            i.second->type == TANK   ||
+            i.second->type == PLAYER_TANK)
+        {
+            /*
+            int dir_obj_s = dynamic_cast<Directable*>(i.second)->get_dir();
+            int dir_obj  = (dynamic_cast<Directable*>((*obj).second))->get_dir();
+            */
+            int dir_obj_s = i.second->get_direction();
+            int dir_obj  = ((*obj).second)->get_direction();
+            
+            if (dir_obj != dir_obj_s)
+            {
+                ((*obj).second)->set_direction(dir_obj_s);
+                posts.push(PostSC(i.first, TURN, Object(i.first, i.second->type, i.second->get_point()), dir_obj_s));
+                //continue;
             }
         }
-        for (auto i : to_remove) {
-            object_list.erase(i);
+
+        //  Поиск под пункт Move
+        if  (i.second->get_point() != (*obj).second->get_point())
+        {
+            (*obj).second->set_point(i.second->get_point());
+            posts.push(PostSC(i.first, MOVE, Object (i.first, i.second->type, i.second->get_point())));
+            continue;
         }
+        
+        // ДЛя изменения направлдения необходимо переписать PostSC с объединением
+        //if (i.second->dir != (*obj).second->get_point())
+    }
+    
+    // Remove
+    // сверяет изменения с абстрактной сценой и удаляет объекты
+    std::vector<int> to_remove;
+    for(auto i: this->object_list) {
+        if (scene->map_objects.find(i.first) == scene->map_objects.end()) {
+            delete i.second;                        //если нет объекта в абстрактной сцене
+                                                    //значит его надо удалить и из нашей сцены
+            to_remove.push_back(i.first);
+            posts.push(PostSC(i.first, DELETE, Object (i.first, i.second->type, i.second->get_point())));
+        }
+    }
+    for (auto i : to_remove) {
+        object_list.erase(i);
+    }
 }
 
 void Server::Send()
 {
-    char* buf;
-    int bytes_read;
-    
-    sock = accept(listener, NULL, NULL);
-        if(sock < 0)
-        {
-            perror("accept");
-            exit(3);
-        }
+    char buf;
+
+        unsigned char* number = new unsigned char [sizeof(int)];
+
+        intToByte(posts.size(), number);
+
+        // отправляем количество изменений
+        //send(sock, number, sizeof(int), 0);
+        write(sock , number, sizeof(int));
+
+        std::cout << "Размер отправил" << "\n";
+
+        recv(sock, &buf, sizeof(char), 0);
+
+        std::cout << "Ответ получил" << "\n";
 
         // Мы отправляем все изменения 
         while (!posts.empty())
         {
-            while (*buf == 0)
-            {
-                int size = 0;
-                void* post = NULL;//encrypt(posts.top());
+            buf = 0;
+            int size = 0;
+                PostSC post = posts.top();
 
                 // send* - отправляет сообщения в сокет
-                send(sock, post, size, 0);
+                send(sock, post.encrypt(), POST_SC_SIZE, 0);
+
+                /*
+                std::cout << post.object.get_point().x 
+                    << post.object.get_point().y << "\n";
+                std::cout << "Post отправил" << "\n";
+                */
 
                 // recv* - получить сообщение из сокета
-                bytes_read = recv(sock, buf, 1, 0);
-            }
-            posts.pop();
-        }  
+                //recv(sock, &buf, sizeof(char), 0);
+
+                std::cout << "Ответ получил" << "\n";
             
-        
+            posts.pop();
+        }     
+    delete[] number;
 }
 
-void* encrypt(Object obj , int& size)
+void Server::addObject(int id , Object& obj){
+    //map_objects[id] = new Object(id, type, Point {x, y}, 1);
+    //TODO заменить на switch
+    Point point = obj.get_point();
+    int type = obj.type;
+
+    if(type == DISTR_BLOCK) {
+            object_list[id] = new DistrBlock(id, point, 1);
+        } else if(type == UNDISTR_BLOCK) {
+            object_list[id] = new Object(id, UNDISTR_BLOCK, point, 100000);
+        } else if(type == TANK) {
+            object_list[id] = new Tank(id, point, obj.get_direction());
+        } else if(type == PLAYER_TANK) { //отличие только в том, что не создаётся AI_tank
+            object_list[id] = new Tank(id, point, obj.get_direction(), PLAYER_TANK);
+        } else if(type == WATER_BLOCK){
+            object_list[id] = new Object(id, WATER_BLOCK, point);
+        } else if(type == HEADQUARTERS) {
+            object_list[id] = new Headquarters(id, point);
+        } else if(type == SPAWNER) {
+            object_list[id] = new Object(id, SPAWNER, point, 1000, 0, 0);
+        } else if(type == EXPLOSION) {
+            object_list[id] = new Object(id, EXPLOSION, point, 1000);
+        } else if(type == BULLET) {
+            object_list[id] = new Bullet(id, point, obj.get_direction());
+        }
+}
+
+void Server::Get()
 {
-    unsigned char* answer = 0;
-    size = sizeof(int) + sizeof(obj.type) +
-            sizeof(Point) + sizeof(int);
 
-        answer = new unsigned char[size];
-        
-        
-        
+    unsigned char number[sizeof(int)];
+    char answer = 1;
+
+    recv(sock, number, sizeof(int), 0);
+
+    //std::cout << "Размер получил" << "\n";
+
+    //получаем количество эллементов
+    int size = byteToInt(number);
+
+    write(sock , &answer, sizeof(char));
+
+    //std::cout << "ответ отправил" << "\n";
     
+    if (size < 0) 
+    {
+        exit(4);
+    }
 
-        return (void*) answer;
+
+    while (size)
+    {
+        unsigned char message[POST_C_SIZE];
+        
+        // принимаем пост
+        recv(sock, message, POST_C_SIZE, 0);
+
+        //std::cout << "Post " << size << " получил" << "\n";
+
+        // сообщаем что все хорошо
+        //send(sock, (void*)1, sizeof(int), 0);
+        //write(sock , &answer, sizeof(char));
+
+        //std::cout << "Ответ отправил" << "\n";
+
+        PostC command(message);
+        commands.push(command);
+        //recv(sock, buf, sizeof(message), 0);
+        size--;
+    }
+}
+
+void Server::updateController(Controller& ctrl, ObjectScene *scene)
+{
+    while (!commands.empty())
+    {
+        PostC post = commands.top();
+        switch (post.command)
+        {
+        case SETUP :
+            ctrl.setUp();
+            break;
+
+        case SETDOWN :
+            ctrl.setDown();
+            break;
+
+        case SETLEFT :
+            ctrl.setLeft();
+            break;
+
+        case SETRIGHT :
+            ctrl.setRight();
+            break;
+
+        case SETSHOOT :
+            ctrl.shoot(scene);
+            break;
+
+        case SETSTOP :
+            ctrl.stop(post.direction);
+            break;
+
+        default:
+            break;
+        }
+
+       commands.pop();
+    }
+    
 }

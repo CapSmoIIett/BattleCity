@@ -104,8 +104,8 @@ void DrawHeadquarters::draw(RenderWindow &window, ObjectScene* scene){
             //window.clear();
             window.draw(*sprite);
             window.display();
-            Time t1 = seconds(1);
-            sleep(t1);
+            //Time t1 = seconds(1);
+            //sleep(t1);
             endGame(window);
        } 
 }    

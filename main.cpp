@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
+#include <ctime>
 
 #include "Object.h"
 #include "ObjectScene.h"
@@ -17,7 +18,8 @@ int main() {
 
     ObjectScene scene;
     
-    /**/int num = rand() % 5 + 1;
+    int num = time(0);
+    num = num % LEVELS + 1;
     std::string str = std::to_string(num);
     std::string file_name = "levels/";
     std::string txt = ".txt";

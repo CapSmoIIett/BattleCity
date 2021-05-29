@@ -67,8 +67,8 @@ void Controller::manageTank(ObjectScene *scene, RenderWindow & window) {
             ride = 0; //пусть стоит на старте
         }       
         else
-        {   Time t1 = seconds(1);
-            sleep(t1);
+        {   //Time t1 = seconds(1);
+            //sleep(t1);
             endGame(window);
         }
     }

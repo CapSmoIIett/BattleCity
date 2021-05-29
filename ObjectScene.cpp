@@ -22,6 +22,7 @@ int ObjectScene::addObject(Object* object){
 
 int ObjectScene::addObject(int x, int y, int type){
     //map_objects[count_id] = new Object(count_id, type, Point {x, y}, 1);
+    //TODO заменить на switch
     if(type == DISTR_BLOCK) {
             map_objects[count_id] = new DistrBlock(count_id, Point{x, y}, 1);
         } else if(type == UNDISTR_BLOCK) {
@@ -41,7 +42,46 @@ int ObjectScene::addObject(int x, int y, int type){
         }
     count_id++;
     return count_id - 1; 
-}                                        
+}
+
+int ObjectScene::addObject(int id, Object obj)
+{
+    if (map_objects.find(id) != map_objects.end())
+        return id; 
+    //TODO заменить на switch
+    if(obj.type == DISTR_BLOCK) {
+            map_objects[id] = new DistrBlock(id, obj.get_point(), 1);
+        } 
+        else if(obj.type == UNDISTR_BLOCK) {
+            map_objects[id] = new Object(id, UNDISTR_BLOCK, obj.get_point(), 100000);
+        } 
+        else if(obj.type == TANK) {
+            map_objects[id] = new Tank(id, obj.get_point());
+        } 
+        else if(obj.type == PLAYER_TANK) { //отличие только в том, что не создаётся AI_tank
+            map_objects[id] = new Tank(id, obj.get_point(), 0, PLAYER_TANK);
+        } 
+        else if(obj.type == BULLET)
+        {
+            // Костыль для клиента
+            int dir = obj.get_direction();
+            map_objects[id] = new Bullet(id, obj.get_point(), dir);
+            //map_objects[id] = new Object(id, BULLET, obj.get_point(), dir);
+        } 
+        else if(obj.type == WATER_BLOCK){
+            map_objects[id] = new Object(id, WATER_BLOCK, obj.get_point());
+        } 
+        else if(obj.type == HEADQUARTERS) {
+            map_objects[id] = new Headquarters(id, obj.get_point());
+        } 
+        else if(obj.type == SPAWNER) {
+            map_objects[id] = new Object(id, SPAWNER, obj.get_point(), 1000, 0, 0);
+        } 
+        else if(obj.type == EXPLOSION) {
+            map_objects[id] = new Object(id, EXPLOSION, obj.get_point(), 1000);
+        }
+    return id; 
+}
 
 void ObjectScene::clearDead(){
     std::vector <int> to_remove;

@@ -18,6 +18,10 @@ using namespace sf;
 struct Point                                                                             //точка, возвращаемая абстрактным классом для отрисовки текстуры
 { 
     int x, y;
+
+    Point& operator= (const Point& point);
+    friend bool operator== (const Point& left, const Point& right);
+    friend bool operator!= (const Point& left, const Point& right);
 };
 
 // Класс объектов с напралением
@@ -97,7 +101,13 @@ class Object                                                                    
         virtual void handle_tick(class ObjectScene *scene) {};
 
         //
-        virtual sf::Rect<int> get_future_rectangle(class ObjectScene *scene) {return sf::Rect <int>(point.x, point.y, width, heigth);}; 
+        virtual sf::Rect<int> get_future_rectangle(class ObjectScene *scene) {return sf::Rect <int>(point.x, point.y, width, heigth);};
+
+        Object& operator= (const Object& obj); 
+
+        // Костыли для сервера с клиентом
+        virtual int  get_direction() { return -1;};
+        virtual void set_direction(int) {};
 };
 
 // Объект танка
@@ -139,6 +149,8 @@ class Tank: public Object, public Directable
         void move(class ObjectScene *scene);
 
         //friend void AIController::manageTank();
+        virtual int get_direction();
+        virtual void set_direction(int n);
 };
 
 
@@ -192,5 +204,8 @@ class Bullet: public Object, public Directable
 
         //
         void handle_tick(class ObjectScene *scene);
+
+        virtual int get_direction();
+        virtual void set_direction(int n);
 };
 

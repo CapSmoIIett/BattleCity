@@ -31,8 +31,11 @@ public:
     // Функция, добавляющая объект в массив объектов
     int addObject(class Object*);        
 
+
+    
     // Функция, добавляющая объект в массив объектов
-    int addObject(int x, int y, int type);                                     
+    int addObject(int x, int y, int type);   
+    int addObject(int id, Object obj);                  // Необходим для работы клиента                                
 
     // Функция, очищающая список объектов от убитых, с health <= 0
     void clearDead();                                     
