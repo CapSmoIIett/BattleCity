@@ -69,8 +69,28 @@ void AIController::manageTank(ObjectScene *scene) {
         if (tank->did_collided()) {
             command = nullptr;              // Столкновение обнуляет команду
             is_shoot = 0;
-            direction = rand() % 4;
-            tank->set_dir(direction);
+            int lastDir = tank->get_dir();
+            
+            if (direction  == RIGHT)
+            {
+               direction = UP; 
+            }
+            else
+            {
+                direction++;
+            }
+
+            tank->set_dir(direction);                  // Устанавоиваем направление
+            Rect <int>future_rectangle = tank->get_future_rectangle(scene);
+            bool is_intersect = tank->now_rectangle(scene).intersects(future_rectangle) && tank_id != tank->id;
+
+            // Если из-зи этого будет столкновение возвращаем все параметры - команда не выполнена
+            if (is_intersect) 
+            {         
+                tank->set_dir(lastDir);
+                direction = lastDir;
+            }
+    
         }
     }   
 }
@@ -130,13 +150,15 @@ void AIScene::setCommands(ObjectScene *scene) {
             player_points.push_back(scene->map_objects[player]->get_point());
         }
     }
-            
+
+    player_points.push_back(headquarters_point);
+
 
     for (auto i : map_ai_tanks) {                   // Проверяем каждый ИИ
         Object *object = scene->map_objects[i.first];
         Tank *tank = dynamic_cast<Tank *>(object);
         Point point = tank->get_point();
-        if (headquarters_point.x - point.x < 25 &&         
+        /*if (headquarters_point.x - point.x < 25 &&         
             headquarters_point.x - point.x > -25) {
             if (headquarters_point.y > point.y) {         // если база ниже
                 if (headquarters_point.y - point.y <= SIZEBLOCK * 5) 
@@ -162,7 +184,7 @@ void AIScene::setCommands(ObjectScene *scene) {
                     map_ai_tanks[object->id]->setCommand(Command(LEFT, 1));
                     continue;
             }
-        }
+        }*/
 
         for (auto player_point : player_points) {
             if (player_point.x - point.x < 5 &&         

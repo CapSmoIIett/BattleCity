@@ -20,7 +20,18 @@
 #define DISTR_BLOCK     20
 #define UNDISTR_BLOCK   21
 #define WATER_BLOCK     22
-#define HEADQUARTERS    3 
-#define SPAWNER         4
+#define HEADQUARTERS    31 
+#define SPAWNER         32
 #define BULLET          5
 #define EXPLOSION       6
+
+#define POST_SC_SIZE       24
+#define POST_C_SIZE         8
+
+// Для PostCS
+#define SETSTOP     100
+#define SETUP       101
+#define SETDOWN     102
+#define SETLEFT     103
+#define SETRIGHT    104
+#define SETSHOOT    105

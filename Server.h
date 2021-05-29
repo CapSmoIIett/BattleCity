@@ -1,3 +1,5 @@
+#pragma once 
+
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -7,7 +9,7 @@
 
 #include "Object.h"
 #include "Posts.h"
-
+#include "Controller.h"
 
 
 // Экземпляр этого класса будет создаваться у главного (первого) игрока
@@ -17,24 +19,24 @@ public:
     Server();
     ~Server();
 
-    // метод для работы в фоновом режиме
-    void Run();
-
-    // 
+    // Отправляет изменения клиенту
     void Send();  
 
-    //
-    void* encrypt(Object);
+    // Принимаем команды от клиента
+    void Get();
 
     // Обновляется и обновляет текущую объектную сцену
     void synchronize(ObjectScene *scene);
+    
+    //
+    void updateController(Controller& controller, ObjectScene* scene);
 
-    // Обновляется и обновляет других игроков  
-    void checkClients();
+    void addObject(int x, Object&);
 
 private:
     std::unordered_map <int, Object*> object_list;
-    std::stack<Object> posts;
+    std::stack<PostSC> posts;
+    std::stack<PostC> commands;
     //std::vector<int> clients;
 
     int client;
