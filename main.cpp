@@ -19,7 +19,7 @@ int main() {
     ObjectScene scene;
     level(scene);
     
-    AIScene ai_scene(&scene, 7);
+    AIScene ai_scene(&scene, 3);
 
     Time cycle_time = seconds(0.02);//0.02f);
     RenderWindow window(VideoMode(624, 624), "BattleCity");

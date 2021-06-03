@@ -89,7 +89,8 @@ void AIController::manageTank(ObjectScene *scene) {
             {         
                 tank->set_dir(lastDir);
                 direction = lastDir;
-            }    
+            }
+    
         }
     }   
 }
@@ -98,8 +99,7 @@ void AIController::manageTank(ObjectScene *scene) {
 
 
 AIScene::AIScene(ObjectScene *scene, int max) : maxTanks(max) {
-    for (auto i : scene->map_objects) 
-    { // Получаем точки спавнеров
+    for (auto i : scene->map_objects) { // Получаем точки спавнеров
         if (i.second->type == SPAWNER)
             spawners.push_back(i.second->get_point());
         if (i.second->type == HEADQUARTERS)
@@ -125,7 +125,9 @@ void AIScene::synchronize(ObjectScene *scene) {
 
     if (clock.getElapsedTime() - last_spawn >= sf::seconds(time_to_spawn) &&
             map_ai_tanks.size() < maxTanks) {
-        int spawn = rand() % (spawners.size()); // Выбираем случайный спавнер
+        int spawn = time(0);
+        spawn = rand() % (spawners.size()); // Выбираем случайный спавнер
+
         Point point = spawners[spawn];
 
         std::cout << "\n\n\n"
@@ -158,12 +160,10 @@ void AIScene::setCommands(ObjectScene *scene) {
         Object *object = scene->map_objects[i.first];
         Tank *tank = dynamic_cast<Tank *>(object);
         Point point = tank->get_point();
-        
-
+ 
         for (auto player_point : player_points) {
             if (player_point.x - point.x < 5 &&         
-                point.x - player_point.x > -5) {        // Если игрок и ИИ на одной вертикали 
-                
+                player_point.x - point.x > -5) {        // Если игрок и ИИ на одной вертикали 
                 if (player_point.y > point.y) {         // если игрок ниже
                     if (checkVisibility(scene, point, DOWN)) 
                         map_ai_tanks[object->id]->setCommand(Command(DOWN, 1));
@@ -176,7 +176,7 @@ void AIScene::setCommands(ObjectScene *scene) {
                     }
                 }
             if (player_point.y - point.y < 5 &&
-                point.y - player_point.y > -5) {        // Если игрок и ИИ на одной горизонтали
+                player_point.y - point.y > -5) {        // Если игрок и ИИ на одной горизонтали
                 if (player_point.x > point.x) {         // если игрок правее
                     if (checkVisibility(scene, point, RIGHT))
                         map_ai_tanks[object->id]->setCommand(Command(RIGHT, 1));
@@ -214,7 +214,7 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
                 Point p = i.second->get_point();
                 if (i.second->type == TANK) continue;
                 if (p.x - point.x < 3 &&         
-                    point.x - p.x > -3)
+                    p.x - point.x > -3)
                     if (difference > point.y - p.y){        // Если растояние (разница в точках) меньше 
                         name_closer = i.second->type;  
                         difference = point.y - p.y;         
@@ -227,7 +227,7 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
                 Point p = i.second->get_point();
                 if (i.second->type == TANK) continue;
                 if (p.x - point.x < 3 &&         
-                    point.x - p.x > -3)
+                    p.x - point.x > -3)
                     if (difference > p.y - point.y){        // Если растояние (разница в точках) меньше 
                         name_closer = i.second->type;  
                         difference = p.y - point.y;         
@@ -240,7 +240,7 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
                 Point p = i.second->get_point();
                 if (i.second->type == TANK) continue;
                 if (p.y - point.y < 3 &&
-                    point.y - p.y > -3)
+                    p.y - point.y > -3)
                     if (difference > point.y - p.y){        // Если растояние (разница в точках) меньше 
                         name_closer = i.second->type;  
                         difference = point.y - p.y;         
@@ -253,7 +253,7 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
                 Point p = i.second->get_point();
                 if (i.second->type == TANK) continue;
                 if (p.y - point.y < 3 &&
-                    point.y - p.y > -3)
+                    p.y - point.y > -3)
                     if (difference > p.y - point.y){        // Если растояние (разница в точках) меньше 
                         name_closer = i.second->type;  
                         difference = p.y - point.y;         
