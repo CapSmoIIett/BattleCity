@@ -14,7 +14,7 @@
 #define MOVE   2
 #define TURN   3
 
-#define LEVELS 5
+#define LEVELS 3
 
 #define OBJECT          0
 #define TANK            10

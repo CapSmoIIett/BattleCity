@@ -446,7 +446,6 @@ void OnlineClient(RenderWindow & window, Event event, Clock clock, Controller co
 {
     Client client;
 
-
     while (window.isOpen()) 
     {
         while (window.pollEvent(event)) 
@@ -524,7 +523,7 @@ void OnlineClient(RenderWindow & window, Event event, Clock clock, Controller co
     }
 }
 
-/*void level(ObjectScene scene)
+/**/void level(ObjectScene& scene)
 {
     int num = time(0);
     num = num % LEVELS + 1;
@@ -538,4 +537,4 @@ void OnlineClient(RenderWindow & window, Event event, Clock clock, Controller co
     std::fstream file(file_name.c_str());
     scene.loadMap(file);
     file.close();
-}*/
+}

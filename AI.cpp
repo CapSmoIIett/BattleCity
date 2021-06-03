@@ -89,8 +89,7 @@ void AIController::manageTank(ObjectScene *scene) {
             {         
                 tank->set_dir(lastDir);
                 direction = lastDir;
-            }
-    
+            }    
         }
     }   
 }
@@ -99,7 +98,8 @@ void AIController::manageTank(ObjectScene *scene) {
 
 
 AIScene::AIScene(ObjectScene *scene, int max) : maxTanks(max) {
-    for (auto i : scene->map_objects) { // Получаем точки спавнеров
+    for (auto i : scene->map_objects) 
+    { // Получаем точки спавнеров
         if (i.second->type == SPAWNER)
             spawners.push_back(i.second->get_point());
         if (i.second->type == HEADQUARTERS)
@@ -158,37 +158,12 @@ void AIScene::setCommands(ObjectScene *scene) {
         Object *object = scene->map_objects[i.first];
         Tank *tank = dynamic_cast<Tank *>(object);
         Point point = tank->get_point();
-        /*if (headquarters_point.x - point.x < 25 &&         
-            headquarters_point.x - point.x > -25) {
-            if (headquarters_point.y > point.y) {         // если база ниже
-                if (headquarters_point.y - point.y <= SIZEBLOCK * 5) 
-                    map_ai_tanks[object->id]->setCommand(Command(DOWN, 1));
-                    continue;
-            }
-            else {
-                if (point.y - headquarters_point.y <= SIZEBLOCK * 5)
-                    map_ai_tanks[object->id]->setCommand(Command(UP, 1));
-                    continue;
-            }
-        }
-            
-        if (headquarters_point.y - point.y < 25 &&         
-            headquarters_point.y - point.y > -25) {
-            if (headquarters_point.y > point.y) {         // если база правее
-                if (headquarters_point.x - point.x <= SIZEBLOCK * 5) 
-                    map_ai_tanks[object->id]->setCommand(Command(RIGHT, 1));
-                    continue;
-            }
-            else {
-                if (point.x - headquarters_point.x <= SIZEBLOCK * 5)
-                    map_ai_tanks[object->id]->setCommand(Command(LEFT, 1));
-                    continue;
-            }
-        }*/
+        
 
         for (auto player_point : player_points) {
             if (player_point.x - point.x < 5 &&         
-                player_point.x - point.x > -5) {        // Если игрок и ИИ на одной вертикали 
+                point.x - player_point.x > -5) {        // Если игрок и ИИ на одной вертикали 
+                
                 if (player_point.y > point.y) {         // если игрок ниже
                     if (checkVisibility(scene, point, DOWN)) 
                         map_ai_tanks[object->id]->setCommand(Command(DOWN, 1));
@@ -201,7 +176,7 @@ void AIScene::setCommands(ObjectScene *scene) {
                     }
                 }
             if (player_point.y - point.y < 5 &&
-                player_point.y - point.y > -5) {        // Если игрок и ИИ на одной горизонтали
+                point.y - player_point.y > -5) {        // Если игрок и ИИ на одной горизонтали
                 if (player_point.x > point.x) {         // если игрок правее
                     if (checkVisibility(scene, point, RIGHT))
                         map_ai_tanks[object->id]->setCommand(Command(RIGHT, 1));
@@ -216,68 +191,6 @@ void AIScene::setCommands(ObjectScene *scene) {
             }
         }
     }
-
-    /*for (int player : player_tank) {                        // Для каждого игрока
-        if (scene->map_objects.find(player) != scene->map_objects.end()) {
-            Point player_point = scene->map_objects[player]->get_point();
-            for (auto i : map_ai_tanks) {                   // Проверяем каждый ИИ
-                Object *object = scene->map_objects[i.first];
-                Tank *tank = dynamic_cast<Tank *>(object);
-                Point point = tank->get_point();
-                if (player_point.x - point.x < 5 &&         
-                    player_point.x - point.x > -5) {        // Если игрок и ИИ на одной вертикали 
-                    if (player_point.y > point.y) {         // если игрок ниже
-                        if (checkVisibility(scene, point, DOWN)) 
-                            map_ai_tanks[object->id]->setCommand(Command(DOWN, 1));
-                    }
-                    else {
-                        if (checkVisibility(scene, point, UP))
-                            map_ai_tanks[object->id]->setCommand(Command(UP, 1));
-                    }
-                }
-                if (player_point.y - point.y < 5 &&
-                    player_point.y - point.y > -5) {        // Если игрок и ИИ на одной горизонтали
-                    if (player_point.x > point.x) {         // если игрок правее
-                        if (checkVisibility(scene, point, RIGHT))
-                            map_ai_tanks[object->id]->setCommand(Command(RIGHT, 1));
-                    }
-                    else
-                    {
-                        if (checkVisibility(scene, point, LEFT))
-                            map_ai_tanks[object->id]->setCommand(Command(LEFT, 1));
-                    }
-                }
-            }
-        }
-    }
-    /*for (auto i : map_ai_tanks) {                   // Проверяем каждый ИИ
-                Object *object = scene->map_objects[i.first];
-                Tank *tank = dynamic_cast<Tank *>(object);
-                Point point = tank->get_point();
-                if (headquarters_point.x - point.x < SIZEBLOCK  &&         
-                    headquarters_point.x - point.x > (SIZEBLOCK * (-1))) {        // Если база и ИИ на одной вертикали 
-                    if (headquarters_point.y > point.y) {         // если база ниже
-                        //if (headquarters_point.y - point.y <= SIZEBLOCK * 5) // если база на растоянии 5-х блоков
-                            map_ai_tanks[object->id]->setCommand(Command(DOWN, 1));
-                    }
-                    else {
-                        //if ( point.y - headquarters_point.y <= SIZEBLOCK * 5)
-                            map_ai_tanks[object->id]->setCommand(Command(UP, 1));
-                    }
-                }
-                if (headquarters_point.y - point.y < SIZEBLOCK &&
-                    headquarters_point.y - point.y > SIZEBLOCK * (-1)) {        // Если игрок и ИИ на одной горизонтали
-                    if (headquarters_point.x > point.x) {         // если игрок правее
-                        //if (headquarters_point.x - point.x <= SIZEBLOCK * 5)
-                            map_ai_tanks[object->id]->setCommand(Command(RIGHT, 1));
-                    }
-                    else
-                    {
-                        //if (point.x - headquarters_point.x <= SIZEBLOCK * 5)
-                            map_ai_tanks[object->id]->setCommand(Command(LEFT, 1));
-                    }
-                }
-            }//*/
 }
 
 void AIScene::manageAllAITanks(ObjectScene *scene) {
@@ -301,7 +214,7 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
                 Point p = i.second->get_point();
                 if (i.second->type == TANK) continue;
                 if (p.x - point.x < 3 &&         
-                    p.x - point.x > -3)
+                    point.x - p.x > -3)
                     if (difference > point.y - p.y){        // Если растояние (разница в точках) меньше 
                         name_closer = i.second->type;  
                         difference = point.y - p.y;         
@@ -314,7 +227,7 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
                 Point p = i.second->get_point();
                 if (i.second->type == TANK) continue;
                 if (p.x - point.x < 3 &&         
-                    p.x - point.x > -3)
+                    point.x - p.x > -3)
                     if (difference > p.y - point.y){        // Если растояние (разница в точках) меньше 
                         name_closer = i.second->type;  
                         difference = p.y - point.y;         
@@ -327,7 +240,7 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
                 Point p = i.second->get_point();
                 if (i.second->type == TANK) continue;
                 if (p.y - point.y < 3 &&
-                    p.y - point.y > -3)
+                    point.y - p.y > -3)
                     if (difference > point.y - p.y){        // Если растояние (разница в точках) меньше 
                         name_closer = i.second->type;  
                         difference = point.y - p.y;         
@@ -340,7 +253,7 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
                 Point p = i.second->get_point();
                 if (i.second->type == TANK) continue;
                 if (p.y - point.y < 3 &&
-                    p.y - point.y > -3)
+                    point.y - p.y > -3)
                     if (difference > p.y - point.y){        // Если растояние (разница в точках) меньше 
                         name_closer = i.second->type;  
                         difference = p.y - point.y;         
@@ -350,5 +263,5 @@ bool AIScene::checkVisibility (ObjectScene *scene, Point point, int dir) {
         }
     }
 
-    return name_closer == PLAYER_TANK;
+    return name_closer == PLAYER_TANK || name_closer == HEADQUARTERS;
 }

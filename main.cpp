@@ -17,26 +17,13 @@ using namespace std;
 int main() {
 
     ObjectScene scene;
+    level(scene);
     
-    int num = time(0);
-    num = num % LEVELS + 1;
-    std::string str = std::to_string(num);
-    std::string file_name = "levels/";
-    std::string txt = ".txt";
-    file_name += str;
-    file_name += txt;
-
-    //fstream file("levels/1.txt");
-    fstream file(file_name.c_str());
-    scene.loadMap(file);
-    file.close();
-    
-    AIScene ai_scene(&scene, 10);
+    AIScene ai_scene(&scene, 7);
 
     Time cycle_time = seconds(0.02);//0.02f);
     RenderWindow window(VideoMode(624, 624), "BattleCity");
     DrawScene draw_scene;
-
 
     Controller controller;
     Controller controller2;
